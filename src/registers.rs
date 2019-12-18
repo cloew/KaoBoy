@@ -25,10 +25,7 @@ impl Registers {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
-    macro_rules! as_hex {
-        ($value:expr) => (format!("0x{:X}", $value));
-    }
+    use crate::{as_hex};
     
     #[test]
     fn test_read_bc_register_combines_underlying_registers() {
