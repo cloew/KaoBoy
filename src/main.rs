@@ -1,4 +1,5 @@
-mod registers;
+pub mod bit_helpers;
+pub mod registers;
 
 use registers::Registers;
 
