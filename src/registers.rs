@@ -1,3 +1,7 @@
+macro_rules! build_u16 {
+    ($upper:expr, $lower:expr) => (($upper as u16) << 8 | ($lower as u16));
+}
+
 macro_rules! get_lower_u8 {
     ($value:expr) => ($value as u8);
 }
@@ -6,19 +10,16 @@ macro_rules! get_upper_u8 {
     ($value:expr) => ((($value & 0xFF00) >> 8) as u8);
 }
 
-macro_rules! build_u16 {
-    ($upper:expr, $lower:expr) => (($upper as u16) << 8 | ($lower as u16));
-}
 
-struct Registers {
-    a: u8,
-    b: u8,
-    c: u8,
-    d: u8,
-    e: u8,
-    f: u8, // Special Flags register
-    h: u8,
-    l: u8,
+pub struct Registers {
+    pub a: u8,
+    pub b: u8,
+    pub c: u8,
+    pub d: u8,
+    pub e: u8,
+    pub f: u8, // Special Flags register
+    pub h: u8,
+    pub l: u8,
 }
 
 impl Registers {
