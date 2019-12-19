@@ -1,5 +1,6 @@
 use crate::{build_u16, get_lower_u8, get_upper_u8};
 
+const SUBTRACT_FLAG_MASK: u8 = 0x40;
 const ZERO_FLAG_MASK: u8 = 0x80;
 
 pub struct Registers {
@@ -29,6 +30,14 @@ impl Registers {
     
     pub fn set_zero_flag(&mut self, is_zero: bool) {
         self.set_flag(ZERO_FLAG_MASK, is_zero);
+    }
+    
+    pub fn get_subtract_flag(&self) -> bool {
+        return self.get_flag(SUBTRACT_FLAG_MASK);
+    }
+    
+    pub fn set_subtract_flag(&mut self, is_subtract: bool) {
+        self.set_flag(SUBTRACT_FLAG_MASK, is_subtract);
     }
     fn get_flag(&self, flag_mask: u8) -> bool {
         return self.f & flag_mask > 0;
@@ -47,6 +56,8 @@ impl Registers {
 mod tests {
     use super::*;
     use crate::{as_hex};
+    
+    const ALL_FLAGS_ON: u8 = 0xF0;
     
     #[test]
     fn test_read_bc_register_combines_underlying_registers() {
@@ -73,7 +84,7 @@ mod tests {
     
     #[test]
     fn test_get_zero_flag_true_reads_flag_properly() {
-        const INITIAL_FLAGS: u8 = 0x80;
+        const INITIAL_FLAGS: u8 = ZERO_FLAG_MASK;
         
         let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
         
@@ -84,7 +95,7 @@ mod tests {
     
     #[test]
     fn test_get_zero_flag_false_reads_flag_properly() {
-        const INITIAL_FLAGS: u8 = 0x70;
+        const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !ZERO_FLAG_MASK;
         
         let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
         
@@ -95,8 +106,8 @@ mod tests {
     
     #[test]
     fn test_set_zero_flag_to_true_flags_only_the_zero_bit() {
-        const INITIAL_FLAGS: u8 = 0x70;
-        const EXPECTED_FLAGS: u8 = 0xF0;
+        const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !ZERO_FLAG_MASK;
+        const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON;
         
         let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
         
@@ -107,12 +118,58 @@ mod tests {
     
     #[test]
     fn test_set_zero_flag_to_false_flags_only_the_zero_bit() {
-        const INITIAL_FLAGS: u8 = 0xF0;
-        const EXPECTED_FLAGS: u8 = 0x70;
+        const INITIAL_FLAGS: u8 = ALL_FLAGS_ON;
+        const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON & !ZERO_FLAG_MASK;
         
         let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
         
         registers.set_zero_flag(false);
+        
+        assert_eq!(as_hex!(registers.f), as_hex!(EXPECTED_FLAGS));
+    }
+    
+    #[test]
+    fn test_get_subtract_flag_true_reads_flag_properly() {
+        const INITIAL_FLAGS: u8 = SUBTRACT_FLAG_MASK;
+        
+        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        
+        let subtract_flag = registers.get_subtract_flag();
+        
+        assert_eq!(subtract_flag, true);
+    }
+    
+    #[test]
+    fn test_get_subtract_flag_false_reads_flag_properly() {
+        const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !SUBTRACT_FLAG_MASK;
+        
+        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        
+        let subtract_flag = registers.get_subtract_flag();
+        
+        assert_eq!(subtract_flag, false);
+    }
+    
+    #[test]
+    fn test_set_subtract_flag_to_true_flags_only_the_zero_bit() {
+        const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !SUBTRACT_FLAG_MASK;
+        const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON;
+        
+        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        
+        registers.set_subtract_flag(true);
+        
+        assert_eq!(as_hex!(registers.f), as_hex!(EXPECTED_FLAGS));
+    }
+    
+    #[test]
+    fn test_set_subtract_flag_to_false_flags_only_the_zero_bit() {
+        const INITIAL_FLAGS: u8 = ALL_FLAGS_ON;
+        const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON & !SUBTRACT_FLAG_MASK;
+        
+        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        
+        registers.set_subtract_flag(false);
         
         assert_eq!(as_hex!(registers.f), as_hex!(EXPECTED_FLAGS));
     }
