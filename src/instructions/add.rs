@@ -5,6 +5,7 @@ fn add(registers: &mut Registers, value: u8) {
     
     registers.a = new_value;
     registers.set_zero_flag(new_value == 0);
+    registers.set_subtract_flag(false);
 }
 
 #[cfg(test)]
@@ -47,5 +48,18 @@ mod tests {
         add(&mut registers, VALUE_TO_ADD);
         
         assert_eq!(registers.get_zero_flag(), false);
+    }
+    
+    #[test]
+    fn test_add_turns_subtract_flag_off() {
+        const INITIAL_A: u8 = 0x12;
+        const VALUE_TO_ADD: u8 = 0x34;
+        
+        let mut registers = Registers {a: INITIAL_A, b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+        registers.set_subtract_flag(true);
+        
+        add(&mut registers, VALUE_TO_ADD);
+        
+        assert_eq!(registers.get_subtract_flag(), false);
     }
 }
