@@ -23,11 +23,11 @@ impl Registers {
         self.c = get_lower_u8!(value);
     }
     
-    fn get_zero_flag(&self) -> bool {
+    pub fn get_zero_flag(&self) -> bool {
         return self.f & ZERO_FLAG_MASK > 0;
     }
     
-    fn set_zero_flag(&mut self, is_zero: bool) {
+    pub fn set_zero_flag(&mut self, is_zero: bool) {
         if is_zero {
             self.f |= ZERO_FLAG_MASK;
         } else {
