@@ -24,14 +24,21 @@ impl Registers {
     }
     
     pub fn get_zero_flag(&self) -> bool {
-        return self.f & ZERO_FLAG_MASK > 0;
+        return self.get_flag(ZERO_FLAG_MASK);
     }
     
     pub fn set_zero_flag(&mut self, is_zero: bool) {
-        if is_zero {
-            self.f |= ZERO_FLAG_MASK;
+        self.set_flag(ZERO_FLAG_MASK, is_zero);
+    }
+    fn get_flag(&self, flag_mask: u8) -> bool {
+        return self.f & flag_mask > 0;
+    }
+
+    fn set_flag(&mut self, flag_mask: u8, set_to_true: bool) {
+        if set_to_true {
+            self.f |= flag_mask;
         } else {
-            self.f &= !ZERO_FLAG_MASK;
+            self.f &= !flag_mask;
         }
     }
 }
