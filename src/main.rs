@@ -2,7 +2,7 @@ pub mod bit_helpers;
 pub mod registers;
 mod instructions;
 
-use registers::Registers;
+use registers::registers::Registers;
 use std::collections::HashMap;
 
 fn main() {
