@@ -1,11 +1,12 @@
 use crate::{build_u16, get_lower_u8, get_upper_u8};
+use crate::registers::register::{Register};
 
 const HALF_CARRY_FLAG_MASK: u8 = 0x20;
 const SUBTRACT_FLAG_MASK: u8 = 0x40;
 const ZERO_FLAG_MASK: u8 = 0x80;
 
 pub struct Registers {
-    pub a: u8,
+    pub a: Register,
     pub b: u8,
     pub c: u8,
     pub d: u8,
@@ -16,6 +17,10 @@ pub struct Registers {
 }
 
 impl Registers {
+	pub fn new() -> Registers {
+		return Registers {a: Register::new(), b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+	}
+
     fn read_bc_register(&self) -> u16 {
         return build_u16!(self.b, self.c);
     }
@@ -70,7 +75,7 @@ mod tests {
     
     #[test]
     fn test_read_bc_register_combines_underlying_registers() {
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+        let mut registers = Registers::new();
         const EXPECTED_VALUE: u16 = 0x1234;
         
         registers.b = 0x12;
@@ -81,7 +86,7 @@ mod tests {
     
     #[test]
     fn test_write_bc_register_separates_to_underlying_registers() {
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+        let mut registers = Registers::new();
         const EXPECTED_B_VALUE: u8 = 0x12;
         const EXPECTED_C_VALUE: u8 = 0x34;
         
@@ -95,7 +100,8 @@ mod tests {
     fn test_get_zero_flag_true_reads_flag_properly() {
         const INITIAL_FLAGS: u8 = ZERO_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         let zero_flag = registers.get_zero_flag();
         
@@ -106,7 +112,8 @@ mod tests {
     fn test_get_zero_flag_false_reads_flag_properly() {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !ZERO_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         let zero_flag = registers.get_zero_flag();
         
@@ -118,7 +125,8 @@ mod tests {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !ZERO_FLAG_MASK;
         const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         registers.set_zero_flag(true);
         
@@ -130,7 +138,8 @@ mod tests {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON;
         const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON & !ZERO_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         registers.set_zero_flag(false);
         
@@ -141,7 +150,8 @@ mod tests {
     fn test_get_subtract_flag_true_reads_flag_properly() {
         const INITIAL_FLAGS: u8 = SUBTRACT_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         let subtract_flag = registers.get_subtract_flag();
         
@@ -152,7 +162,8 @@ mod tests {
     fn test_get_subtract_flag_false_reads_flag_properly() {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !SUBTRACT_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         let subtract_flag = registers.get_subtract_flag();
         
@@ -164,7 +175,8 @@ mod tests {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !SUBTRACT_FLAG_MASK;
         const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         registers.set_subtract_flag(true);
         
@@ -176,7 +188,8 @@ mod tests {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON;
         const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON & !SUBTRACT_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         registers.set_subtract_flag(false);
         
@@ -187,7 +200,8 @@ mod tests {
     fn test_get_half_carry_flag_true_reads_flag_properly() {
         const INITIAL_FLAGS: u8 = HALF_CARRY_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         let half_carry_flag = registers.get_half_carry_flag();
         
@@ -198,7 +212,8 @@ mod tests {
     fn test_get_half_carry_flag_false_reads_flag_properly() {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !HALF_CARRY_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         let half_carry_flag = registers.get_half_carry_flag();
         
@@ -210,7 +225,8 @@ mod tests {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !HALF_CARRY_FLAG_MASK;
         const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         registers.set_half_carry_flag(true);
         
@@ -222,7 +238,8 @@ mod tests {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON;
         const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON & !HALF_CARRY_FLAG_MASK;
         
-        let mut registers = Registers {a: 0, b: 0, c: 0, d: 0, e: 0, f: INITIAL_FLAGS, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.f = INITIAL_FLAGS;
         
         registers.set_half_carry_flag(false);
         

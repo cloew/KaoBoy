@@ -3,7 +3,7 @@ use crate::registers::registers::Registers;
 fn add(registers: &mut Registers, value: u8) {
     let (new_value, overflow) = registers.a.overflowing_add(value);
     
-    registers.a = new_value;
+    registers.a.set(new_value);
     registers.set_zero_flag(new_value == 0);
     registers.set_subtract_flag(false);
 }
@@ -19,7 +19,8 @@ mod tests {
         const VALUE_TO_ADD: u8 = 0x34;
         const EXPECTED_VALUE: u16 = 0x46;
         
-        let mut registers = Registers {a: INITIAL_A, b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.a.set(INITIAL_A);
         
         add(&mut registers, VALUE_TO_ADD);
         
@@ -31,7 +32,8 @@ mod tests {
         const INITIAL_A: u8 = 0x12;
         const VALUE_TO_ADD: u8 = (0x00 as u8).overflowing_sub(INITIAL_A).0;
         
-        let mut registers = Registers {a: INITIAL_A, b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.a.set(INITIAL_A);
         
         add(&mut registers, VALUE_TO_ADD);
         
@@ -43,7 +45,8 @@ mod tests {
         const INITIAL_A: u8 = 0x12;
         const VALUE_TO_ADD: u8 = 0xFF - INITIAL_A;
         
-        let mut registers = Registers {a: INITIAL_A, b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.a.set(INITIAL_A);
         
         add(&mut registers, VALUE_TO_ADD);
         
@@ -55,7 +58,8 @@ mod tests {
         const INITIAL_A: u8 = 0x12;
         const VALUE_TO_ADD: u8 = 0x34;
         
-        let mut registers = Registers {a: INITIAL_A, b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+        let mut registers = Registers::new();
+		registers.a.set(INITIAL_A);
         registers.set_subtract_flag(true);
         
         add(&mut registers, VALUE_TO_ADD);
