@@ -4,8 +4,8 @@ fn add(registers: &mut Registers, value: u8) {
     let (new_value, overflow) = registers.a.overflowing_add(value);
     
     registers.a.set(new_value);
-    registers.set_zero_flag(new_value == 0);
-    registers.set_subtract_flag(false);
+    registers.zero_flag.set(new_value == 0);
+    registers.subtract_flag.set(false);
 }
 
 #[cfg(test)]
@@ -37,7 +37,7 @@ mod tests {
         
         add(&mut registers, VALUE_TO_ADD);
         
-        assert_eq!(registers.get_zero_flag(), true);
+        assert_eq!(registers.zero_flag.get(), true);
     }
     
     #[test]
@@ -50,7 +50,7 @@ mod tests {
         
         add(&mut registers, VALUE_TO_ADD);
         
-        assert_eq!(registers.get_zero_flag(), false);
+        assert_eq!(registers.zero_flag.get(), false);
     }
     
     #[test]
@@ -60,10 +60,10 @@ mod tests {
         
         let mut registers = Registers::new();
 		registers.a.set(INITIAL_A);
-        registers.set_subtract_flag(true);
+        registers.subtract_flag.set(true);
         
         add(&mut registers, VALUE_TO_ADD);
         
-        assert_eq!(registers.get_subtract_flag(), false);
+        assert_eq!(registers.subtract_flag.get(), false);
     }
 }

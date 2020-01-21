@@ -13,15 +13,19 @@ impl RegisterFlag {
 		return RegisterFlag {_registers: registers, _name: register_name, mask: mask};
 	}
 	
-	pub fn get(&self) -> u8 {
+	pub fn get(&self) -> bool {
         return self.get_flag_register() & self.mask > 0;
 	}
 	
-	pub fn set(&mut self, new_value: u8) {
-        self._registers.borrow_mut()[self._name as usize] = new_value;
+	pub fn set(&mut self, set_to_true: bool) {
+        if set_to_true {
+            self._registers.borrow_mut()[self._name as usize] |= self.mask;
+        } else {
+            self._registers.borrow_mut()[self._name as usize] &= !self.mask;
+        }
 	}
 	
-	fn get_flag_register(&self) {
+	fn get_flag_register(&self) -> u8 {
         return self._registers.borrow()[self._name as usize];
 	}
 }
