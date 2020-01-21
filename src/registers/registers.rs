@@ -1,9 +1,23 @@
 use crate::{build_u16, get_lower_u8, get_upper_u8};
 use crate::registers::register::{Register};
 
+use std::rc::Rc;
+use std::cell::RefCell;
+
 const HALF_CARRY_FLAG_MASK: u8 = 0x20;
 const SUBTRACT_FLAG_MASK: u8 = 0x40;
 const ZERO_FLAG_MASK: u8 = 0x80;
+
+pub enum RegisterName {
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    H,
+    L,
+}
 
 pub struct Registers {
     pub a: Register,
@@ -14,11 +28,14 @@ pub struct Registers {
     pub f: u8, // Special Flags register
     pub h: u8,
     pub l: u8,
+    
+    pub _registers: Rc<RefCell<[u8; 8]>>,
 }
 
 impl Registers {
 	pub fn new() -> Registers {
-		return Registers {a: Register::new(), b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0};
+        let registers_ref = Rc::new(RefCell::new([0; 8]));
+		return Registers {a: Register::new(registers_ref.clone()), b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0, _registers: registers_ref};
 	}
 
     fn read_bc_register(&self) -> u16 {
