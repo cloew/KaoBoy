@@ -1,5 +1,6 @@
 use crate::{build_u16, get_lower_u8, get_upper_u8};
 use crate::registers::register::{Register};
+use crate::registers::register_names::{RegisterName};
 
 use std::rc::Rc;
 use std::cell::RefCell;
@@ -8,26 +9,15 @@ const HALF_CARRY_FLAG_MASK: u8 = 0x20;
 const SUBTRACT_FLAG_MASK: u8 = 0x40;
 const ZERO_FLAG_MASK: u8 = 0x80;
 
-pub enum RegisterName {
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    H,
-    L,
-}
-
 pub struct Registers {
     pub a: Register,
-    pub b: u8,
-    pub c: u8,
-    pub d: u8,
-    pub e: u8,
+    pub b: Register,
+    pub c: Register,
+    pub d: Register,
+    pub e: Register,
     pub f: u8, // Special Flags register
-    pub h: u8,
-    pub l: u8,
+    pub h: Register,
+    pub l: Register,
     
     pub _registers: Rc<RefCell<[u8; 8]>>,
 }
@@ -35,17 +25,17 @@ pub struct Registers {
 impl Registers {
 	pub fn new() -> Registers {
         let registers_ref = Rc::new(RefCell::new([0; 8]));
-		return Registers {a: Register::new(registers_ref.clone()), b: 0, c: 0, d: 0, e: 0, f: 0, h: 0, l: 0, _registers: registers_ref};
+		return Registers {
+            a: Register::new(registers_ref.clone(), RegisterName::A),
+            b: Register::new(registers_ref.clone(), RegisterName::B),
+            c: Register::new(registers_ref.clone(), RegisterName::C),
+            d: Register::new(registers_ref.clone(), RegisterName::D),
+            e: Register::new(registers_ref.clone(), RegisterName::E),
+            f: 0,
+            h: Register::new(registers_ref.clone(), RegisterName::H),
+            l: Register::new(registers_ref.clone(), RegisterName::L),
+            _registers: registers_ref};
 	}
-
-    fn read_bc_register(&self) -> u16 {
-        return build_u16!(self.b, self.c);
-    }
-    
-    fn write_bc_register(&mut self, value: u16) {
-        self.b = get_upper_u8!(value); //((value & 0xFF00) >> 8) as u8;
-        self.c = get_lower_u8!(value);
-    }
     
     pub fn get_zero_flag(&self) -> bool {
         return self.get_flag(ZERO_FLAG_MASK);
@@ -89,29 +79,6 @@ mod tests {
     use crate::{as_hex};
     
     const ALL_FLAGS_ON: u8 = 0xF0;
-    
-    #[test]
-    fn test_read_bc_register_combines_underlying_registers() {
-        let mut registers = Registers::new();
-        const EXPECTED_VALUE: u16 = 0x1234;
-        
-        registers.b = 0x12;
-        registers.c = 0x34;
-        
-        assert_eq!(as_hex!(registers.read_bc_register()), as_hex!(EXPECTED_VALUE));
-    }
-    
-    #[test]
-    fn test_write_bc_register_separates_to_underlying_registers() {
-        let mut registers = Registers::new();
-        const EXPECTED_B_VALUE: u8 = 0x12;
-        const EXPECTED_C_VALUE: u8 = 0x34;
-        
-        registers.write_bc_register(0x1234);
-        
-        assert_eq!(as_hex!(registers.b), as_hex!(EXPECTED_B_VALUE));
-        assert_eq!(as_hex!(registers.c), as_hex!(EXPECTED_C_VALUE));
-    }
     
     #[test]
     fn test_get_zero_flag_true_reads_flag_properly() {
