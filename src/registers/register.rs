@@ -14,15 +14,15 @@ impl Register {
 	}
 	
 	pub fn get(&self) -> u8 {
-        return self._registers.borrow()[0];
+        return self._registers.borrow()[self._name as usize];
 	}
 	
 	pub fn set(&mut self, new_value: u8) {
-        self._registers.borrow_mut()[0] = new_value;
+        self._registers.borrow_mut()[self._name as usize] = new_value;
 	}
 	
 	pub fn overflowing_add(&self, other: u8) -> (u8, bool) {
-        return self._registers.borrow_mut()[0].overflowing_add(other);
+        return self._registers.borrow_mut()[self._name as usize].overflowing_add(other);
 	}
 }
 

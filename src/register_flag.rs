@@ -18,11 +18,11 @@ impl RegisterFlag {
 	}
 	
 	pub fn set(&mut self, new_value: u8) {
-        self._registers.borrow_mut()[0] = new_value;
+        self._registers.borrow_mut()[self._name as usize] = new_value;
 	}
 	
 	fn get_flag_register(&self) {
-        return self._registers.borrow()[0];
+        return self._registers.borrow()[self._name as usize];
 	}
 }
 
@@ -37,9 +37,10 @@ mod tests {
     #[test]
     fn test_get_flag_true_reads_flag_properly() {
         const INITIAL_FLAGS: u8 = MASK;
+        const REGISTER: RegisterName = RegisterName::A;
         
-        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), RegisterName::A, MASK);
-		register_flag._registers.borrow_mut()[0] = INITIAL_FLAGS;
+        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), REGISTER, MASK);
+		register_flag._registers.borrow_mut()[REGISTER as usize] = INITIAL_FLAGS;
         
         let flag = register_flag.get();
         
@@ -49,9 +50,10 @@ mod tests {
     #[test]
     fn test_get_flag_false_reads_flag_properly() {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !MASK;
+        const REGISTER: RegisterName = RegisterName::A;
         
-        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), RegisterName::A, MASK);
-		register_flag._registers.borrow_mut()[0] = INITIAL_FLAGS;
+        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), REGISTER, MASK);
+		register_flag._registers.borrow_mut()[REGISTER as usize] = INITIAL_FLAGS;
         
         let flag = register_flag.get();
         
@@ -62,9 +64,10 @@ mod tests {
     fn test_set_flag_to_true_flags_only_the_masked_bit() {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !MASK;
         const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON;
+        const REGISTER: RegisterName = RegisterName::A;
         
-        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), RegisterName::A, MASK);
-		register_flag._registers.borrow_mut()[0] = INITIAL_FLAGS;
+        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), REGISTER, MASK);
+		register_flag._registers.borrow_mut()[REGISTER as usize] = INITIAL_FLAGS;
         
         register_flag.set(true);
         
@@ -75,9 +78,10 @@ mod tests {
     fn test_set_flag_to_false_flags_only_the_masked_bit() {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON;
         const EXPECTED_FLAGS: u8 = ALL_FLAGS_ON & !MASK;
+        const REGISTER: RegisterName = RegisterName::A;
         
-        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), RegisterName::A, MASK);
-		register_flag._registers.borrow_mut()[0] = INITIAL_FLAGS;
+        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), REGISTER, MASK);
+		register_flag._registers.borrow_mut()[REGISTER as usize] = INITIAL_FLAGS;
         
         register_flag.set(false);
         
