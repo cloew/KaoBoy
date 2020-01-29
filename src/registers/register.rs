@@ -38,6 +38,7 @@ impl fmt::UpperHex for Register {
         write!(f, "{:X}", self.get())
     }
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;
