@@ -55,10 +55,33 @@ impl Registers {
             // Underlying register array
             _registers: registers_ref};
 	}
+    
+    pub fn get(&self, register_name: RegisterName) -> &Register {
+        return match register_name {
+            RegisterName::A => &self.a,
+            RegisterName::B => &self.b,
+            RegisterName::C => &self.c,
+            RegisterName::D => &self.d,
+            RegisterName::E => &self.e,
+            RegisterName::F => &self.f,
+            RegisterName::H => &self.h,
+            RegisterName::L => &self.l,
+            _ => panic!("Unknown Register: {}", register_name),
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use std::ptr;
+    
+    #[test]
+    fn test_get_gets_proper_register() {
+        let mut registers = Registers::new();
+        
+        let register = registers.get(RegisterName::A);
+        
+        assert!(ptr::eq(register, &registers.a));
+    }
 }

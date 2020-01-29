@@ -3,6 +3,7 @@ use std::fmt;
 use std::rc::Rc;
 use std::cell::RefCell;
 
+#[derive(Debug)]
 pub struct Register {
 	_registers: Rc<RefCell<[u8; 8]>>,
     _name: RegisterName,
