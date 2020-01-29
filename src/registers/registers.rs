@@ -66,7 +66,6 @@ impl Registers {
             RegisterName::F => &self.f,
             RegisterName::H => &self.h,
             RegisterName::L => &self.l,
-            _ => panic!("Unknown Register: {}", register_name),
         }
     }
 }
@@ -78,7 +77,7 @@ mod tests {
     
     #[test]
     fn test_get_gets_proper_register() {
-        let mut registers = Registers::new();
+        let registers = Registers::new();
         
         let register = registers.get(RegisterName::A);
         

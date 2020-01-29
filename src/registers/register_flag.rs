@@ -43,7 +43,7 @@ mod tests {
         const INITIAL_FLAGS: u8 = MASK;
         const REGISTER: RegisterName = RegisterName::A;
         
-        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), REGISTER, MASK);
+        let register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), REGISTER, MASK);
 		register_flag._registers.borrow_mut()[REGISTER as usize] = INITIAL_FLAGS;
         
         let flag = register_flag.get();
@@ -56,7 +56,7 @@ mod tests {
         const INITIAL_FLAGS: u8 = ALL_FLAGS_ON & !MASK;
         const REGISTER: RegisterName = RegisterName::A;
         
-        let mut register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), REGISTER, MASK);
+        let register_flag = RegisterFlag::new(Rc::new(RefCell::new([0; 8])), REGISTER, MASK);
 		register_flag._registers.borrow_mut()[REGISTER as usize] = INITIAL_FLAGS;
         
         let flag = register_flag.get();
