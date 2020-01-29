@@ -6,6 +6,7 @@ use crate::registers::register_names::{RegisterName};
 use std::rc::Rc;
 use std::cell::RefCell;
 
+const CARRY_FLAG_MASK: u8 = 0x10;
 const HALF_CARRY_FLAG_MASK: u8 = 0x20;
 const SUBTRACT_FLAG_MASK: u8 = 0x40;
 const ZERO_FLAG_MASK: u8 = 0x80;
@@ -25,6 +26,7 @@ pub struct Registers {
     pub zero_flag: RegisterFlag,
     pub subtract_flag: RegisterFlag,
     pub half_carry_flag: RegisterFlag,
+    pub carry_flag: RegisterFlag,
     
     // Underlying register array
     pub _registers: Rc<RefCell<[u8; 8]>>,
@@ -48,6 +50,7 @@ impl Registers {
             zero_flag: RegisterFlag::new(registers_ref.clone(), RegisterName::F, ZERO_FLAG_MASK),
             subtract_flag: RegisterFlag::new(registers_ref.clone(), RegisterName::F, SUBTRACT_FLAG_MASK),
             half_carry_flag: RegisterFlag::new(registers_ref.clone(), RegisterName::F, HALF_CARRY_FLAG_MASK),
+            carry_flag: RegisterFlag::new(registers_ref.clone(), RegisterName::F, CARRY_FLAG_MASK),
             
             // Underlying register array
             _registers: registers_ref};
