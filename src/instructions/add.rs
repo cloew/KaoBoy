@@ -1,6 +1,6 @@
 use crate::registers::registers::Registers;
 
-fn add(registers: &mut Registers, value: u8) {
+pub fn add(registers: &mut Registers, value: u8) {
     let original_value = registers.a.get();
     let (new_value, overflow) = registers.a.overflowing_add(value);
     
