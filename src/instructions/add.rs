@@ -1,12 +1,18 @@
 use crate::registers::registers::Registers;
 
 fn add(registers: &mut Registers, value: u8) {
+    let original_value = registers.a.get();
     let (new_value, overflow) = registers.a.overflowing_add(value);
     
     registers.a.set(new_value);
     registers.zero_flag.set(new_value == 0);
     registers.subtract_flag.set(false);
     registers.carry_flag.set(overflow);
+    registers.half_carry_flag.set(check_half_carry(original_value, value));
+}
+
+fn check_half_carry(value1: u8, value2: u8) -> bool {
+    return (value1 & 0xF) + (value2 & 0xF) > 0xF;
 }
 
 #[cfg(test)]
@@ -69,7 +75,7 @@ mod tests {
     }
     
     #[test]
-    fn test_add_no_overflow_sets_overflow_flag_off() {
+    fn test_add_no_overflow_sets_carry_flag_off() {
         const INITIAL_A: u8 = 0xFF;
         const VALUE_TO_ADD: u8 = 0x00;
         
@@ -83,7 +89,7 @@ mod tests {
     }
     
     #[test]
-    fn test_add_overflowed_sets_overflow_flag_on() {
+    fn test_add_overflowed_sets_carry_flag_on() {
         const INITIAL_A: u8 = 0xFF;
         const VALUE_TO_ADD: u8 = 0x1;
         
@@ -94,5 +100,33 @@ mod tests {
         add(&mut registers, VALUE_TO_ADD);
         
         assert_eq!(registers.carry_flag.get(), true);
+    }
+    
+    #[test]
+    fn test_add_no_lower_overflow_sets_half_carry_flag_off() {
+        const INITIAL_A: u8 = 0xB0;
+        const VALUE_TO_ADD: u8 = 0x10;
+        
+        let mut registers = Registers::new();
+		registers.a.set(INITIAL_A);
+        registers.half_carry_flag.set(true);
+        
+        add(&mut registers, VALUE_TO_ADD);
+        
+        assert_eq!(registers.half_carry_flag.get(), false);
+    }
+    
+    #[test]
+    fn test_add_overflowed_sets_half_carry_flag_on() {
+        const INITIAL_A: u8 = 0xFF;
+        const VALUE_TO_ADD: u8 = 0x1;
+        
+        let mut registers = Registers::new();
+		registers.a.set(INITIAL_A);
+        registers.half_carry_flag.set(false);
+        
+        add(&mut registers, VALUE_TO_ADD);
+        
+        assert_eq!(registers.half_carry_flag.get(), true);
     }
 }
