@@ -1,5 +1,6 @@
 pub mod bit_helpers;
 pub mod registers;
+mod cpu;
 mod instructions;
 
 use registers::registers::Registers;
