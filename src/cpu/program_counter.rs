@@ -1,4 +1,4 @@
-use crate::cup::memory::{Memory};
+use crate::cpu::memory::{Memory};
 
 pub struct ProgramCounter {
     _counter: u16,
