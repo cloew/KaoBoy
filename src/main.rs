@@ -1,7 +1,8 @@
-pub mod bit_helpers;
-pub mod registers;
+mod utils;
+mod bit_helpers;
 mod cpu;
 mod instructions;
+mod registers;
 
 use registers::registers::Registers;
 use std::collections::HashMap;
@@ -17,9 +18,4 @@ fn main() {
     );
     
     println!("{}", book_reviews["Mistborn"]);
-}
-
-#[cfg(test)]
-mod tests {
-    pub mod test_utils;
 }
