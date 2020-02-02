@@ -25,6 +25,10 @@ impl RegisterFlag {
         }
 	}
     
+    pub fn activate(&mut self) {
+        self.set(true);
+    }
+    
     pub fn reset(&mut self) {
         self.set(false);
     }

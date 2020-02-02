@@ -7,7 +7,7 @@ pub fn subtract(registers: &mut Registers, value: u8) {
     
     registers.a.set(new_value);
     registers.zero_flag.set(new_value == 0);
-    registers.subtract_flag.set(true);
+    registers.subtract_flag.activate();
     registers.carry_flag.set(overflow);
     registers.half_carry_flag.set(check_half_borrow(original_value, value));
 }
