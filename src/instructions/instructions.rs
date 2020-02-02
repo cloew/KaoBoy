@@ -3,9 +3,18 @@ use crate::instructions::instruction::{Instruction};
 use crate::{as_hex};
 
 pub fn load_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
-    let optional_instruction = add::instructions::load_instruction(instruction_byte);
-    return match optional_instruction {
-        Some(instruction) => instruction,
+    let package_instruction_loaders = vec![
+        add::instructions::load_instruction
+    ];
+    
+    let next_instruction = package_instruction_loaders.iter().find_map(
+        |load_from_package| load_from_package(instruction_byte)
+    );
+    
+    return match next_instruction {
+        Some(instruction) => {
+            return instruction;
+        },
         None => panic!("Unknown instruction: {}", as_hex!(instruction_byte)),
     }
 }
