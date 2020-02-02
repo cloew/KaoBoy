@@ -1,5 +1,6 @@
 use crate::instructions::add;
 use crate::instructions::subtract;
+use crate::instructions::xor;
 use crate::instructions::instruction::{Instruction};
 use crate::{as_hex};
 
@@ -9,6 +10,7 @@ pub fn load_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
             = vec![
         add::instructions::load_instruction,
         subtract::instructions::load_instruction,
+        xor::instructions::load_instruction,
     ];
     
     let next_instruction = package_instruction_loaders.iter().find_map(

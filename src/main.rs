@@ -27,6 +27,14 @@ fn main() {
     memory.set_byte(11, 0x94);
     memory.set_byte(12, 0x95);
     memory.set_byte(13, 0x97);
+    // XOR
+    memory.set_byte(14, 0xA8);
+    memory.set_byte(15, 0xA9);
+    memory.set_byte(16, 0xAA);
+    memory.set_byte(17, 0xAB);
+    memory.set_byte(18, 0xAC);
+    memory.set_byte(19, 0xAD);
+    memory.set_byte(20, 0xAF);
     
 	let mut cpu = Cpu::new(memory);
     cpu._registers.b.set(1);
@@ -35,6 +43,13 @@ fn main() {
     cpu._registers.e.set(8);
     cpu._registers.h.set(16);
     cpu._registers.l.set(32);
+    
+    for x in 0..7 {    
+        cpu.run_next_instruction();
+        println!("{}", as_hex!(cpu._registers.a));
+    }
+    
+    cpu._registers.a.set(0xFF);
     
     for x in 0..7 {    
         cpu.run_next_instruction();

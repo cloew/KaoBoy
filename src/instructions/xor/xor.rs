@@ -1,5 +1,4 @@
 use crate::registers::registers::Registers;
-use crate::instructions::utils::half_carry_utils::{check_half_borrow};
 
 pub fn xor(registers: &mut Registers, value: u8) {
     let original_value = registers.a.get();
