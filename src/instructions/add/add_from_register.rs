@@ -1,4 +1,4 @@
-use crate::instructions::add::{add};
+use crate::instructions::add::add::{add};
 use crate::instructions::instruction::{Instruction};
 use crate::registers::register_names::{RegisterName};
 use crate::registers::registers::{Registers};

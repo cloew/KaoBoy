@@ -1,5 +1,5 @@
 use crate::instructions::instruction::{Instruction};
-use crate::instructions::add_from_register::{AddFromRegister};
+use crate::instructions::add::add_from_register::{AddFromRegister};
 use crate::registers::register_names::{RegisterName};
 use crate::{as_hex};
 
