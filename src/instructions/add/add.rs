@@ -1,4 +1,5 @@
 use crate::registers::registers::Registers;
+use crate::instructions::utils::half_carry_utils::{check_half_carry};
 
 pub fn add(registers: &mut Registers, value: u8) {
     let original_value = registers.a.get();
@@ -9,10 +10,6 @@ pub fn add(registers: &mut Registers, value: u8) {
     registers.subtract_flag.set(false);
     registers.carry_flag.set(overflow);
     registers.half_carry_flag.set(check_half_carry(original_value, value));
-}
-
-fn check_half_carry(value1: u8, value2: u8) -> bool {
-    return (value1 & 0xF) + (value2 & 0xF) > 0xF;
 }
 
 #[cfg(test)]
