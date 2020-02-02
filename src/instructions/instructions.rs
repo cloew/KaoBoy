@@ -13,7 +13,7 @@ pub fn load_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
     
     return match next_instruction {
         Some(instruction) => {
-            return instruction;
+            instruction
         },
         None => panic!("Unknown instruction: {}", as_hex!(instruction_byte)),
     }
