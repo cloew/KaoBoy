@@ -1,4 +1,5 @@
 use crate::instructions::add::{add};
+use crate::instructions::instruction::{Instruction};
 use crate::registers::register_names::{RegisterName};
 use crate::registers::registers::{Registers};
 
@@ -10,8 +11,10 @@ impl AddFromRegister {
 	pub fn new(register_name: RegisterName) -> AddFromRegister {
 		return AddFromRegister {_name: register_name};
 	}
-	
-	pub fn run(&self, registers: &mut Registers) {
+}
+
+impl Instruction for AddFromRegister {
+	fn run(&self, registers: &mut Registers) {
         let value_to_add = registers.get(self._name).get();
         add(registers, value_to_add);
 	}
