@@ -1,8 +1,13 @@
 use crate::instructions::add;
 use crate::instructions::instruction::{Instruction};
+use crate::{as_hex};
 
 pub fn load_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
-    return add::instructions::load_instruction(instruction_byte);
+    let optional_instruction = add::instructions::load_instruction(instruction_byte);
+    return match optional_instruction {
+        Some(instruction) => instruction,
+        None => panic!("Unknown instruction: {}", as_hex!(instruction_byte)),
+    }
 }
 
 #[cfg(test)]

@@ -1,23 +1,20 @@
 use crate::instructions::instruction::{Instruction};
 use crate::instructions::add::add_from_register::{AddFromRegister};
 use crate::registers::register_names::{RegisterName};
-use crate::{as_hex};
 
-pub fn load_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
-    let instruction = match instruction_byte {
+pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
+    return match instruction_byte {
         // Add Instructions
-        0x80 => AddFromRegister::new(RegisterName::B),
-        0x81 => AddFromRegister::new(RegisterName::C),
-        0x82 => AddFromRegister::new(RegisterName::D),
-        0x83 => AddFromRegister::new(RegisterName::E),
-        0x84 => AddFromRegister::new(RegisterName::H),
-        0x85 => AddFromRegister::new(RegisterName::L),
-        0x87 => AddFromRegister::new(RegisterName::A),
+        0x80 => Some(Box::new(AddFromRegister::new(RegisterName::B))),
+        0x81 => Some(Box::new(AddFromRegister::new(RegisterName::C))),
+        0x82 => Some(Box::new(AddFromRegister::new(RegisterName::D))),
+        0x83 => Some(Box::new(AddFromRegister::new(RegisterName::E))),
+        0x84 => Some(Box::new(AddFromRegister::new(RegisterName::H))),
+        0x85 => Some(Box::new(AddFromRegister::new(RegisterName::L))),
+        0x87 => Some(Box::new(AddFromRegister::new(RegisterName::A))),
         // Abort if instruction is unknown
-        _ => panic!("Unknown instruction: {}", as_hex!(instruction_byte)),
+        _ => None,
     };
-    
-    return Box::new(instruction);
 }
 
 #[cfg(test)]
