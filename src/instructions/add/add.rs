@@ -100,7 +100,7 @@ mod tests {
     }
     
     #[test]
-    fn test_add_no_lower_overflow_sets_half_carry_flag_off() {
+    fn test_add_no_lower_nibble_overflow_sets_half_carry_flag_off() {
         const INITIAL_A: u8 = 0xB0;
         const VALUE_TO_ADD: u8 = 0x10;
         
@@ -114,7 +114,7 @@ mod tests {
     }
     
     #[test]
-    fn test_add_overflowed_sets_half_carry_flag_on() {
+    fn test_add_lower_nibble_overflowed_sets_half_carry_flag_on() {
         const INITIAL_A: u8 = 0xFF;
         const VALUE_TO_ADD: u8 = 0x1;
         
