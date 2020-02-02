@@ -7,9 +7,9 @@ pub fn xor(registers: &mut Registers, value: u8) {
     
     registers.a.set(new_value);
     registers.zero_flag.set(new_value == 0);
-    registers.subtract_flag.set(false);
-    registers.carry_flag.set(false);
-    registers.half_carry_flag.set(false);
+    registers.subtract_flag.reset();
+    registers.carry_flag.reset();
+    registers.half_carry_flag.reset();
 }
 
 #[cfg(test)]

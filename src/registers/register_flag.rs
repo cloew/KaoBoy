@@ -24,6 +24,10 @@ impl RegisterFlag {
             self._registers.borrow_mut()[self._name as usize] &= !self.mask;
         }
 	}
+    
+    pub fn reset(&mut self) {
+        self.set(false);
+    }
 	
 	fn get_flag_register(&self) -> u8 {
         return self._registers.borrow()[self._name as usize];
