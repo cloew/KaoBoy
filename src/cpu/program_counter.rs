@@ -1,4 +1,6 @@
 use crate::cpu::memory::{Memory};
+use crate::instructions::instruction::{Instruction};
+use crate::instructions::instructions::{load_instruction};
 
 pub struct ProgramCounter {
     _counter: u16,
@@ -8,6 +10,11 @@ pub struct ProgramCounter {
 impl ProgramCounter {
     pub fn new() -> ProgramCounter {
         return ProgramCounter {_counter: 0, _memory: Memory::new()};
+    }
+    
+    pub fn read_next_instruction(&mut self) -> Box<dyn Instruction> {
+        let next_byte = self.read_next_byte();
+        return load_instruction(next_byte);
     }
     
     pub fn read_next_byte(&mut self) -> u8 {
@@ -23,16 +30,60 @@ mod tests {
     use crate::{as_hex};
     
     #[test]
+    fn test_read_next_instruction_returns_instruction() {
+        const ADD_INSTRUCTION: u8 = 0x87;
+        const COUNTER: u16 = 0xABCD;
+        
+        let mut program_counter = ProgramCounter::new();
+        program_counter._counter = COUNTER;
+        program_counter._memory.set_byte(COUNTER, ADD_INSTRUCTION);
+        
+        program_counter.read_next_instruction();
+        
+        // Not sure if there'e anything I can assert on
+    }
+    
+    #[test]
+    fn test_read_next_instruction_increases_counter() {
+        const ADD_INSTRUCTION: u8 = 0x87;
+        const COUNTER: u16 = 0xABCD;
+        
+        let mut program_counter = ProgramCounter::new();
+        program_counter._counter = COUNTER;
+        program_counter._memory.set_byte(COUNTER, ADD_INSTRUCTION);
+        
+        program_counter.read_next_instruction();
+        
+        assert_eq!(program_counter._counter, COUNTER+1);
+    }
+    
+    #[test]
     fn test_read_next_byte_returns_byte() {
         const ADDRESS: u16 = 0xABCD;
         const COUNTER: u16 = ADDRESS;
         const EXPECTED_BYTE: u8 = 0xAB;
-        let mut program_counter = ProgramCounter::new();
         
+        let mut program_counter = ProgramCounter::new();
         program_counter._counter = COUNTER;
         program_counter._memory.set_byte(ADDRESS, EXPECTED_BYTE);
+        
         let result = program_counter.read_next_byte();
         
         assert_eq!(as_hex!(result), as_hex!(EXPECTED_BYTE));
+    }
+    
+    #[test]
+    fn test_read_next_byte_increases_counter() {
+        const ADDRESS: u16 = 0xABCD;
+        const COUNTER: u16 = ADDRESS;
+        const EXPECTED_BYTE: u8 = 0xAB;
+        
+        let mut program_counter = ProgramCounter::new();
+        program_counter._counter = COUNTER;
+        program_counter._memory.set_byte(ADDRESS, EXPECTED_BYTE);
+        
+        program_counter.read_next_byte();
+        
+        assert_eq!(program_counter._counter, COUNTER+1);
     }
 }
