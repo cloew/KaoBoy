@@ -1,4 +1,4 @@
 pub mod cpu;
+pub mod memory;
 
-mod memory;
 mod program_counter;

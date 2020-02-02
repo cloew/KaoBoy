@@ -12,6 +12,10 @@ impl ProgramCounter {
         return ProgramCounter {_counter: 0, _memory: memory};
     }
     
+    pub fn set_counter(&mut self, new_counter: u16) {
+        self._counter = new_counter;
+    }
+    
     pub fn read_next_instruction(&mut self) -> Box<dyn Instruction> {
         let next_byte = self.read_next_byte();
         return load_instruction(next_byte);
@@ -39,7 +43,7 @@ mod tests {
         const COUNTER: u16 = 0xABCD;
         
         let mut program_counter = build_program_counter();
-        program_counter._counter = COUNTER;
+        program_counter.set_counter(COUNTER);
         program_counter._memory.set_byte(COUNTER, ADD_INSTRUCTION);
         
         program_counter.read_next_instruction();
@@ -53,7 +57,7 @@ mod tests {
         const COUNTER: u16 = 0xABCD;
         
         let mut program_counter = build_program_counter();
-        program_counter._counter = COUNTER;
+        program_counter.set_counter(COUNTER);
         program_counter._memory.set_byte(COUNTER, ADD_INSTRUCTION);
         
         program_counter.read_next_instruction();
@@ -68,7 +72,7 @@ mod tests {
         const EXPECTED_BYTE: u8 = 0xAB;
         
         let mut program_counter = build_program_counter();
-        program_counter._counter = COUNTER;
+        program_counter.set_counter(COUNTER);
         program_counter._memory.set_byte(ADDRESS, EXPECTED_BYTE);
         
         let result = program_counter.read_next_byte();
@@ -83,7 +87,7 @@ mod tests {
         const EXPECTED_BYTE: u8 = 0xAB;
         
         let mut program_counter = build_program_counter();
-        program_counter._counter = COUNTER;
+        program_counter.set_counter(COUNTER);
         program_counter._memory.set_byte(ADDRESS, EXPECTED_BYTE);
         
         program_counter.read_next_byte();
