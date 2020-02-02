@@ -1,10 +1,14 @@
 use crate::instructions::add;
+use crate::instructions::subtract;
 use crate::instructions::instruction::{Instruction};
 use crate::{as_hex};
 
 pub fn load_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
-    let package_instruction_loaders = vec![
-        add::instructions::load_instruction
+    let package_instruction_loaders: Vec<fn(u8) -> 
+            std::option::Option<std::boxed::Box<(dyn Instruction + 'static)>>>
+            = vec![
+        add::instructions::load_instruction,
+        subtract::instructions::load_instruction,
     ];
     
     let next_instruction = package_instruction_loaders.iter().find_map(

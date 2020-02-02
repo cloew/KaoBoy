@@ -11,6 +11,7 @@ use std::collections::HashMap;
 
 fn main() {
     let mut memory = Memory::new();
+    // Add
     memory.set_byte(0, 0x80);
     memory.set_byte(1, 0x81);
     memory.set_byte(2, 0x82);
@@ -18,6 +19,14 @@ fn main() {
     memory.set_byte(4, 0x84);
     memory.set_byte(5, 0x85);
     memory.set_byte(6, 0x87);
+    // Subtract
+    memory.set_byte(7, 0x90);
+    memory.set_byte(8, 0x91);
+    memory.set_byte(9, 0x92);
+    memory.set_byte(10, 0x93);
+    memory.set_byte(11, 0x94);
+    memory.set_byte(12, 0x95);
+    memory.set_byte(13, 0x97);
     
 	let mut cpu = Cpu::new(memory);
     cpu._registers.b.set(1);
@@ -26,6 +35,13 @@ fn main() {
     cpu._registers.e.set(8);
     cpu._registers.h.set(16);
     cpu._registers.l.set(32);
+    
+    for x in 0..7 {    
+        cpu.run_next_instruction();
+        println!("{}", as_hex!(cpu._registers.a));
+    }
+    
+    cpu._registers.a.set(0xFF);
     
     for x in 0..7 {    
         cpu.run_next_instruction();
