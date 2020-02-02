@@ -25,6 +25,10 @@ impl Register {
 	pub fn overflowing_add(&self, other: u8) -> (u8, bool) {
         return self._registers.borrow_mut()[self._name as usize].overflowing_add(other);
 	}
+	
+	pub fn overflowing_sub(&self, other: u8) -> (u8, bool) {
+        return self._registers.borrow_mut()[self._name as usize].overflowing_sub(other);
+	}
 }
 
 impl PartialEq<u8> for Register {
@@ -88,6 +92,34 @@ mod tests {
 		register.set(INTIAL_A);
 		
 		let result = register.overflowing_add(TO_ADD);
+        
+        assert_eq!(result, EXPECTED);
+    }
+	
+    #[test]
+    fn test_overflowing_sub_no_overflow_returns_new_value_and_false() {
+        const INTIAL_A: u8 = 0x12;
+		const TO_SUB: u8 = 0x02;
+		const EXPECTED_A: u8 = INTIAL_A - TO_SUB;
+        
+		let mut register = Register::new(Rc::new(RefCell::new([0; 8])), RegisterName::A);
+		register.set(INTIAL_A);
+		
+		let result = register.overflowing_sub(TO_SUB);
+        
+        assert_eq!(result, (EXPECTED_A, false));
+    }
+	
+    #[test]
+    fn test_overflowing_sub_overflow_returns_wrapped_value_and_true() {
+        const INTIAL_A: u8 = 0x12;
+		const TO_SUB: u8 = 0xFF;
+		const EXPECTED: (u8, bool) = INTIAL_A.overflowing_sub(TO_SUB);
+        
+		let mut register = Register::new(Rc::new(RefCell::new([0; 8])), RegisterName::A);
+		register.set(INTIAL_A);
+		
+		let result = register.overflowing_sub(TO_SUB);
         
         assert_eq!(result, EXPECTED);
     }
