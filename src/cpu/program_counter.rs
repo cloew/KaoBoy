@@ -8,8 +8,8 @@ pub struct ProgramCounter {
 }
 
 impl ProgramCounter {
-    pub fn new() -> ProgramCounter {
-        return ProgramCounter {_counter: 0, _memory: Memory::new()};
+    pub fn new(memory: Memory) -> ProgramCounter {
+        return ProgramCounter {_counter: 0, _memory: memory};
     }
     
     pub fn read_next_instruction(&mut self) -> Box<dyn Instruction> {
@@ -29,12 +29,16 @@ mod tests {
     use super::*;
     use crate::{as_hex};
     
+    fn build_program_counter() -> ProgramCounter {
+        return ProgramCounter::new(Memory::new());
+    }
+    
     #[test]
     fn test_read_next_instruction_returns_instruction() {
         const ADD_INSTRUCTION: u8 = 0x87;
         const COUNTER: u16 = 0xABCD;
         
-        let mut program_counter = ProgramCounter::new();
+        let mut program_counter = build_program_counter();
         program_counter._counter = COUNTER;
         program_counter._memory.set_byte(COUNTER, ADD_INSTRUCTION);
         
@@ -48,7 +52,7 @@ mod tests {
         const ADD_INSTRUCTION: u8 = 0x87;
         const COUNTER: u16 = 0xABCD;
         
-        let mut program_counter = ProgramCounter::new();
+        let mut program_counter = build_program_counter();
         program_counter._counter = COUNTER;
         program_counter._memory.set_byte(COUNTER, ADD_INSTRUCTION);
         
@@ -63,7 +67,7 @@ mod tests {
         const COUNTER: u16 = ADDRESS;
         const EXPECTED_BYTE: u8 = 0xAB;
         
-        let mut program_counter = ProgramCounter::new();
+        let mut program_counter = build_program_counter();
         program_counter._counter = COUNTER;
         program_counter._memory.set_byte(ADDRESS, EXPECTED_BYTE);
         
@@ -78,7 +82,7 @@ mod tests {
         const COUNTER: u16 = ADDRESS;
         const EXPECTED_BYTE: u8 = 0xAB;
         
-        let mut program_counter = ProgramCounter::new();
+        let mut program_counter = build_program_counter();
         program_counter._counter = COUNTER;
         program_counter._memory.set_byte(ADDRESS, EXPECTED_BYTE);
         
