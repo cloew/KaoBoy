@@ -1,1 +1,1 @@
-mod binary_byte_op;
+pub mod binary_byte_op;

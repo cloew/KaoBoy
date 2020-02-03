@@ -1,14 +1,17 @@
 use crate::instructions::instruction::Instruction;
 use crate::instructions::destinations::destination::Destination;
+use crate::instructions::destinations::register_destination::RegisterDestination;
+use crate::instructions::sources::register_source::RegisterSource;
 use crate::instructions::sources::source::Source;
 use crate::registers::registers::Registers;
+use crate::registers::register_names::RegisterName;
 
-type BinaryByteOpFn = fn(&Registers, u8, u8) -> u8;
+type BinaryByteOpFn = fn(&mut Registers, u8, u8) -> u8;
 
 pub struct BinaryByteOp {
     left_source: Box<dyn Source>,
     right_source: Box<dyn Source>,
-    op: fn(&Registers, u8, u8) -> u8,
+    op: BinaryByteOpFn,
     destination: Box<dyn Destination>,
 }
 
@@ -23,6 +26,17 @@ impl BinaryByteOp {
             right_source: right_source,
             op: op,
             destination: destination,
+        };
+	}
+    
+	pub fn new_inplace_a_op(
+            right_source: Box<dyn Source>,
+            op: BinaryByteOpFn,) -> BinaryByteOp {
+		return BinaryByteOp {
+            left_source: Box::new(RegisterSource::new(RegisterName::A)),
+            right_source: right_source,
+            op: op,
+            destination: Box::new(RegisterDestination::new(RegisterName::A)),
         };
 	}
 }
@@ -40,16 +54,9 @@ impl Instruction for BinaryByteOp {
 mod tests {
     use super::*;
     use crate::{as_hex};
-    use crate::instructions::destinations::register_destination::RegisterDestination;
-    use crate::instructions::sources::register_source::RegisterSource;
-    use crate::registers::register_names::RegisterName;
     
-    fn fake_add_op(registers: &Registers, left_value: u8, right_value: u8) -> u8 {
+    fn fake_add_op(registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
         return left_value + right_value;
-    }
-    
-    fn fake_op_wrapper() -> BinaryByteOpFn {
-        return |registers: &Registers, left_value: u8, right_value: u8| left_value + right_value;
     }
     
     #[test]
