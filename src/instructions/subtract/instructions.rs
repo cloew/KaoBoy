@@ -1,16 +1,23 @@
 use crate::instructions::instruction::{Instruction};
-use crate::instructions::subtract::subtract_from_register::{SubtractFromRegister};
+use crate::instructions::sources::register_source::RegisterSource;
+use crate::instructions::subtract::subtract::{subtract};
 use crate::registers::register_names::{RegisterName};
+use crate::instructions::common::binary_byte_op::BinaryByteOp;
+use crate::{boxed, optional_boxed};
+
+fn build_subtract_instruction(other_source_name: RegisterName) -> Option<Box<dyn Instruction>> {
+    return optional_boxed!(BinaryByteOp::new_inplace_a_op(boxed!(RegisterSource::new(other_source_name)), subtract));
+}
 
 pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
     return match instruction_byte {
-        0x90 => Some(Box::new(SubtractFromRegister::new(RegisterName::B))),
-        0x91 => Some(Box::new(SubtractFromRegister::new(RegisterName::C))),
-        0x92 => Some(Box::new(SubtractFromRegister::new(RegisterName::D))),
-        0x93 => Some(Box::new(SubtractFromRegister::new(RegisterName::E))),
-        0x94 => Some(Box::new(SubtractFromRegister::new(RegisterName::H))),
-        0x95 => Some(Box::new(SubtractFromRegister::new(RegisterName::L))),
-        0x97 => Some(Box::new(SubtractFromRegister::new(RegisterName::A))),
+        0x90 => build_subtract_instruction(RegisterName::B),
+        0x91 => build_subtract_instruction(RegisterName::C),
+        0x92 => build_subtract_instruction(RegisterName::D),
+        0x93 => build_subtract_instruction(RegisterName::E),
+        0x94 => build_subtract_instruction(RegisterName::H),
+        0x95 => build_subtract_instruction(RegisterName::L),
+        0x97 => build_subtract_instruction(RegisterName::A),
         _ => None,
     };
 }
