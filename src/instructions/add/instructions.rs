@@ -1,5 +1,4 @@
 use crate::instructions::instruction::{Instruction};
-use crate::instructions::add::add_from_register::{AddFromRegister};
 use crate::instructions::add::add::{add};
 use crate::instructions::sources::register_source::RegisterSource;
 use crate::registers::register_names::{RegisterName};
