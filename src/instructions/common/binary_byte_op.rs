@@ -55,7 +55,7 @@ mod tests {
     use super::*;
     use crate::{as_hex};
     
-    fn fake_add_op(registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
+    fn fake_add_op(_registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
         return left_value + right_value;
     }
     
@@ -70,8 +70,8 @@ mod tests {
         registers.b.set(INITIAL_B);
         registers.c.set(0x00);
     
-        let mut left_source = RegisterSource::new(RegisterName::A);
-        let mut right_source = RegisterSource::new(RegisterName::B);
+        let left_source = RegisterSource::new(RegisterName::A);
+        let right_source = RegisterSource::new(RegisterName::B);
         let destination = RegisterDestination::new(RegisterName::C);
         
         let instruction = BinaryByteOp::new(Box::new(left_source), Box::new(right_source), fake_add_op, Box::new(destination));

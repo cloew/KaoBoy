@@ -14,7 +14,6 @@ fn get_lower_nibble(value: u8) -> u8 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
     
     #[test]
     fn test_check_half_carry_no_lower_nibble_returns_false() {
