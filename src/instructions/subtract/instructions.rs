@@ -1,8 +1,8 @@
 use crate::instructions::instruction::{Instruction};
+use crate::instructions::common::binary_byte_op::BinaryByteOp;
 use crate::instructions::sources::register_source::RegisterSource;
 use crate::instructions::subtract::subtract::{subtract};
 use crate::registers::register_names::{RegisterName};
-use crate::instructions::common::binary_byte_op::BinaryByteOp;
 use crate::{boxed, optional_boxed};
 
 fn build_subtract_instruction(other_source_name: RegisterName) -> Option<Box<dyn Instruction>> {
