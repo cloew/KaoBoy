@@ -68,6 +68,19 @@ impl Registers {
             RegisterName::L => &self.l,
         }
     }
+    
+    pub fn get_mut(&mut self, register_name: RegisterName) -> &mut Register {
+        return match register_name {
+            RegisterName::A => &mut self.a,
+            RegisterName::B => &mut self.b,
+            RegisterName::C => &mut self.c,
+            RegisterName::D => &mut self.d,
+            RegisterName::E => &mut self.e,
+            RegisterName::F => &mut self.f,
+            RegisterName::H => &mut self.h,
+            RegisterName::L => &mut self.l,
+        }
+    }
 }
 
 #[cfg(test)]
