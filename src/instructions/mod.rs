@@ -1,8 +1,10 @@
 pub mod instruction;
 pub mod instructions;
 
-mod add;
+mod destinations;
 mod sources;
-mod subtract;
 mod utils;
+
+mod add;
+mod subtract;
 mod xor;
