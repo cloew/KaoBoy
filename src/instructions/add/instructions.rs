@@ -3,9 +3,10 @@ use crate::instructions::add::add::{add};
 use crate::instructions::sources::register_source::RegisterSource;
 use crate::registers::register_names::{RegisterName};
 use crate::instructions::common::binary_byte_op::BinaryByteOp;
+use crate::{boxed, optional_boxed};
 
 fn build_add_instruction(other_source_name: RegisterName) -> Option<Box<dyn Instruction>> {
-    return Some(Box::new(BinaryByteOp::new_inplace_a_op(Box::new(RegisterSource::new(other_source_name)), add)));
+    return optional_boxed!(BinaryByteOp::new_inplace_a_op(boxed!(RegisterSource::new(other_source_name)), add));
 }
 
 pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
