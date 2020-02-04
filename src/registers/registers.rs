@@ -1,7 +1,7 @@
-use crate::{build_u16, get_lower_u8, get_upper_u8};
 use super::register::Register;
 use super::register_flag::RegisterFlag;
 use super::register_names::RegisterName;
+use crate::{build_u16, get_lower_u8, get_upper_u8};
 
 use std::rc::Rc;
 use std::cell::RefCell;

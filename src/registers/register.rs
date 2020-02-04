@@ -46,7 +46,7 @@ impl fmt::UpperHex for Register {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use crate::as_hex;
     
     #[test]
     fn test_set_sets_value() {

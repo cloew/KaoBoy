@@ -41,7 +41,7 @@ impl RegisterFlag {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use crate::as_hex;
     
     const ALL_FLAGS_ON: u8 = 0xF0;
     const MASK: u8 = 0x80;
