@@ -14,7 +14,7 @@ pub fn xor(registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use crate::as_hex;
     
     #[test]
     fn test_xor_xors_to_a_register() {
