@@ -1,4 +1,4 @@
-use super::super::destinations::destination::Destination;
+use super::destination::Destination;
 use crate::registers::register_names::RegisterName;
 use crate::registers::registers::Registers;
 
@@ -21,7 +21,7 @@ impl Destination for RegisterDestination {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use crate::as_hex;
     
     #[test]
     fn test_run_returns_register_value() {
