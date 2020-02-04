@@ -1,8 +1,8 @@
-use crate::instructions::add;
-use crate::instructions::subtract;
-use crate::instructions::xor;
-use crate::instructions::instruction::{Instruction};
-use crate::{as_hex};
+use super::add;
+use super::subtract;
+use super::xor;
+use super::instruction::Instruction;
+use crate::as_hex;
 
 pub fn load_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
     let package_instruction_loaders: Vec<fn(u8) -> 
