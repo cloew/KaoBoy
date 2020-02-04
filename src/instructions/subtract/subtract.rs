@@ -1,5 +1,5 @@
+use super::super::utils::half_carry_utils::{check_half_borrow};
 use crate::registers::registers::Registers;
-use crate::instructions::utils::half_carry_utils::{check_half_borrow};
 
 pub fn subtract(registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
     let (new_value, overflow) = left_value.overflowing_sub(right_value);
@@ -15,7 +15,7 @@ pub fn subtract(registers: &mut Registers, left_value: u8, right_value: u8) -> u
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use crate::as_hex;
     
     #[test]
     fn test_subtract_subtracts_to_a_register() {
