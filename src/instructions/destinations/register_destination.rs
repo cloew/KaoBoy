@@ -1,4 +1,4 @@
-use crate::instructions::destinations::destination::Destination;
+use super::super::destinations::destination::Destination;
 use crate::registers::register_names::RegisterName;
 use crate::registers::registers::Registers;
 
