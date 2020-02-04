@@ -1,9 +1,9 @@
-use crate::instructions::instruction::Instruction;
-use crate::instructions::destinations::destination::Destination;
-use crate::instructions::destinations::register_destination::RegisterDestination;
-use crate::instructions::sources::register_source::RegisterSource;
-use crate::instructions::sources::source::Source;
-use crate::registers::registers::Registers;
+use super::super::destinations::destination::Destination;
+use super::super::destinations::register_destination::RegisterDestination;
+use super::super::instruction::Instruction;
+use super::super::sources::register_source::RegisterSource;
+use super::super::sources::source::Source;
+use super::super::super::registers::registers::Registers;
 use crate::registers::register_names::RegisterName;
 
 type BinaryByteOpFn = fn(&mut Registers, u8, u8) -> u8;
