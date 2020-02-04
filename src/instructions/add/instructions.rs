@@ -1,8 +1,8 @@
-use crate::instructions::instruction::{Instruction};
-use crate::instructions::add::add::{add};
-use crate::instructions::common::binary_byte_op::BinaryByteOp;
-use crate::instructions::sources::register_source::RegisterSource;
-use crate::registers::register_names::{RegisterName};
+use super::add::{add};
+use super::super::common::binary_byte_op::BinaryByteOp;
+use super::super::instruction::Instruction;
+use super::super::sources::register_source::RegisterSource;
+use crate::registers::register_names::RegisterName;
 use crate::{boxed, optional_boxed};
 
 fn build_add_instruction(other_source_name: RegisterName) -> Option<Box<dyn Instruction>> {
