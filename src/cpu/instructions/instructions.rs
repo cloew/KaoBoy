@@ -1,4 +1,5 @@
 use super::add;
+use super::load;
 use super::subtract;
 use super::xor;
 use super::instruction::Instruction;
@@ -9,6 +10,7 @@ pub fn load_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
             std::option::Option<std::boxed::Box<(dyn Instruction + 'static)>>>
             = vec![
         add::instructions::load_instruction,
+        load::instructions::load_instruction,
         subtract::instructions::load_instruction,
         xor::instructions::load_instruction,
     ];

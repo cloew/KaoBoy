@@ -5,18 +5,18 @@ use super::super::super::registers::registers::Registers;
 
 type UnaryByteOpFn = fn(&mut Registers, u8) -> u8;
 
-pub struct BinaryByteOp {
+pub struct UnaryByteOp {
     source: Box<dyn Source>,
     op: UnaryByteOpFn,
     destination: Box<dyn Destination>,
 }
 
-impl BinaryByteOp {
+impl UnaryByteOp {
 	pub fn new(
             source: Box<dyn Source>,
             op: UnaryByteOpFn,
-            destination: Box<dyn Destination>) -> BinaryByteOp {
-		return BinaryByteOp {
+            destination: Box<dyn Destination>) -> UnaryByteOp {
+		return UnaryByteOp {
             source: source,
             op: op,
             destination: destination,
@@ -24,7 +24,7 @@ impl BinaryByteOp {
 	}
 }
 
-impl Instruction for BinaryByteOp {
+impl Instruction for UnaryByteOp {
 	fn run(&self, registers: &mut Registers) {
         let current_value = self.source.read(registers);
         let new_value = (self.op)(registers, current_value);
@@ -56,7 +56,7 @@ mod tests {
         let source = RegisterSource::new(RegisterName::A);
         let destination = RegisterDestination::new(RegisterName::C);
         
-        let instruction = BinaryByteOp::new(boxed!(source), fake_inc_op, boxed!(destination));
+        let instruction = UnaryByteOp::new(boxed!(source), fake_inc_op, boxed!(destination));
         
         instruction.run(&mut registers);
         
