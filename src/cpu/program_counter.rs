@@ -1,4 +1,4 @@
-use crate::cpu::memory::{Memory};
+use super::memory::{Memory};
 use crate::instructions::instruction::{Instruction};
 use crate::instructions::instructions::{load_instruction};
 

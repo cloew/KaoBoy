@@ -1,5 +1,5 @@
-use crate::cpu::memory::{Memory};
-use crate::cpu::program_counter::{ProgramCounter};
+use super::memory::{Memory};
+use super::program_counter::{ProgramCounter};
 use crate::registers::registers::Registers;
 
 pub struct Cpu {
