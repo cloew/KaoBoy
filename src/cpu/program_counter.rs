@@ -1,6 +1,6 @@
-use super::memory::{Memory};
-use crate::instructions::instruction::{Instruction};
-use crate::instructions::instructions::{load_instruction};
+use super::memory::Memory;
+use crate::instructions::instruction::Instruction;
+use crate::instructions::instructions::load_instruction;
 
 pub struct ProgramCounter {
     _counter: u16,
