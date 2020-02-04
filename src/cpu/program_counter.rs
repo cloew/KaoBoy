@@ -1,6 +1,6 @@
+use super::instructions::instruction::Instruction;
+use super::instructions::instructions::load_instruction;
 use super::memory::Memory;
-use crate::instructions::instruction::Instruction;
-use crate::instructions::instructions::load_instruction;
 
 pub struct ProgramCounter {
     _counter: u16,
@@ -31,7 +31,7 @@ impl ProgramCounter {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use crate::as_hex;
     
     fn build_program_counter() -> ProgramCounter {
         return ProgramCounter::new(Memory::new());

@@ -4,7 +4,7 @@ use super::super::instruction::Instruction;
 use super::super::sources::register_source::RegisterSource;
 use super::super::sources::source::Source;
 use super::super::super::registers::registers::Registers;
-use crate::registers::register_names::RegisterName;
+use super::super::super::registers::register_names::RegisterName;
 
 type BinaryByteOpFn = fn(&mut Registers, u8, u8) -> u8;
 
@@ -53,7 +53,7 @@ impl Instruction for BinaryByteOp {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use crate::as_hex;
     
     fn fake_add_op(_registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
         return left_value + right_value;

@@ -1,6 +1,6 @@
 use super::memory::Memory;
 use super::program_counter::ProgramCounter;
-use crate::registers::registers::Registers;
+use super::registers::registers::Registers;
 
 pub struct Cpu {
     _counter: ProgramCounter,

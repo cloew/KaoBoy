@@ -1,4 +1,4 @@
-use crate::registers::registers::Registers;
+use super::super::super::registers::registers::Registers;
 
 pub fn xor(registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
     let new_value = left_value ^ right_value;

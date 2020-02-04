@@ -1,6 +1,6 @@
 use super::source::Source;
-use crate::registers::register_names::RegisterName;
-use crate::registers::registers::Registers;
+use super::super::super::registers::register_names::RegisterName;
+use super::super::super::registers::registers::Registers;
 
 pub struct RegisterSource {
     _name: RegisterName,

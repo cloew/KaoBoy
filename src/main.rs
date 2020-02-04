@@ -1,10 +1,7 @@
-mod utils;
 mod bit_helpers;
 mod cpu;
-mod instructions;
-mod registers;
+mod utils;
 
-use registers::registers::Registers;
 use cpu::cpu::Cpu;
 use cpu::memory::Memory;
 use std::collections::HashMap;
@@ -63,7 +60,7 @@ fn main() {
         println!("{}", as_hex!(cpu._registers.a));
     }
     
-    /*let mut registers = Registers::new();
+    /*
     println!("Hello, world!");
     
     let mut book_reviews = HashMap::new();
