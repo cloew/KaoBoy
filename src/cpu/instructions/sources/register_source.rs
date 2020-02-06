@@ -27,7 +27,7 @@ mod tests {
     #[test]
     fn test_run_returns_register_value() {
         const EXPECTED_A: u8 = 0x12;
-        let mut context = build_test_instruction_context();
+        let context = build_test_instruction_context();
         context.registers_mut().a.set(EXPECTED_A);
         let source = RegisterSource::new(RegisterName::A);
         

@@ -14,6 +14,10 @@ impl InstructionContext {
 		return InstructionContext {_program: program, _registers: registers};
 	}
     
+    pub fn program_mut(&self) -> std::cell::RefMut<ProgramCounter> {
+        return self._program.borrow_mut();
+    }
+    
     pub fn registers(&self) -> std::cell::Ref<Registers> {
         return self._registers.borrow();
     }

@@ -4,7 +4,7 @@ use super::memory::Memory;
 
 pub struct ProgramCounter {
     _counter: u16,
-    _memory: Memory,
+    pub _memory: Memory,
 }
 
 impl ProgramCounter {
