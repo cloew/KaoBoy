@@ -1,23 +1,31 @@
+use super::instruction_context::InstructionContext;
 use super::memory::Memory;
 use super::program_counter::ProgramCounter;
 use super::registers::registers::Registers;
 
+use std::rc::Rc;
+use std::cell::RefCell;
+
 pub struct Cpu {
     _counter: ProgramCounter,
-    pub _registers: Registers,
+    pub _registers: Rc<RefCell<Registers>>,
+    
+    _context: InstructionContext,
 }
 
 impl Cpu {
     pub fn new(memory: Memory) -> Cpu {
+        let registers = Rc::new(RefCell::new(Registers::new()));
         return Cpu {
             _counter: ProgramCounter::new(memory),
-            _registers: Registers::new(),
+            _registers: registers.clone(),
+            _context: InstructionContext::new(registers.clone()),
         };
     }
     
     pub fn run_next_instruction(&mut self) {
         let instruction = self._counter.read_next_instruction();
-        instruction.run(&mut self._registers);
+        instruction.run(&mut self._context);
     }
 }
 
@@ -38,10 +46,10 @@ mod tests {
         
         let mut cpu = Cpu::new(memory);
         cpu._counter.set_counter(COUNTER);
-		cpu._registers.a.set(INITIAL_A);
+		cpu._registers.borrow_mut().a.set(INITIAL_A);
         
         cpu.run_next_instruction();
         
-        assert_eq!(as_hex!(cpu._registers.a), as_hex!(EXPECTED_A));
+        assert_eq!(as_hex!(cpu._registers.borrow().a), as_hex!(EXPECTED_A));
     }
 }

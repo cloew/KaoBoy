@@ -42,37 +42,37 @@ fn main() {
     memory.set_byte(27, 0x7F);
     
 	let mut cpu = Cpu::new(memory);
-    cpu._registers.b.set(1);
-    cpu._registers.c.set(2);
-    cpu._registers.d.set(4);
-    cpu._registers.e.set(8);
-    cpu._registers.h.set(16);
-    cpu._registers.l.set(32);
+    cpu._registers.borrow_mut().b.set(1);
+    cpu._registers.borrow_mut().c.set(2);
+    cpu._registers.borrow_mut().d.set(4);
+    cpu._registers.borrow_mut().e.set(8);
+    cpu._registers.borrow_mut().h.set(16);
+    cpu._registers.borrow_mut().l.set(32);
     
     for x in 0..7 {    
         cpu.run_next_instruction();
-        println!("{}", as_hex!(cpu._registers.a));
+        println!("{}", as_hex!(cpu._registers.borrow_mut().a));
     }
     
-    cpu._registers.a.set(0xFF);
+    cpu._registers.borrow_mut().a.set(0xFF);
     
     for x in 0..7 {    
         cpu.run_next_instruction();
-        println!("{}", as_hex!(cpu._registers.a));
+        println!("{}", as_hex!(cpu._registers.borrow_mut().a));
     }
     
-    cpu._registers.a.set(0xFF);
+    cpu._registers.borrow_mut().a.set(0xFF);
     
     for x in 0..7 {    
         cpu.run_next_instruction();
-        println!("{}", as_hex!(cpu._registers.a));
+        println!("{}", as_hex!(cpu._registers.borrow_mut().a));
     }
     
-    cpu._registers.a.set(0x00);
+    cpu._registers.borrow_mut().a.set(0x00);
     
     for x in 0..7 {    
         cpu.run_next_instruction();
-        println!("{}", as_hex!(cpu._registers.a));
+        println!("{}", as_hex!(cpu._registers.borrow_mut().a));
     }
     
     /*

@@ -3,10 +3,10 @@ use super::super::destinations::register_destination::RegisterDestination;
 use super::super::instruction::Instruction;
 use super::super::sources::register_source::RegisterSource;
 use super::super::sources::source::Source;
-use super::super::super::registers::registers::Registers;
+use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::register_names::RegisterName;
 
-type BinaryByteOpFn = fn(&mut Registers, u8, u8) -> u8;
+type BinaryByteOpFn = fn(&mut InstructionContext, u8, u8) -> u8;
 
 pub struct BinaryByteOp {
     left_source: Box<dyn Source>,
@@ -42,11 +42,11 @@ impl BinaryByteOp {
 }
 
 impl Instruction for BinaryByteOp {
-	fn run(&self, registers: &mut Registers) {
-        let left_value = self.left_source.read(registers);
-        let right_value = self.right_source.read(registers);
-        let new_value = (self.op)(registers, left_value, right_value);
-        self.destination.assign(registers, new_value);
+	fn run(&self, context: &mut InstructionContext) {
+        let left_value = self.left_source.read(context);
+        let right_value = self.right_source.read(context);
+        let new_value = (self.op)(context, left_value, right_value);
+        self.destination.assign(context, new_value);
 	}
 }
 
@@ -54,8 +54,9 @@ impl Instruction for BinaryByteOp {
 mod tests {
     use super::*;
     use crate::as_hex;
+    use crate::cpu::testing::build_test_instruction_context;
     
-    fn fake_add_op(_registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
+    fn fake_add_op(context: &mut InstructionContext, left_value: u8, right_value: u8) -> u8 {
         return left_value + right_value;
     }
     
@@ -65,10 +66,10 @@ mod tests {
         const INITIAL_B: u8 = 0x56;
         const OP_RESULT: u8 = INITIAL_A + INITIAL_B;
 
-        let mut registers = Registers::new();
-        registers.a.set(INITIAL_A);
-        registers.b.set(INITIAL_B);
-        registers.c.set(0x00);
+        let mut context = build_test_instruction_context();
+        context.registers_mut().a.set(INITIAL_A);
+        context.registers_mut().b.set(INITIAL_B);
+        context.registers_mut().c.set(0x00);
     
         let left_source = RegisterSource::new(RegisterName::A);
         let right_source = RegisterSource::new(RegisterName::B);
@@ -76,8 +77,8 @@ mod tests {
         
         let instruction = BinaryByteOp::new(Box::new(left_source), Box::new(right_source), fake_add_op, Box::new(destination));
         
-        instruction.run(&mut registers);
+        instruction.run(&mut context);
         
-        assert_eq!(as_hex!(registers.c), as_hex!(OP_RESULT));
+        assert_eq!(as_hex!(context.registers().c), as_hex!(OP_RESULT));
     }
 }

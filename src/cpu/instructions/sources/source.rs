@@ -1,5 +1,5 @@
-use super::super::super::registers::registers::Registers;
+use super::super::super::instruction_context::InstructionContext;
 
 pub trait Source {
-    fn read(&self, registers: &Registers) -> u8;
+    fn read(&self, context: &InstructionContext) -> u8;
 }

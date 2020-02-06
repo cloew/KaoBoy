@@ -1,6 +1,6 @@
-use super::super::super::registers::registers::Registers;
+use super::super::super::instruction_context::InstructionContext;
 
-pub fn no_op(registers: &mut Registers, value: u8) -> u8 {
+pub fn no_op(context: &mut InstructionContext, value: u8) -> u8 {
     return value;
 }
 
@@ -8,13 +8,14 @@ pub fn no_op(registers: &mut Registers, value: u8) -> u8 {
 mod tests {
     use super::*;
     use crate::{as_hex};
+    use crate::cpu::testing::build_test_instruction_context;
     
     #[test]
     fn test_run_calls_source_op_and_destination() {
         const VALUE: u8 = 0x12;
-        let mut registers = Registers::new();
+        let mut context = build_test_instruction_context();
         
-        let result = no_op(&mut registers, VALUE);
+        let result = no_op(&mut context, VALUE);
         
         assert_eq!(as_hex!(result), as_hex!(VALUE));
     }

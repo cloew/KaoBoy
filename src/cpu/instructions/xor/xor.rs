@@ -1,12 +1,12 @@
-use super::super::super::registers::registers::Registers;
+use super::super::super::instruction_context::InstructionContext;
 
-pub fn xor(registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
+pub fn xor(context: &mut InstructionContext, left_value: u8, right_value: u8) -> u8 {
     let new_value = left_value ^ right_value;
     
-    registers.zero_flag.set(new_value == 0);
-    registers.subtract_flag.reset();
-    registers.carry_flag.reset();
-    registers.half_carry_flag.reset();
+    context.registers_mut().zero_flag.set(new_value == 0);
+    context.registers_mut().subtract_flag.reset();
+    context.registers_mut().carry_flag.reset();
+    context.registers_mut().half_carry_flag.reset();
     
     return new_value;
 }
@@ -15,6 +15,7 @@ pub fn xor(registers: &mut Registers, left_value: u8, right_value: u8) -> u8 {
 mod tests {
     use super::*;
     use crate::as_hex;
+    use crate::cpu::testing::build_test_instruction_context;
     
     #[test]
     fn test_xor_xors_to_a_register() {
@@ -22,9 +23,9 @@ mod tests {
         const RIGHT_VALUE: u8 = 0x12;
         const EXPECTED_VALUE: u8 = LEFT_VALUE ^ RIGHT_VALUE;
         
-        let mut registers = Registers::new();
+        let mut context = build_test_instruction_context();
         
-        let result = xor(&mut registers, LEFT_VALUE, RIGHT_VALUE);
+        let result = xor(&mut context, LEFT_VALUE, RIGHT_VALUE);
         
         assert_eq!(as_hex!(result), as_hex!(EXPECTED_VALUE));
     }
@@ -34,12 +35,12 @@ mod tests {
         const LEFT_VALUE: u8 = 0x12;
         const RIGHT_VALUE: u8 = LEFT_VALUE;
         
-        let mut registers = Registers::new();
-        registers.zero_flag.reset();
+        let mut context = build_test_instruction_context();
+        context.registers_mut().zero_flag.reset();
         
-        xor(&mut registers, LEFT_VALUE, RIGHT_VALUE);
+        xor(&mut context, LEFT_VALUE, RIGHT_VALUE);
         
-        assert_eq!(registers.zero_flag.get(), true);
+        assert_eq!(context.registers().zero_flag.get(), true);
     }
     
     #[test]
@@ -47,12 +48,12 @@ mod tests {
         const LEFT_VALUE: u8 = 0x12;
         const RIGHT_VALUE: u8 = 0xFF;
         
-        let mut registers = Registers::new();
-        registers.zero_flag.activate();
+        let mut context = build_test_instruction_context();
+        context.registers_mut().zero_flag.activate();
         
-        xor(&mut registers, LEFT_VALUE, RIGHT_VALUE);
+        xor(&mut context, LEFT_VALUE, RIGHT_VALUE);
         
-        assert_eq!(registers.zero_flag.get(), false);
+        assert_eq!(context.registers().zero_flag.get(), false);
     }
     
     #[test]
@@ -60,12 +61,12 @@ mod tests {
         const LEFT_VALUE: u8 = 0x34;
         const RIGHT_VALUE: u8 = 0x12;
         
-        let mut registers = Registers::new();
-        registers.subtract_flag.activate();
+        let mut context = build_test_instruction_context();
+        context.registers_mut().subtract_flag.activate();
         
-        xor(&mut registers, LEFT_VALUE, RIGHT_VALUE);
+        xor(&mut context, LEFT_VALUE, RIGHT_VALUE);
         
-        assert_eq!(registers.subtract_flag.get(), false);
+        assert_eq!(context.registers().subtract_flag.get(), false);
     }
     
     #[test]
@@ -73,12 +74,12 @@ mod tests {
         const LEFT_VALUE: u8 = 0xFF;
         const RIGHT_VALUE: u8 = 0x00;
         
-        let mut registers = Registers::new();
-        registers.carry_flag.activate();
+        let mut context = build_test_instruction_context();
+        context.registers_mut().carry_flag.activate();
         
-        xor(&mut registers, LEFT_VALUE, RIGHT_VALUE);
+        xor(&mut context, LEFT_VALUE, RIGHT_VALUE);
         
-        assert_eq!(registers.carry_flag.get(), false);
+        assert_eq!(context.registers().carry_flag.get(), false);
     }
     
     #[test]
@@ -86,11 +87,11 @@ mod tests {
         const LEFT_VALUE: u8 = 0x20;
         const RIGHT_VALUE: u8 = 0x10;
         
-        let mut registers = Registers::new();
-        registers.half_carry_flag.activate();
+        let mut context = build_test_instruction_context();
+        context.registers_mut().half_carry_flag.activate();
         
-        xor(&mut registers, LEFT_VALUE, RIGHT_VALUE);
+        xor(&mut context, LEFT_VALUE, RIGHT_VALUE);
         
-        assert_eq!(registers.half_carry_flag.get(), false);
+        assert_eq!(context.registers().half_carry_flag.get(), false);
     }
 }

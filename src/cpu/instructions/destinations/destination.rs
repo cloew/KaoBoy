@@ -1,5 +1,5 @@
-use super::super::super::registers::registers::Registers;
+use super::super::super::instruction_context::InstructionContext;
 
 pub trait Destination {
-    fn assign(&self, registers: &mut Registers, new_value: u8);
+    fn assign(&self, context: &mut InstructionContext, new_value: u8);
 }
