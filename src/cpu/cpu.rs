@@ -7,7 +7,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 
 pub struct Cpu {
-    _counter: ProgramCounter,
+    _counter: Rc<RefCell<ProgramCounter>>,
     pub _registers: Rc<RefCell<Registers>>,
     
     _context: InstructionContext,
@@ -15,16 +15,17 @@ pub struct Cpu {
 
 impl Cpu {
     pub fn new(memory: Memory) -> Cpu {
+        let program = Rc::new(RefCell::new(ProgramCounter::new(memory)));
         let registers = Rc::new(RefCell::new(Registers::new()));
         return Cpu {
-            _counter: ProgramCounter::new(memory),
+            _counter: program.clone(),
             _registers: registers.clone(),
-            _context: InstructionContext::new(registers.clone()),
+            _context: InstructionContext::new(program.clone(), registers.clone()),
         };
     }
     
     pub fn run_next_instruction(&mut self) {
-        let instruction = self._counter.read_next_instruction();
+        let instruction = self._counter.borrow_mut().read_next_instruction();
         instruction.run(&mut self._context);
     }
 }
@@ -45,7 +46,7 @@ mod tests {
         memory.set_byte(COUNTER, ADD_INSTRUCTION);
         
         let mut cpu = Cpu::new(memory);
-        cpu._counter.set_counter(COUNTER);
+        cpu._counter.borrow_mut().set_counter(COUNTER);
 		cpu._registers.borrow_mut().a.set(INITIAL_A);
         
         cpu.run_next_instruction();
