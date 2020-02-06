@@ -1,16 +1,16 @@
 use super::source::Source;
 use super::super::super::instruction_context::InstructionContext;
 
-pub struct ConstantSource {
+pub struct ConstantByteSource {
 }
 
-impl ConstantSource {
-	pub fn new() -> ConstantSource {
-		return ConstantSource {};
+impl ConstantByteSource {
+	pub fn new() -> ConstantByteSource {
+		return ConstantByteSource {};
 	}
 }
 
-impl Source for ConstantSource {
+impl Source for ConstantByteSource {
 	fn read(&self, context: &InstructionContext) -> u8 {
         return context.program_mut().read_next_byte();
 	}
@@ -27,7 +27,7 @@ mod tests {
         const COUNTER: u16 = 0xABCD;
         const EXPECTED_VALUE: u8 = 0x12;
         let context = build_test_instruction_context();
-        let source = ConstantSource::new();
+        let source = ConstantByteSource::new();
         
         context.program_mut().set_counter(COUNTER);
         context.program_mut()._memory.set_byte(COUNTER, EXPECTED_VALUE);

@@ -1,7 +1,7 @@
 use super::super::instruction::Instruction;
 use super::super::common::no_op::no_op;
 use super::super::common::unary_byte_op::UnaryByteOp;
-use super::super::sources::constant_source::ConstantSource;
+use super::super::sources::constant_byte_source::ConstantByteSource;
 use super::super::destinations::register_destination::RegisterDestination;
 use super::super::sources::register_source::RegisterSource;
 use super::super::super::registers::register_names::RegisterName;
@@ -17,10 +17,10 @@ fn build_load_instruction(source_name: RegisterName, destination_name: RegisterN
     );
 }
 
-fn build_load_instruction_from_constant(destination_name: RegisterName) -> Option<Box<dyn Instruction>> {
+fn build_load_instruction_from_constant_byte(destination_name: RegisterName) -> Option<Box<dyn Instruction>> {
     return optional_boxed!(
         UnaryByteOp::new(
-            boxed!(ConstantSource::new()),
+            boxed!(ConstantByteSource::new()),
             no_op,
             boxed!(RegisterDestination::new(destination_name))
         )
@@ -37,7 +37,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x44 => build_load_instruction(RegisterName::H, RegisterName::B),
         0x45 => build_load_instruction(RegisterName::L, RegisterName::B),
         0x47 => build_load_instruction(RegisterName::A, RegisterName::B),
-        0x06 => build_load_instruction_from_constant(RegisterName::B),
+        0x06 => build_load_instruction_from_constant_byte(RegisterName::B),
         // Load into Register C
         0x48 => build_load_instruction(RegisterName::B, RegisterName::C),
         0x49 => build_load_instruction(RegisterName::C, RegisterName::C),
@@ -46,7 +46,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x4C => build_load_instruction(RegisterName::H, RegisterName::C),
         0x4D => build_load_instruction(RegisterName::L, RegisterName::C),
         0x4F => build_load_instruction(RegisterName::A, RegisterName::C),
-        0x0E => build_load_instruction_from_constant(RegisterName::C),
+        0x0E => build_load_instruction_from_constant_byte(RegisterName::C),
         // Load into Register D
         0x50 => build_load_instruction(RegisterName::B, RegisterName::D),
         0x51 => build_load_instruction(RegisterName::C, RegisterName::D),
@@ -55,7 +55,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x54 => build_load_instruction(RegisterName::H, RegisterName::D),
         0x55 => build_load_instruction(RegisterName::L, RegisterName::D),
         0x57 => build_load_instruction(RegisterName::A, RegisterName::D),
-        0x16 => build_load_instruction_from_constant(RegisterName::D),
+        0x16 => build_load_instruction_from_constant_byte(RegisterName::D),
         // Load into Register E
         0x58 => build_load_instruction(RegisterName::B, RegisterName::E),
         0x59 => build_load_instruction(RegisterName::C, RegisterName::E),
@@ -64,7 +64,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x5C => build_load_instruction(RegisterName::H, RegisterName::E),
         0x5D => build_load_instruction(RegisterName::L, RegisterName::E),
         0x5F => build_load_instruction(RegisterName::A, RegisterName::E),
-        0x1E => build_load_instruction_from_constant(RegisterName::E),
+        0x1E => build_load_instruction_from_constant_byte(RegisterName::E),
         // Load into Register H
         0x60 => build_load_instruction(RegisterName::B, RegisterName::H),
         0x61 => build_load_instruction(RegisterName::C, RegisterName::H),
@@ -73,7 +73,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x64 => build_load_instruction(RegisterName::H, RegisterName::H),
         0x65 => build_load_instruction(RegisterName::L, RegisterName::H),
         0x67 => build_load_instruction(RegisterName::A, RegisterName::H),
-        0x26 => build_load_instruction_from_constant(RegisterName::H),
+        0x26 => build_load_instruction_from_constant_byte(RegisterName::H),
         // Load into Register L
         0x68 => build_load_instruction(RegisterName::B, RegisterName::L),
         0x69 => build_load_instruction(RegisterName::C, RegisterName::L),
@@ -82,7 +82,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x6C => build_load_instruction(RegisterName::H, RegisterName::L),
         0x6D => build_load_instruction(RegisterName::L, RegisterName::L),
         0x6F => build_load_instruction(RegisterName::A, RegisterName::L),
-        0x2E => build_load_instruction_from_constant(RegisterName::L),
+        0x2E => build_load_instruction_from_constant_byte(RegisterName::L),
         // Load into Register A
         0x78 => build_load_instruction(RegisterName::B, RegisterName::A),
         0x79 => build_load_instruction(RegisterName::C, RegisterName::A),
@@ -91,7 +91,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x7C => build_load_instruction(RegisterName::H, RegisterName::A),
         0x7D => build_load_instruction(RegisterName::L, RegisterName::A),
         0x7F => build_load_instruction(RegisterName::A, RegisterName::A),
-        0x3E => build_load_instruction_from_constant(RegisterName::A),
+        0x3E => build_load_instruction_from_constant_byte(RegisterName::A),
         _ => None,
     };
 }
