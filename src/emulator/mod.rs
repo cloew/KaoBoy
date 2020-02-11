@@ -1,3 +1,4 @@
-pub mod memory;
+mod memory;
+pub mod emulator;
 
 pub use memory::Memory;

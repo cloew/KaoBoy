@@ -14,7 +14,7 @@ pub struct Cpu {
 }
 
 impl Cpu {
-    pub fn new(memory: Memory) -> Cpu {
+    pub fn new(memory: Rc<RefCell<Memory>>) -> Cpu {
         let program = Rc::new(RefCell::new(ProgramCounter::new(memory)));
         let registers = Rc::new(RefCell::new(Registers::new()));
         return Cpu {
@@ -33,7 +33,7 @@ impl Cpu {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{as_hex};
+    use crate::{as_hex, rc_refcell};
     
     #[test]
     fn test_run_next_instruction_runs_instruction() {
@@ -45,7 +45,7 @@ mod tests {
         let mut memory = Memory::new();
         memory.set_byte(COUNTER, ADD_INSTRUCTION);
         
-        let mut cpu = Cpu::new(memory);
+        let mut cpu = Cpu::new(rc_refcell!(memory));
         cpu._counter.borrow_mut().set_counter(COUNTER);
 		cpu._registers.borrow_mut().a.set(INITIAL_A);
         

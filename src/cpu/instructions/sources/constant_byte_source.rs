@@ -30,7 +30,7 @@ mod tests {
         let source = ConstantByteSource::new();
         
         context.program_mut().set_counter(COUNTER);
-        context.program_mut()._memory.set_byte(COUNTER, EXPECTED_VALUE);
+        context.program_mut()._memory.borrow_mut().set_byte(COUNTER, EXPECTED_VALUE);
         
         let result = source.read(&context);
         

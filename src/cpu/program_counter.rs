@@ -2,13 +2,16 @@ use super::instructions::instruction::Instruction;
 use super::instructions::instructions::load_instruction;
 use crate::emulator::Memory;
 
+use std::rc::Rc;
+use std::cell::RefCell;
+
 pub struct ProgramCounter {
     _counter: u16,
-    pub _memory: Memory,
+    pub _memory: Rc<RefCell<Memory>>,
 }
 
 impl ProgramCounter {
-    pub fn new(memory: Memory) -> ProgramCounter {
+    pub fn new(memory: Rc<RefCell<Memory>>) -> ProgramCounter {
         return ProgramCounter {_counter: 0, _memory: memory};
     }
     
@@ -22,7 +25,7 @@ impl ProgramCounter {
     }
     
     pub fn read_next_byte(&mut self) -> u8 {
-        let next_byte = self._memory.read_byte(self._counter);
+        let next_byte = self._memory.borrow().read_byte(self._counter);
         self._counter += 1;
         return next_byte;
     }
@@ -31,10 +34,10 @@ impl ProgramCounter {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::as_hex;
+    use crate::{as_hex, rc_refcell};
     
     fn build_program_counter() -> ProgramCounter {
-        return ProgramCounter::new(Memory::new());
+        return ProgramCounter::new(rc_refcell!(Memory::new()));
     }
     
     #[test]
@@ -44,7 +47,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.set_byte(COUNTER, ADD_INSTRUCTION);
+        program_counter._memory.borrow_mut().set_byte(COUNTER, ADD_INSTRUCTION);
         
         program_counter.read_next_instruction();
         
@@ -58,7 +61,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.set_byte(COUNTER, ADD_INSTRUCTION);
+        program_counter._memory.borrow_mut().set_byte(COUNTER, ADD_INSTRUCTION);
         
         program_counter.read_next_instruction();
         
@@ -73,7 +76,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.set_byte(ADDRESS, EXPECTED_BYTE);
+        program_counter._memory.borrow_mut().set_byte(ADDRESS, EXPECTED_BYTE);
         
         let result = program_counter.read_next_byte();
         
@@ -88,7 +91,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.set_byte(ADDRESS, EXPECTED_BYTE);
+        program_counter._memory.borrow_mut().set_byte(ADDRESS, EXPECTED_BYTE);
         
         program_counter.read_next_byte();
         

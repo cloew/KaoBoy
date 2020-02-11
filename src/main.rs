@@ -56,7 +56,7 @@ fn main() {
     
     
     memory.bootstrap(&program);
-	let mut cpu = Cpu::new(memory);
+	let mut cpu = Cpu::new(rc_refcell!(memory));
     cpu._registers.borrow_mut().b.set(1);
     cpu._registers.borrow_mut().c.set(2);
     cpu._registers.borrow_mut().d.set(4);
