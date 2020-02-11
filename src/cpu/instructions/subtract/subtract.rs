@@ -1,6 +1,5 @@
 use super::super::utils::half_carry_utils::{check_half_borrow};
 use super::super::super::instruction_context::InstructionContext;
-use super::super::super::cpu::Cpu;
 
 pub fn subtract(context: &mut InstructionContext, left_value: u8, right_value: u8) -> u8 {
     let (new_value, overflow) = left_value.overflowing_sub(right_value);

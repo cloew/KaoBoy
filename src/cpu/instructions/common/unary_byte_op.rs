@@ -41,7 +41,7 @@ mod tests {
     use crate::cpu::testing::build_test_instruction_context;
     use crate::{as_hex, boxed};
     
-    fn fake_inc_op(context: &mut InstructionContext, value: u8) -> u8 {
+    fn fake_inc_op(_context: &mut InstructionContext, value: u8) -> u8 {
         return value + 1;
     }
     

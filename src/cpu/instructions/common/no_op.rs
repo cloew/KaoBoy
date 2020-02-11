@@ -1,6 +1,6 @@
 use super::super::super::instruction_context::InstructionContext;
 
-pub fn no_op(context: &mut InstructionContext, value: u8) -> u8 {
+pub fn no_op(_context: &mut InstructionContext, value: u8) -> u8 {
     return value;
 }
 

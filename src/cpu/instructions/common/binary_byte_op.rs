@@ -56,7 +56,7 @@ mod tests {
     use crate::as_hex;
     use crate::cpu::testing::build_test_instruction_context;
     
-    fn fake_add_op(context: &mut InstructionContext, left_value: u8, right_value: u8) -> u8 {
+    fn fake_add_op(_context: &mut InstructionContext, left_value: u8, right_value: u8) -> u8 {
         return left_value + right_value;
     }
     
