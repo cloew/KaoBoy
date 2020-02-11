@@ -1,13 +1,12 @@
 mod bit_helpers;
-mod emulator;
 mod cpu;
+mod emulator;
 mod utils;
 
-use cpu::cpu::Cpu;
-use emulator::Memory;
+use emulator::Emulator;
 
 fn main() {
-    let mut memory = Memory::new();
+    let mut emulator = Emulator::new();
     
     let program: [u8; 38] = [
         // Add
@@ -55,42 +54,42 @@ fn main() {
     ];
     
     
-    memory.bootstrap(&program);
-	let mut cpu = Cpu::new(rc_refcell!(memory));
-    cpu._registers.borrow_mut().b.set(1);
-    cpu._registers.borrow_mut().c.set(2);
-    cpu._registers.borrow_mut().d.set(4);
-    cpu._registers.borrow_mut().e.set(8);
-    cpu._registers.borrow_mut().h.set(16);
-    cpu._registers.borrow_mut().l.set(32);
+    emulator.bootstrap(&program);
+    
+    emulator._cpu._registers.borrow_mut().b.set(1);
+    emulator._cpu._registers.borrow_mut().c.set(2);
+    emulator._cpu._registers.borrow_mut().d.set(4);
+    emulator._cpu._registers.borrow_mut().e.set(8);
+    emulator._cpu._registers.borrow_mut().h.set(16);
+    emulator._cpu._registers.borrow_mut().l.set(32);
     
     println!("Testing add");
     for _x in 0..8 {    
-        cpu.run_next_instruction();
-        println!("{}", as_hex!(cpu._registers.borrow_mut().a));
+        emulator._cpu.run_next_instruction();
+        println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().a));
     }
     println!("");
     
     println!("Testing subtract");
-    cpu._registers.borrow_mut().a.set(0xFF);
+    emulator._cpu._registers.borrow_mut().a.set(0xFF);
     for _x in 0..8 {    
-        cpu.run_next_instruction();
-        println!("{}", as_hex!(cpu._registers.borrow_mut().a));
+        emulator._cpu.run_next_instruction();
+        println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().a));
     }
     println!("");
     
     println!("Testing xor");
-    cpu._registers.borrow_mut().a.set(0xFF);
+    emulator._cpu._registers.borrow_mut().a.set(0xFF);
     for _x in 0..9 {    
-        cpu.run_next_instruction();
-        println!("{}", as_hex!(cpu._registers.borrow_mut().a));
+        emulator._cpu.run_next_instruction();
+        println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().a));
     }
     println!("");
     
     println!("Testing load A");
-    cpu._registers.borrow_mut().a.set(0x00);
+    emulator._cpu._registers.borrow_mut().a.set(0x00);
     for _x in 0..8 {    
-        cpu.run_next_instruction();
-        println!("{}", as_hex!(cpu._registers.borrow_mut().a));
+        emulator._cpu.run_next_instruction();
+        println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().a));
     }
 }

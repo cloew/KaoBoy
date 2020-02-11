@@ -6,7 +6,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 
 pub struct Emulator {
-    _cpu: Cpu,
+    pub _cpu: Cpu,
     _memory: Rc<RefCell<Memory>>,
 }
 
