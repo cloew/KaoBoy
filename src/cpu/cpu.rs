@@ -1,7 +1,7 @@
 use super::instruction_context::InstructionContext;
-use super::memory::Memory;
 use super::program_counter::ProgramCounter;
 use super::registers::registers::Registers;
+use crate::emulator::Memory;
 
 use std::rc::Rc;
 use std::cell::RefCell;

@@ -1,9 +1,10 @@
 mod bit_helpers;
+mod emulator;
 mod cpu;
 mod utils;
 
 use cpu::cpu::Cpu;
-use cpu::memory::Memory;
+use emulator::Memory;
 
 fn main() {
     let mut memory = Memory::new();

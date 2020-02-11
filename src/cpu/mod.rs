@@ -1,5 +1,4 @@
 pub mod cpu;
-pub mod memory;
 pub mod instruction_context;
 
 mod instructions;
