@@ -1,3 +1,4 @@
+use crate::{build_u16, get_lower_u8, get_upper_u8};
 
 pub struct Memory {
     _memory: [u8; 0xFFFF],
@@ -18,8 +19,18 @@ impl Memory {
         return self._memory[address as usize];
     }
     
+    pub fn read_short(&self, address: u16) -> u16 {
+        return build_u16!(self.read_byte(address), self.read_byte(address+1));
+    }
+    
     pub fn set_byte(&mut self, address: u16, value: u8) {
         self._memory[address as usize] = value;
+    }
+    
+    pub fn set_short(&mut self, address: u16, value: u16) {
+        let bytes = value.to_be_bytes();
+        self.set_byte(address, bytes[0]);
+        self.set_byte(address+1, bytes[1]);
     }
 }
 
@@ -53,5 +64,34 @@ mod tests {
         let result = memory.read_byte(ADDRESS);
         
         assert_eq!(as_hex!(result), as_hex!(EXPECTED_BYTE));
+    }
+    
+    #[test]
+    fn test_read_short_returns_short() {
+        const ADDRESS: u16 = 0xABCD;
+        const EXPECTED_SHORT: u16 = 0xFEDC;
+        let mut memory = Memory::new();
+        
+        memory.set_short(ADDRESS, EXPECTED_SHORT);
+        let result = memory.read_short(ADDRESS);
+        
+        assert_eq!(as_hex!(result), as_hex!(EXPECTED_SHORT));
+    }
+    
+    #[test]
+    fn test_set_short_sets_in_proper_order() {
+        const ADDRESS: u16 = 0xABCD;
+        const EXPECTED_SHORT: u16 = 0xFEDC;
+        let bytes = EXPECTED_SHORT.to_be_bytes();
+        let EXPECTED_FIRST_BYTE = bytes[0];
+        let EXPECTED_SECOND_BYTE = bytes[1];
+        let mut memory = Memory::new();
+        
+        memory.set_short(ADDRESS, EXPECTED_SHORT);
+        let firstResult = memory.read_byte(ADDRESS);
+        let secondResult = memory.read_byte(ADDRESS+1);
+        
+        assert_eq!(as_hex!(firstResult), as_hex!(EXPECTED_FIRST_BYTE));
+        assert_eq!(as_hex!(secondResult), as_hex!(EXPECTED_SECOND_BYTE));
     }
 }
