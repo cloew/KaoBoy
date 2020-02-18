@@ -1,4 +1,4 @@
-use super::destination::Destination;
+use super::byte_destination::ByteDestination;
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::register_names::RegisterName;
 
@@ -12,7 +12,7 @@ impl RegisterDestination {
 	}
 }
 
-impl Destination for RegisterDestination {
+impl ByteDestination for RegisterDestination {
 	fn assign(&self, context: &mut InstructionContext, new_value: u8) {
         context.registers_mut().get_mut(self._name).set(new_value);
 	}

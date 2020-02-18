@@ -1,5 +1,4 @@
-use super::super::destinations::destination::Destination;
-use super::super::destinations::register_destination::RegisterDestination;
+use super::super::destinations::{ByteDestination, RegisterDestination};
 use super::super::instruction::Instruction;
 use super::super::sources::register_source::RegisterSource;
 use super::super::sources::ByteSource;
@@ -12,7 +11,7 @@ pub struct BinaryByteOp {
     left_source: Box<dyn ByteSource>,
     right_source: Box<dyn ByteSource>,
     op: BinaryByteOpFn,
-    destination: Box<dyn Destination>,
+    destination: Box<dyn ByteDestination>,
 }
 
 impl BinaryByteOp {
@@ -20,7 +19,7 @@ impl BinaryByteOp {
             left_source: Box<dyn ByteSource>,
             right_source: Box<dyn ByteSource>,
             op: BinaryByteOpFn,
-            destination: Box<dyn Destination>) -> BinaryByteOp {
+            destination: Box<dyn ByteDestination>) -> BinaryByteOp {
 		return BinaryByteOp {
             left_source: left_source,
             right_source: right_source,
