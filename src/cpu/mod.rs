@@ -6,5 +6,7 @@ mod registers;
 mod stack;
 mod program_counter;
 
+pub use instruction_context::InstructionContext;
+
 #[cfg(test)]
 pub mod testing;
