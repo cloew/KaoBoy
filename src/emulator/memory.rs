@@ -1,4 +1,4 @@
-use crate::{build_u16, get_lower_u8, get_upper_u8};
+use crate::{build_u16};
 
 pub struct Memory {
     _memory: [u8; 0xFFFF],

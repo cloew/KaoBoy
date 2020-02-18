@@ -1,6 +1,7 @@
 use super::instructions::instruction::Instruction;
 use super::instructions::instructions::load_instruction;
 use crate::emulator::Memory;
+use crate::{build_u16};
 
 use std::rc::Rc;
 use std::cell::RefCell;
@@ -28,6 +29,12 @@ impl ProgramCounter {
         let next_byte = self._memory.borrow().read_byte(self._counter);
         self._counter += 1;
         return next_byte;
+    }
+    
+    pub fn read_next_short(&mut self) -> u16 {
+        let first_byte = self.read_next_byte();
+        let second_byte = self.read_next_byte();
+        return build_u16!(first_byte, second_byte);
     }
 }
 
@@ -96,5 +103,35 @@ mod tests {
         program_counter.read_next_byte();
         
         assert_eq!(program_counter._counter, COUNTER+1);
+    }
+    
+    #[test]
+    fn test_read_next_short_returns_short() {
+        const ADDRESS: u16 = 0xABCD;
+        const COUNTER: u16 = ADDRESS;
+        const EXPECTED_SHORT: u16 = 0xFEDC;
+        
+        let mut program_counter = build_program_counter();
+        program_counter.set_counter(COUNTER);
+        program_counter._memory.borrow_mut().set_short(ADDRESS, EXPECTED_SHORT);
+        
+        let result = program_counter.read_next_short();
+        
+        assert_eq!(as_hex!(result), as_hex!(EXPECTED_SHORT));
+    }
+    
+    #[test]
+    fn test_read_next_short_increases_counter() {
+        const ADDRESS: u16 = 0xABCD;
+        const COUNTER: u16 = ADDRESS;
+        const EXPECTED_SHORT: u16 = 0xFEDC;
+        
+        let mut program_counter = build_program_counter();
+        program_counter.set_counter(COUNTER);
+        program_counter._memory.borrow_mut().set_short(ADDRESS, EXPECTED_SHORT);
+        
+        program_counter.read_next_short();
+        
+        assert_eq!(program_counter._counter, COUNTER+2);
     }
 }
