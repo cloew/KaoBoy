@@ -1,7 +1,6 @@
 use super::super::destinations::{ByteDestination, RegisterDestination};
 use super::super::instruction::Instruction;
-use super::super::sources::register_source::RegisterSource;
-use super::super::sources::ByteSource;
+use super::super::sources::{ByteSource, RegisterSource};
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::register_names::RegisterName;
 
