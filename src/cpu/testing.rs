@@ -1,13 +1,15 @@
 use super::instruction_context::InstructionContext;
 use super::program_counter::ProgramCounter;
 use super::registers::registers::Registers;
+use super::stack::Stack;
 use crate::rc_refcell;
 use crate::emulator::Memory;
 
 
 pub fn build_test_instruction_context() -> InstructionContext {
     let memory = rc_refcell!(Memory::new());
-    let program = rc_refcell!(ProgramCounter::new(memory));
+    let program = rc_refcell!(ProgramCounter::new(memory.clone()));
     let registers = rc_refcell!(Registers::new());
-    return InstructionContext::new(program, registers);
+    let stack = rc_refcell!(Stack::new(memory.clone()));
+    return InstructionContext::new(program, registers, stack);
 }

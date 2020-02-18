@@ -25,7 +25,7 @@ impl Cpu {
             _counter: program.clone(),
             _registers: registers.clone(),
             _stack: stack.clone(),
-            _context: InstructionContext::new(program.clone(), registers.clone()),
+            _context: InstructionContext::new(program.clone(), registers.clone(), stack.clone()),
         };
     }
     
