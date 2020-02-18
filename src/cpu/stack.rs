@@ -1,5 +1,3 @@
-use super::instructions::instruction::Instruction;
-use super::instructions::instructions::load_instruction;
 use crate::emulator::Memory;
 
 use std::rc::Rc;
