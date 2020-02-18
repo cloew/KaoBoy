@@ -1,4 +1,4 @@
-use super::source::Source;
+use super::ByteSource;
 use super::super::super::instruction_context::InstructionContext;
 
 pub struct ConstantByteSource {
@@ -10,7 +10,7 @@ impl ConstantByteSource {
 	}
 }
 
-impl Source for ConstantByteSource {
+impl ByteSource for ConstantByteSource {
 	fn read(&self, context: &InstructionContext) -> u8 {
         return context.program_mut().read_next_byte();
 	}

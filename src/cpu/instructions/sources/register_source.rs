@@ -1,4 +1,4 @@
-use super::source::Source;
+use super::ByteSource;
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::register_names::RegisterName;
 
@@ -12,7 +12,7 @@ impl RegisterSource {
 	}
 }
 
-impl Source for RegisterSource {
+impl ByteSource for RegisterSource {
 	fn read(&self, context: &InstructionContext) -> u8 {
         return context.registers().get(self._name).get();
 	}

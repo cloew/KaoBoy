@@ -1,19 +1,19 @@
 use super::super::destinations::destination::Destination;
 use super::super::instruction::Instruction;
-use super::super::sources::source::Source;
+use super::super::sources::ByteSource;
 use super::super::super::instruction_context::InstructionContext;
 
 type UnaryByteOpFn = fn(&mut InstructionContext, u8) -> u8;
 
 pub struct UnaryByteOp {
-    source: Box<dyn Source>,
+    source: Box<dyn ByteSource>,
     op: UnaryByteOpFn,
     destination: Box<dyn Destination>,
 }
 
 impl UnaryByteOp {
 	pub fn new(
-            source: Box<dyn Source>,
+            source: Box<dyn ByteSource>,
             op: UnaryByteOpFn,
             destination: Box<dyn Destination>) -> UnaryByteOp {
 		return UnaryByteOp {

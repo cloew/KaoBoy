@@ -2,23 +2,23 @@ use super::super::destinations::destination::Destination;
 use super::super::destinations::register_destination::RegisterDestination;
 use super::super::instruction::Instruction;
 use super::super::sources::register_source::RegisterSource;
-use super::super::sources::source::Source;
+use super::super::sources::ByteSource;
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::register_names::RegisterName;
 
 type BinaryByteOpFn = fn(&mut InstructionContext, u8, u8) -> u8;
 
 pub struct BinaryByteOp {
-    left_source: Box<dyn Source>,
-    right_source: Box<dyn Source>,
+    left_source: Box<dyn ByteSource>,
+    right_source: Box<dyn ByteSource>,
     op: BinaryByteOpFn,
     destination: Box<dyn Destination>,
 }
 
 impl BinaryByteOp {
 	pub fn new(
-            left_source: Box<dyn Source>,
-            right_source: Box<dyn Source>,
+            left_source: Box<dyn ByteSource>,
+            right_source: Box<dyn ByteSource>,
             op: BinaryByteOpFn,
             destination: Box<dyn Destination>) -> BinaryByteOp {
 		return BinaryByteOp {
@@ -30,7 +30,7 @@ impl BinaryByteOp {
 	}
     
 	pub fn new_inplace_a_op(
-            right_source: Box<dyn Source>,
+            right_source: Box<dyn ByteSource>,
             op: BinaryByteOpFn,) -> BinaryByteOp {
 		return BinaryByteOp {
             left_source: Box::new(RegisterSource::new(RegisterName::A)),
