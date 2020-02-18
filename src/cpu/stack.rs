@@ -13,6 +13,10 @@ impl Stack {
         return Stack {_pointer: 0, _memory: memory};
     }
     
+    pub fn get_pointer(&self) -> u16 {
+        return self._pointer;
+    }
+    
     pub fn set_pointer(&mut self, new_pointer: u16) {
         self._pointer = new_pointer;
     }
@@ -34,6 +38,6 @@ mod tests {
         
         stack.set_pointer(NEW_STACK_POINTER);
         
-        assert_eq!(stack._pointer, NEW_STACK_POINTER);
+        assert_eq!(stack.get_pointer(), NEW_STACK_POINTER);
     }
 }

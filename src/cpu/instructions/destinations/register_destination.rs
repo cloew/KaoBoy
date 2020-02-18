@@ -29,9 +29,9 @@ mod tests {
         const EXPECTED_A: u8 = 0x12;
         let mut context = build_test_instruction_context();
         context.registers_mut().a.set(0x00);
-        let source = RegisterDestination::new(RegisterName::A);
+        let destination = RegisterDestination::new(RegisterName::A);
         
-        source.assign(&mut context, EXPECTED_A);
+        destination.assign(&mut context, EXPECTED_A);
         
         assert_eq!(as_hex!(context.registers().a), as_hex!(EXPECTED_A));
     }

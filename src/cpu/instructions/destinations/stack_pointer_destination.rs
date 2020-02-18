@@ -10,7 +10,7 @@ impl StackPointerDestination {
 	}
 }
 
-impl ShortDestination for RegisterDestination {
+impl ShortDestination for StackPointerDestination {
 	fn assign(&self, context: &mut InstructionContext, new_value: u16) {
         context.stack_mut().set_pointer(new_value);
 	}
@@ -24,13 +24,13 @@ mod tests {
     
     #[test]
     fn test_run_returns_register_value() {
-        const EXPECTED_POINTER: u8 = 0x12;
+        const EXPECTED_POINTER: u16 = 0x1234;
         let mut context = build_test_instruction_context();
         context.stack_mut().set_pointer(0x00);
-        let source = StackPointerDestination::new();
+        let destination = StackPointerDestination::new();
         
-        source.assign(&mut context, EXPECTED_POINTER);
+        destination.assign(&mut context, EXPECTED_POINTER);
         
-        assert_eq!(as_hex!(context.stack_mut()._pointer), as_hex!(EXPECTED_POINTER));
+        assert_eq!(as_hex!(context.stack_mut().get_pointer()), as_hex!(EXPECTED_POINTER));
     }
 }
