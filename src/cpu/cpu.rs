@@ -1,7 +1,9 @@
 use super::instruction_context::InstructionContext;
 use super::program_counter::ProgramCounter;
+use super::stack::Stack;
 use super::registers::registers::Registers;
 use crate::emulator::Memory;
+use crate::rc_refcell;
 
 use std::rc::Rc;
 use std::cell::RefCell;
@@ -9,17 +11,20 @@ use std::cell::RefCell;
 pub struct Cpu {
     _counter: Rc<RefCell<ProgramCounter>>,
     pub _registers: Rc<RefCell<Registers>>,
+    _stack: Rc<RefCell<Stack>>,
     
     _context: InstructionContext,
 }
 
 impl Cpu {
     pub fn new(memory: Rc<RefCell<Memory>>) -> Cpu {
-        let program = Rc::new(RefCell::new(ProgramCounter::new(memory)));
-        let registers = Rc::new(RefCell::new(Registers::new()));
+        let program = rc_refcell!(ProgramCounter::new(memory.clone()));
+        let registers = rc_refcell!(Registers::new());
+        let stack = rc_refcell!(Stack::new(memory.clone()));
         return Cpu {
             _counter: program.clone(),
             _registers: registers.clone(),
+            _stack: stack.clone(),
             _context: InstructionContext::new(program.clone(), registers.clone()),
         };
     }
