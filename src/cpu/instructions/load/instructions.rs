@@ -1,6 +1,5 @@
 use super::super::instruction::Instruction;
-use super::super::common::no_op::no_op;
-use super::super::common::unary_byte_op::UnaryByteOp;
+use super::super::common::{byte_no_op, UnaryByteOp};
 use super::super::sources::constant_byte_source::ConstantByteSource;
 use super::super::destinations::register_destination::RegisterDestination;
 use super::super::sources::register_source::RegisterSource;
@@ -11,7 +10,7 @@ fn build_load_instruction(source_name: RegisterName, destination_name: RegisterN
     return optional_boxed!(
         UnaryByteOp::new(
             boxed!(RegisterSource::new(source_name)),
-            no_op,
+            byte_no_op,
             boxed!(RegisterDestination::new(destination_name))
         )
     );
@@ -21,7 +20,7 @@ fn build_load_instruction_from_constant_byte(destination_name: RegisterName) -> 
     return optional_boxed!(
         UnaryByteOp::new(
             boxed!(ConstantByteSource::new()),
-            no_op,
+            byte_no_op,
             boxed!(RegisterDestination::new(destination_name))
         )
     );

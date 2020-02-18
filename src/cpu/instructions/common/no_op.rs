@@ -1,6 +1,6 @@
 use super::super::super::instruction_context::InstructionContext;
 
-pub fn no_op(_context: &mut InstructionContext, value: u8) -> u8 {
+pub fn byte_no_op(_context: &mut InstructionContext, value: u8) -> u8 {
     return value;
 }
 
@@ -15,7 +15,7 @@ mod tests {
         const VALUE: u8 = 0x12;
         let mut context = build_test_instruction_context();
         
-        let result = no_op(&mut context, VALUE);
+        let result = byte_no_op(&mut context, VALUE);
         
         assert_eq!(as_hex!(result), as_hex!(VALUE));
     }
