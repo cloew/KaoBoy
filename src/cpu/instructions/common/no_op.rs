@@ -1,4 +1,4 @@
-use super::super::super::instruction_context::InstructionContext;
+use super::super::super::InstructionContext;
 
 pub fn byte_no_op(_context: &mut InstructionContext, value: u8) -> u8 {
     return value;
