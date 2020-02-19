@@ -8,7 +8,7 @@ use emulator::Emulator;
 fn main() {
     let mut emulator = Emulator::new();
     
-    let program: [u8; 38] = [
+    let program: [u8; 41] = [
         // Add
         0x80, // 0x00+0x01 = 0x01
         0x81, // 0x01+0x02 = 0x03
@@ -51,6 +51,9 @@ fn main() {
         0x7F,
         0x3E,
         0xFF,
+        0x31,
+        0xCA,
+        0xB0,
     ];
     
     
@@ -92,4 +95,7 @@ fn main() {
         emulator._cpu.run_next_instruction();
         println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().a));
     }
+    println!("Testing load Stack pointer");
+    emulator._cpu.run_next_instruction();
+    println!("Stack Pointer: {}", as_hex!(emulator._cpu._stack.borrow_mut().get_pointer()));
 }

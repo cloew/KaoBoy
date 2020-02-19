@@ -11,7 +11,7 @@ use std::cell::RefCell;
 pub struct Cpu {
     _counter: Rc<RefCell<ProgramCounter>>,
     pub _registers: Rc<RefCell<Registers>>,
-    _stack: Rc<RefCell<Stack>>,
+    pub _stack: Rc<RefCell<Stack>>,
     
     _context: InstructionContext,
 }
