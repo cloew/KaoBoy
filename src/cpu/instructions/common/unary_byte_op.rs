@@ -1,7 +1,8 @@
 use super::super::destinations::ByteDestination;
 use super::super::instruction::Instruction;
 use super::super::sources::ByteSource;
-use super::super::super::instruction_context::InstructionContext;
+use super::super::super::InstructionContext;
+use super::no_op::byte_no_op;
 
 type UnaryByteOpFn = fn(&mut InstructionContext, u8) -> u8;
 
@@ -19,6 +20,16 @@ impl UnaryByteOp {
 		return UnaryByteOp {
             source: source,
             op: op,
+            destination: destination,
+        };
+	}
+    
+	pub fn new_no_op(
+            source: Box<dyn ByteSource>,
+            destination: Box<dyn ByteDestination>) -> UnaryByteOp {
+		return UnaryByteOp {
+            source: source,
+            op: byte_no_op,
             destination: destination,
         };
 	}

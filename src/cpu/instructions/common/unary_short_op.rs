@@ -23,6 +23,7 @@ impl UnaryShortOp {
             destination: destination,
         };
 	}
+    
 	pub fn new_no_op(
             source: Box<dyn ShortSource>,
             destination: Box<dyn ShortDestination>) -> UnaryShortOp {
