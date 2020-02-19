@@ -91,7 +91,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x7F => build_load_instruction(RegisterName::A, RegisterName::A),
         0x3E => build_load_instruction_from_constant_byte(RegisterName::A),
         // Load Stack Pointer
-        0x31 => optional_boxed!(UnaryShortOp::newNoOp(boxed!(ConstantShortSource::new()), boxed!(StackPointerDestination::new()))),
+        0x31 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(StackPointerDestination::new()))),
         _ => None,
     };
 }
