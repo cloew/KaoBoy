@@ -8,7 +8,7 @@ use emulator::Emulator;
 fn main() {
     let mut emulator = Emulator::new();
     
-    let program: [u8; 44] = [
+    let program: [u8; 50] = [
         // Add
         0x80, // 0x00+0x01 = 0x01
         0x81, // 0x01+0x02 = 0x03
@@ -52,6 +52,12 @@ fn main() {
         0x3E,
         0xFF,
         // Load Short Registers
+        0x01,
+        0x12,
+        0x34,
+        0x11,
+        0x56,
+        0x78,
         0x21,
         0xFE,
         0xDC,
@@ -99,6 +105,13 @@ fn main() {
         emulator._cpu.run_next_instruction();
         println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().a));
     }
+    
+    println!("Testing load BC");
+    emulator._cpu.run_next_instruction();
+    println!("BC: {}", as_hex!(emulator._cpu._registers.borrow_mut().bc));
+    println!("Testing load DE");
+    emulator._cpu.run_next_instruction();
+    println!("DE: {}", as_hex!(emulator._cpu._registers.borrow_mut().de));
     println!("Testing load HL");
     emulator._cpu.run_next_instruction();
     println!("HL: {}", as_hex!(emulator._cpu._registers.borrow_mut().hl));

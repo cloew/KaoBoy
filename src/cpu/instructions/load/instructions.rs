@@ -89,6 +89,8 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x7F => build_load_instruction(RegisterName::A, RegisterName::A),
         0x3E => build_load_instruction_from_constant_byte(RegisterName::A),
         // Load Short Fields
+        0x01 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(DoubleRegisterDestination::new(DoubleRegisterName::BC)))),
+        0x11 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(DoubleRegisterDestination::new(DoubleRegisterName::DE)))),
         0x21 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(DoubleRegisterDestination::new(DoubleRegisterName::HL)))),
         0x31 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(StackPointerDestination::new()))),
         _ => None,
