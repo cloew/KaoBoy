@@ -1,6 +1,8 @@
 use super::register::Register;
+use super::double_register::DoubleRegister;
 use super::register_flag::RegisterFlag;
 use super::register_names::RegisterName;
+use super::double_register_names::DoubleRegisterName;
 use crate::{build_u16, get_lower_u8, get_upper_u8};
 
 use std::rc::Rc;
@@ -21,6 +23,12 @@ pub struct Registers {
     pub f: Register, // Special Flags register
     pub h: Register,
     pub l: Register,
+    
+    // Double Registers
+    pub af: DoubleRegister,
+    pub bc: DoubleRegister,
+    pub de: DoubleRegister,
+    pub hl: DoubleRegister,
     
     // Flags
     pub zero_flag: RegisterFlag,
@@ -45,6 +53,12 @@ impl Registers {
             f: Register::new(registers_ref.clone(), RegisterName::F),
             h: Register::new(registers_ref.clone(), RegisterName::H),
             l: Register::new(registers_ref.clone(), RegisterName::L),
+            
+            // Double Registers
+            af: DoubleRegister::new(registers_ref.clone(), RegisterName::A, RegisterName::F),
+            bc: DoubleRegister::new(registers_ref.clone(), RegisterName::B, RegisterName::C),
+            de: DoubleRegister::new(registers_ref.clone(), RegisterName::D, RegisterName::E),
+            hl: DoubleRegister::new(registers_ref.clone(), RegisterName::H, RegisterName::L),
             
             // Flags
             zero_flag: RegisterFlag::new(registers_ref.clone(), RegisterName::F, ZERO_FLAG_MASK),
@@ -81,6 +95,24 @@ impl Registers {
             RegisterName::L => &mut self.l,
         }
     }
+    
+    pub fn get_double(&self, register_name: DoubleRegisterName) -> &DoubleRegister {
+        return match register_name {
+            DoubleRegisterName::AF => &self.af,
+            DoubleRegisterName::BC => &self.bc,
+            DoubleRegisterName::DE => &self.de,
+            DoubleRegisterName::HL => &self.hl,
+        }
+    }
+    
+    pub fn get_double_mut(&mut self, register_name: DoubleRegisterName) -> &mut DoubleRegister {
+        return match register_name {
+            DoubleRegisterName::AF => &mut self.af,
+            DoubleRegisterName::BC => &mut self.bc,
+            DoubleRegisterName::DE => &mut self.de,
+            DoubleRegisterName::HL => &mut self.hl,
+        }
+    }
 }
 
 #[cfg(test)]
@@ -95,5 +127,14 @@ mod tests {
         let register = registers.get(RegisterName::A);
         
         assert!(ptr::eq(register, &registers.a));
+    }
+    
+    #[test]
+    fn test_get_double_gets_proper_register() {
+        let registers = Registers::new();
+        
+        let register = registers.get_double(DoubleRegisterName::HL);
+        
+        assert!(ptr::eq(register, &registers.hl));
     }
 }
