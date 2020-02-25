@@ -1,7 +1,7 @@
 use super::instruction_context::InstructionContext;
 use super::program_counter::ProgramCounter;
 use super::stack::Stack;
-use super::registers::registers::Registers;
+use super::registers::Registers;
 use crate::emulator::Memory;
 use crate::rc_refcell;
 
