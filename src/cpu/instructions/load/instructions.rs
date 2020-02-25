@@ -1,8 +1,8 @@
 use super::super::instruction::Instruction;
 use super::super::common::{UnaryByteOp, UnaryShortOp};
 use super::super::sources::{ConstantByteSource, ConstantShortSource, RegisterSource};
-use super::super::destinations::{RegisterDestination, StackPointerDestination};
-use super::super::super::registers::register_names::RegisterName;
+use super::super::destinations::{DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
+use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
 
 fn build_load_instruction(source_name: RegisterName, destination_name: RegisterName) -> Option<Box<dyn Instruction>> {
@@ -88,7 +88,8 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x7D => build_load_instruction(RegisterName::L, RegisterName::A),
         0x7F => build_load_instruction(RegisterName::A, RegisterName::A),
         0x3E => build_load_instruction_from_constant_byte(RegisterName::A),
-        // Load Stack Pointer
+        // Load Short Fields
+        0x21 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(DoubleRegisterDestination::new(DoubleRegisterName::HL)))),
         0x31 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(StackPointerDestination::new()))),
         _ => None,
     };
