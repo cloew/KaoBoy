@@ -6,6 +6,6 @@ mod double_register;
 mod register;
 mod register_flag;
 
-pub use self::registers::Registers;
-pub use self::register_names::RegisterName;
-pub use self::double_register_names::DoubleRegisterName;
+pub use registers::Registers;
+pub use register_names::RegisterName;
+pub use double_register_names::DoubleRegisterName;
