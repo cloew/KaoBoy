@@ -49,7 +49,7 @@ mod tests {
         const EXPECTED_A: u8 = INITIAL_A + INITIAL_A;
         
         let mut memory = Memory::new();
-        memory.set_byte(COUNTER, ADD_INSTRUCTION);
+        memory.write_byte(COUNTER, ADD_INSTRUCTION);
         
         let mut cpu = Cpu::new(rc_refcell!(memory));
         cpu._counter.borrow_mut().set_counter(COUNTER);

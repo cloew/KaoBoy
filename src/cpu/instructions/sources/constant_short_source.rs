@@ -30,7 +30,7 @@ mod tests {
         let source = ConstantShortSource::new();
         
         context.program_mut().set_counter(COUNTER);
-        context.program_mut()._memory.borrow_mut().set_short(COUNTER, EXPECTED_VALUE);
+        context.program_mut()._memory.borrow_mut().write_short(COUNTER, EXPECTED_VALUE);
         
         let result = source.read(&context);
         

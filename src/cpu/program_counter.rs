@@ -54,7 +54,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.borrow_mut().set_byte(COUNTER, ADD_INSTRUCTION);
+        program_counter._memory.borrow_mut().write_byte(COUNTER, ADD_INSTRUCTION);
         
         program_counter.read_next_instruction();
         
@@ -68,7 +68,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.borrow_mut().set_byte(COUNTER, ADD_INSTRUCTION);
+        program_counter._memory.borrow_mut().write_byte(COUNTER, ADD_INSTRUCTION);
         
         program_counter.read_next_instruction();
         
@@ -83,7 +83,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.borrow_mut().set_byte(ADDRESS, EXPECTED_BYTE);
+        program_counter._memory.borrow_mut().write_byte(ADDRESS, EXPECTED_BYTE);
         
         let result = program_counter.read_next_byte();
         
@@ -98,7 +98,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.borrow_mut().set_byte(ADDRESS, EXPECTED_BYTE);
+        program_counter._memory.borrow_mut().write_byte(ADDRESS, EXPECTED_BYTE);
         
         program_counter.read_next_byte();
         
@@ -113,7 +113,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.borrow_mut().set_short(ADDRESS, EXPECTED_SHORT);
+        program_counter._memory.borrow_mut().write_short(ADDRESS, EXPECTED_SHORT);
         
         let result = program_counter.read_next_short();
         
@@ -128,7 +128,7 @@ mod tests {
         
         let mut program_counter = build_program_counter();
         program_counter.set_counter(COUNTER);
-        program_counter._memory.borrow_mut().set_short(ADDRESS, EXPECTED_SHORT);
+        program_counter._memory.borrow_mut().write_short(ADDRESS, EXPECTED_SHORT);
         
         program_counter.read_next_short();
         

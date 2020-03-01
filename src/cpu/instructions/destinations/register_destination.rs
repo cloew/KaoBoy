@@ -25,7 +25,7 @@ mod tests {
     use crate::cpu::testing::build_test_instruction_context;
     
     #[test]
-    fn test_run_returns_register_value() {
+    fn test_run_assigns_register_value() {
         const EXPECTED_A: u8 = 0x12;
         let mut context = build_test_instruction_context();
         context.registers_mut().a.set(0x00);

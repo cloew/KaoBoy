@@ -26,6 +26,10 @@ impl InstructionContext {
             _stack: stack};
 	}
     
+    pub fn memory(&self) -> std::cell::Ref<Memory> {
+        return self._memory.borrow();
+    }
+    
     pub fn memory_mut(&self) -> std::cell::RefMut<Memory> {
         return self._memory.borrow_mut();
     }

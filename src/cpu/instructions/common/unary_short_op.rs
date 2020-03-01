@@ -65,7 +65,7 @@ mod tests {
         let memory = rc_refcell!(Memory::new());
         let mut context = build_test_instruction_context_with_memory(memory.clone());
         context.program_mut().set_counter(COUNTER);
-        memory.borrow_mut().set_short(COUNTER, SOURCE_VALUE);
+        memory.borrow_mut().write_short(COUNTER, SOURCE_VALUE);
     
         let source = ConstantShortSource::new();
         let destination = StackPointerDestination::new();

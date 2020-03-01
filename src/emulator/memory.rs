@@ -23,14 +23,14 @@ impl Memory {
         return build_u16!(self.read_byte(address), self.read_byte(address+1));
     }
     
-    pub fn set_byte(&mut self, address: u16, value: u8) {
+    pub fn write_byte(&mut self, address: u16, value: u8) {
         self._memory[address as usize] = value;
     }
     
-    pub fn set_short(&mut self, address: u16, value: u16) {
+    pub fn write_short(&mut self, address: u16, value: u16) {
         let bytes = value.to_be_bytes();
-        self.set_byte(address, bytes[0]);
-        self.set_byte(address+1, bytes[1]);
+        self.write_byte(address, bytes[0]);
+        self.write_byte(address+1, bytes[1]);
     }
 }
 
@@ -60,7 +60,7 @@ mod tests {
         const EXPECTED_BYTE: u8 = 0xAB;
         let mut memory = Memory::new();
         
-        memory.set_byte(ADDRESS, EXPECTED_BYTE);
+        memory.write_byte(ADDRESS, EXPECTED_BYTE);
         let result = memory.read_byte(ADDRESS);
         
         assert_eq!(as_hex!(result), as_hex!(EXPECTED_BYTE));
@@ -72,14 +72,14 @@ mod tests {
         const EXPECTED_SHORT: u16 = 0xFEDC;
         let mut memory = Memory::new();
         
-        memory.set_short(ADDRESS, EXPECTED_SHORT);
+        memory.write_short(ADDRESS, EXPECTED_SHORT);
         let result = memory.read_short(ADDRESS);
         
         assert_eq!(as_hex!(result), as_hex!(EXPECTED_SHORT));
     }
     
     #[test]
-    fn test_set_short_sets_in_proper_order() {
+    fn test_write_short_sets_in_proper_order() {
         const ADDRESS: u16 = 0xABCD;
         const EXPECTED_SHORT: u16 = 0xFEDC;
         let bytes = EXPECTED_SHORT.to_be_bytes();
@@ -87,7 +87,7 @@ mod tests {
         let EXPECTED_SECOND_BYTE = bytes[1];
         let mut memory = Memory::new();
         
-        memory.set_short(ADDRESS, EXPECTED_SHORT);
+        memory.write_short(ADDRESS, EXPECTED_SHORT);
         let firstResult = memory.read_byte(ADDRESS);
         let secondResult = memory.read_byte(ADDRESS+1);
         
