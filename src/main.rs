@@ -8,7 +8,7 @@ use emulator::Emulator;
 fn main() {
     let mut emulator = Emulator::new();
     
-    let program: [u8; 50] = [
+    let program: [u8; 63] = [
         // Add
         0x80, // 0x00+0x01 = 0x01
         0x81, // 0x01+0x02 = 0x03
@@ -64,6 +64,22 @@ fn main() {
         0x31,
         0xCA,
         0xB0,
+        // LOAD (HL)
+        0x36,
+        0x99,
+        0x70,
+        0x71,
+        0x72,
+        0x73,
+        0x74,
+        0x75,
+        0x77,
+        // LOAD (BC)
+        0x02,
+        0xCA,
+        // LOAD (DE)
+        0x12,
+        0xBE,
     ];
     
     
@@ -118,4 +134,20 @@ fn main() {
     println!("Testing load Stack pointer");
     emulator._cpu.run_next_instruction();
     println!("Stack Pointer: {}", as_hex!(emulator._cpu._stack.borrow_mut().get_pointer()));
+    
+    println!("Testing load (HL)");
+    emulator._cpu._registers.borrow_mut().a.set(0x00);
+    for _x in 0..8 {
+        let address = emulator._cpu._registers.borrow_mut().hl.get();
+        emulator._cpu.run_next_instruction();
+        println!("{}", as_hex!(emulator._memory.borrow().read_byte(address)));
+    }
+    println!("Testing load (BC)");
+    let address = emulator._cpu._registers.borrow_mut().bc.get();
+    emulator._cpu.run_next_instruction();
+    println!("BC: {}", as_hex!(emulator._memory.borrow().read_byte(address)));
+    println!("Testing load (DE)");
+    let address = emulator._cpu._registers.borrow_mut().de.get();
+    emulator._cpu.run_next_instruction();
+    println!("DE: {}", as_hex!(emulator._memory.borrow().read_byte(address)));
 }

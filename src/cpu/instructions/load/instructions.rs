@@ -1,7 +1,7 @@
 use super::super::instruction::Instruction;
 use super::super::common::{UnaryByteOp, UnaryShortOp};
 use super::super::sources::{ConstantByteSource, ConstantShortSource, RegisterSource};
-use super::super::destinations::{DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
+use super::super::destinations::{AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
 
@@ -19,6 +19,24 @@ fn build_load_instruction_from_constant_byte(destination_name: RegisterName) -> 
         UnaryByteOp::new_no_op(
             boxed!(ConstantByteSource::new()),
             boxed!(RegisterDestination::new(destination_name))
+        )
+    );
+}
+
+fn build_load_into_address_instruction(source_name: RegisterName, destination_name: DoubleRegisterName) -> Option<Box<dyn Instruction>> {
+    return optional_boxed!(
+        UnaryByteOp::new_no_op(
+            boxed!(RegisterSource::new(source_name)),
+            boxed!(AddressedByDoubleRegisterDestination::new(destination_name))
+        )
+    );
+}
+
+fn build_load_into_address_instruction_from_constant_byte(destination_name: DoubleRegisterName) -> Option<Box<dyn Instruction>> {
+    return optional_boxed!(
+        UnaryByteOp::new_no_op(
+            boxed!(ConstantByteSource::new()),
+            boxed!(AddressedByDoubleRegisterDestination::new(destination_name))
         )
     );
 }
@@ -88,11 +106,23 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x7D => build_load_instruction(RegisterName::L, RegisterName::A),
         0x7F => build_load_instruction(RegisterName::A, RegisterName::A),
         0x3E => build_load_instruction_from_constant_byte(RegisterName::A),
+        // Load into Addressed by HL
+        0x70 => build_load_into_address_instruction(RegisterName::B, DoubleRegisterName::HL),
+        0x71 => build_load_into_address_instruction(RegisterName::C, DoubleRegisterName::HL),
+        0x72 => build_load_into_address_instruction(RegisterName::D, DoubleRegisterName::HL),
+        0x73 => build_load_into_address_instruction(RegisterName::E, DoubleRegisterName::HL),
+        0x74 => build_load_into_address_instruction(RegisterName::H, DoubleRegisterName::HL),
+        0x75 => build_load_into_address_instruction(RegisterName::L, DoubleRegisterName::HL),
+        0x77 => build_load_into_address_instruction(RegisterName::A, DoubleRegisterName::HL),
+        0x36 => build_load_into_address_instruction_from_constant_byte(DoubleRegisterName::HL),
         // Load Short Fields
         0x01 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(DoubleRegisterDestination::new(DoubleRegisterName::BC)))),
         0x11 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(DoubleRegisterDestination::new(DoubleRegisterName::DE)))),
         0x21 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(DoubleRegisterDestination::new(DoubleRegisterName::HL)))),
         0x31 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(StackPointerDestination::new()))),
+        // Load Addressed by Double Register Fields
+        0x02 => build_load_into_address_instruction_from_constant_byte(DoubleRegisterName::BC),
+        0x12 => build_load_into_address_instruction_from_constant_byte(DoubleRegisterName::DE),
         _ => None,
     };
 }
