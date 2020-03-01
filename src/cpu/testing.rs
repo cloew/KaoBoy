@@ -18,5 +18,5 @@ pub fn build_test_instruction_context_with_memory(memory: Rc<RefCell<Memory>>) -
     let program = rc_refcell!(ProgramCounter::new(memory.clone()));
     let registers = rc_refcell!(Registers::new());
     let stack = rc_refcell!(Stack::new(memory.clone()));
-    return InstructionContext::new(program, registers, stack);
+    return InstructionContext::new(memory.clone(), program, registers, stack);
 }
