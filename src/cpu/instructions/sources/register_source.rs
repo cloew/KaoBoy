@@ -1,6 +1,6 @@
 use super::ByteSource;
 use super::super::super::instruction_context::InstructionContext;
-use super::super::super::registers::register_names::RegisterName;
+use super::super::super::registers::RegisterName;
 
 pub struct RegisterSource {
     _name: RegisterName,
