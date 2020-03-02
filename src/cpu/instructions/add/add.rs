@@ -1,4 +1,4 @@
-use super::super::utils::half_carry_utils::{check_half_carry};
+use super::super::utils::{check_half_carry};
 use super::super::super::instruction_context::InstructionContext;
 
 pub fn add(context: &mut InstructionContext, left_value: u8, right_value: u8) -> u8 {
