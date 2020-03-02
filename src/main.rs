@@ -4,11 +4,12 @@ mod emulator;
 mod utils;
 
 use emulator::Emulator;
+use cpu::registers::RegisterName;
 
 fn main() {
     let mut emulator = Emulator::new();
     
-    let program: [u8; 63] = [
+    let program: [u8; 70] = [
         // Add
         0x80, // 0x00+0x01 = 0x01
         0x81, // 0x01+0x02 = 0x03
@@ -80,6 +81,14 @@ fn main() {
         // LOAD (DE)
         0x12,
         0xBE,
+        // INC Registers
+        0x04,
+        0x14,
+        0x24,
+        0x0C,
+        0x1C,
+        0x2C,
+        0x3C,
     ];
     
     
@@ -150,4 +159,26 @@ fn main() {
     let address = emulator._cpu._registers.borrow_mut().de.get();
     emulator._cpu.run_next_instruction();
     println!("DE: {}", as_hex!(emulator._memory.borrow().read_byte(address)));
+    
+    println!("Testing INC");
+    emulator._cpu._registers.borrow_mut().a.set(0x00);
+    emulator._cpu._registers.borrow_mut().b.set(0x1);
+    emulator._cpu._registers.borrow_mut().c.set(0x2);
+    emulator._cpu._registers.borrow_mut().d.set(0x4);
+    emulator._cpu._registers.borrow_mut().e.set(0x8);
+    emulator._cpu._registers.borrow_mut().h.set(0x10);
+    emulator._cpu._registers.borrow_mut().l.set(0x20);
+    let registers = [
+        RegisterName::B,
+        RegisterName::D,
+        RegisterName::H,
+        RegisterName::C,
+        RegisterName::E,
+        RegisterName::L,
+        RegisterName::A,
+    ];
+    for name in registers.iter() {
+        emulator._cpu.run_next_instruction();
+        println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().get(*name)));
+    }
 }

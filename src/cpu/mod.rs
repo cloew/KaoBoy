@@ -1,8 +1,8 @@
 pub mod cpu;
 pub mod instruction_context;
+pub mod registers;
 
 mod instructions;
-mod registers;
 mod stack;
 mod program_counter;
 
