@@ -7,6 +7,7 @@ mod stack;
 mod program_counter;
 
 pub use instruction_context::InstructionContext;
+pub use program_counter::ProgramCounter;
 
 #[cfg(test)]
 pub mod testing;

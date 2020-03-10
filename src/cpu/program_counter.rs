@@ -21,8 +21,7 @@ impl ProgramCounter {
     }
     
     pub fn read_next_instruction(&mut self) -> Box<dyn Instruction> {
-        let next_byte = self.read_next_byte();
-        return load_instruction(next_byte);
+        return load_instruction(self);
     }
     
     pub fn read_next_byte(&mut self) -> u8 {

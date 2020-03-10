@@ -9,6 +9,11 @@ use std::rc::Rc;
 use std::cell::RefCell;
 
 
+pub fn build_test_program_counter() -> ProgramCounter {
+    let memory = rc_refcell!(Memory::new());
+    return ProgramCounter::new(memory.clone());
+}
+
 pub fn build_test_instruction_context() -> InstructionContext {
     let memory = rc_refcell!(Memory::new());
     return build_test_instruction_context_with_memory(memory);
