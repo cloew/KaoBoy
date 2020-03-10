@@ -123,6 +123,19 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         // Load Addressed by Double Register Fields
         0x02 => build_load_into_address_instruction_from_constant_byte(DoubleRegisterName::BC),
         0x12 => build_load_into_address_instruction_from_constant_byte(DoubleRegisterName::DE),
+        // Load Addressed by Double Register Fields, then modify the register
+        0x22 => optional_boxed!(
+                    UnaryByteOp::new_no_op(
+                        boxed!((RegisterSource::new(RegisterName::A))),
+                        boxed!(AddressedByDoubleRegisterDestination::new_assign_then_increment(DoubleRegisterName::HL))
+                    )
+                ),
+        0x32 => optional_boxed!(
+                    UnaryByteOp::new_no_op(
+                        boxed!((RegisterSource::new(RegisterName::A))),
+                        boxed!(AddressedByDoubleRegisterDestination::new_assign_then_decrement(DoubleRegisterName::HL))
+                    )
+                ),
         _ => None,
     };
 }

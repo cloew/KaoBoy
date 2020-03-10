@@ -9,7 +9,7 @@ use cpu::registers::{DoubleRegisterName, RegisterName};
 fn main() {
     let mut emulator = Emulator::new();
     
-    let program: [u8; 73] = [
+    let program: [u8; 75] = [
         // Add
         0x80, // 0x00+0x01 = 0x01
         0x81, // 0x01+0x02 = 0x03
@@ -81,6 +81,10 @@ fn main() {
         // LOAD (DE)
         0x12,
         0xBE,
+        // LOAD (HL+)
+        0x22,
+        // LOAD (HL-)
+        0x32,
         // INC Registers
         0x04,
         0x14,
@@ -163,6 +167,22 @@ fn main() {
     let address = emulator._cpu._registers.borrow_mut().de.get();
     emulator._cpu.run_next_instruction();
     println!("DE: {}", as_hex!(emulator._memory.borrow().read_byte(address)));
+    
+    println!("Testing load (HL+)");
+    emulator._cpu._registers.borrow_mut().a.set(0x12);
+    emulator._cpu._registers.borrow_mut().hl.set(0x1234);
+    let address = emulator._cpu._registers.borrow_mut().hl.get();
+    emulator._cpu.run_next_instruction();
+    println!("(HL): {}", as_hex!(emulator._memory.borrow().read_byte(address)));
+    println!("HL: {}", as_hex!(emulator._cpu._registers.borrow_mut().hl));
+    
+    println!("Testing load (HL-)");
+    emulator._cpu._registers.borrow_mut().a.set(0x12);
+    emulator._cpu._registers.borrow_mut().hl.set(0x1234);
+    let address = emulator._cpu._registers.borrow_mut().hl.get();
+    emulator._cpu.run_next_instruction();
+    println!("(HL): {}", as_hex!(emulator._memory.borrow().read_byte(address)));
+    println!("HL: {}", as_hex!(emulator._cpu._registers.borrow_mut().hl));
     
     println!("Testing INC Registers");
     emulator._cpu._registers.borrow_mut().a.set(0x00);
