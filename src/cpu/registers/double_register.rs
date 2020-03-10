@@ -27,6 +27,16 @@ impl DoubleRegister {
         self.set_value(self._upper_name, get_upper_u8!(new_value));
         self.set_value(self._lower_name, get_lower_u8!(new_value));
 	}
+	
+	pub fn increment(&mut self) {
+        let current_value = self.get();
+        self.set(current_value+1);
+	}
+	
+	pub fn decrement(&mut self) {
+        let current_value = self.get();
+        self.set(current_value-1);
+	}
     
     fn get_value(&self, name: RegisterName) -> u8 {
         return self._registers.borrow()[name as usize];
