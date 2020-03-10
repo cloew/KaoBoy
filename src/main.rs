@@ -97,6 +97,9 @@ fn main() {
         0x03,
         0x13,
         0x23,
+        //Prefix Instruction test
+        /*0xCB,
+        0x40,*/
     ];
     
     
@@ -223,4 +226,7 @@ fn main() {
         emulator._cpu.run_next_instruction();
         println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().get_double(*name)));
     }
+    
+    /*println!("Testing load BIT");
+    emulator._cpu.run_next_instruction();*/
 }
