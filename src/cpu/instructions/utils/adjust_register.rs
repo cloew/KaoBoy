@@ -1,6 +1,8 @@
 use super::super::super::InstructionContext;
 use super::super::super::registers::DoubleRegisterName;
 
+pub type PostOpFn = fn(&mut InstructionContext, DoubleRegisterName);
+
 pub fn inc_double_register(context: &mut InstructionContext, register_name: DoubleRegisterName) {
     context.registers_mut().get_double_mut(register_name).increment();
 }
