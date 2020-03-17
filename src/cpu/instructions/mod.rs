@@ -7,6 +7,7 @@ mod sources;
 mod utils;
 
 mod add;
+mod bit;
 mod inc;
 mod load;
 mod subtract;
