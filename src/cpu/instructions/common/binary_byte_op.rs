@@ -2,7 +2,7 @@ use super::super::destinations::{ByteDestination, RegisterDestination};
 use super::super::instruction::Instruction;
 use super::super::sources::{ByteSource, RegisterSource};
 use super::super::super::instruction_context::InstructionContext;
-use super::super::super::registers::register_names::RegisterName;
+use super::super::super::registers::RegisterName;
 
 type BinaryByteOpFn = fn(&mut InstructionContext, u8, u8) -> u8;
 
