@@ -1,4 +1,5 @@
 use super::add;
+use super::bit;
 use super::inc;
 use super::load;
 use super::subtract;
@@ -46,7 +47,9 @@ fn load_standard_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
 }
 
 fn load_prefix_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
-    let package_instruction_loaders: Vec<PackageInstructionLoader> = vec![];
+    let package_instruction_loaders: Vec<PackageInstructionLoader> = vec![
+        bit::instructions::load_instruction,
+    ];
     
     let next_instruction = load_instruction_from_packages(instruction_byte, package_instruction_loaders);
     

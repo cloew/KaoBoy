@@ -9,7 +9,7 @@ use cpu::registers::{DoubleRegisterName, RegisterName};
 fn main() {
     let mut emulator = Emulator::new();
     
-    let program: [u8; 75] = [
+    let program: [u8; 77] = [
         // Add
         0x80, // 0x00+0x01 = 0x01
         0x81, // 0x01+0x02 = 0x03
@@ -97,9 +97,9 @@ fn main() {
         0x03,
         0x13,
         0x23,
-        //Prefix Instruction test
-        /*0xCB,
-        0x40,*/
+        //BIT Instruction test
+        0xCB,
+        0x40,
     ];
     
     
@@ -227,6 +227,15 @@ fn main() {
         println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().get_double(*name)));
     }
     
-    /*println!("Testing load BIT");
-    emulator._cpu.run_next_instruction();*/
+    println!("Testing load BIT");
+    emulator._cpu._registers.borrow_mut().b.set(0x00);
+    emulator._cpu._registers.borrow_mut().zero_flag.reset();
+    emulator._cpu._registers.borrow_mut().subtract_flag.activate();
+    emulator._cpu._registers.borrow_mut().half_carry_flag.reset();
+    emulator._cpu._registers.borrow_mut().carry_flag.activate();
+    emulator._cpu.run_next_instruction();
+    println!("Zero Flag: {}", emulator._cpu._registers.borrow().zero_flag.get());
+    println!("Subtract Flag: {}", emulator._cpu._registers.borrow().subtract_flag.get());
+    println!("Carry Flag: {}", emulator._cpu._registers.borrow().carry_flag.get());
+    println!("Half Carry Flag: {}", emulator._cpu._registers.borrow().half_carry_flag.get());
 }
