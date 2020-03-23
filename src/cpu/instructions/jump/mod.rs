@@ -1,1 +1,2 @@
-pub mod jump_instruction;
+mod conditions;
+mod jump_instruction;
