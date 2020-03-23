@@ -1,6 +1,7 @@
 use super::add;
 use super::bit;
 use super::inc;
+use super::jump;
 use super::load;
 use super::subtract;
 use super::xor;
@@ -31,6 +32,7 @@ fn load_standard_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
             = vec![
         add::instructions::load_instruction,
         inc::instructions::load_instruction,
+        jump::instructions::load_instruction,
         load::instructions::load_instruction,
         subtract::instructions::load_instruction,
         xor::instructions::load_instruction,

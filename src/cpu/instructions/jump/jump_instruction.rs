@@ -23,9 +23,9 @@ impl JumpInstruction {
 
 impl Instruction for JumpInstruction {
 	fn run(&self, context: &mut InstructionContext) {
+        let relative_address = self.source.read(context) as i8;
+        let new_counter = context.program_mut().get_counter().wrapping_add(relative_address as u16);
         if (self.condition)(context) {
-            let mut new_counter = context.program_mut().get_counter();
-            new_counter += (self.source.read(context) as u16);
             context.program_mut().set_counter(new_counter);
         }
 	}
@@ -48,9 +48,9 @@ mod tests {
     
     #[test]
     fn test_run_condition_true_jumps_to_relative_location() {
-        const INITIAL_COUNTER: u16 = 0x12;
-        const RELATIVE_JUMP: u8 = 0x34;
-        const EXPECTED_COUNTER: u16 = INITIAL_COUNTER + (RELATIVE_JUMP as u16);
+        const INITIAL_COUNTER: u16 = 0x0A + 1;
+        const RELATIVE_JUMP: u8 = 0xFB;
+        const EXPECTED_COUNTER: u16 = 0x07;
         let mut context = build_test_instruction_context();
         context.program_mut().set_counter(INITIAL_COUNTER);
         context.memory_mut().write_byte(INITIAL_COUNTER, RELATIVE_JUMP);
@@ -66,7 +66,7 @@ mod tests {
     fn test_run_condition_false_does_not_jump() {
         const INITIAL_COUNTER: u16 = 0x12;
         const RELATIVE_JUMP: u8 = 0x34;
-        const EXPECTED_COUNTER: u16 = INITIAL_COUNTER + (RELATIVE_JUMP as u16);
+        const EXPECTED_COUNTER: u16 = INITIAL_COUNTER + 1 + (RELATIVE_JUMP as u16);
         let mut context = build_test_instruction_context();
         context.program_mut().set_counter(INITIAL_COUNTER);
         context.memory_mut().write_byte(INITIAL_COUNTER, RELATIVE_JUMP);
@@ -75,6 +75,6 @@ mod tests {
         let instruction = JumpInstruction::new(boxed!(source), invalid_condition);
         instruction.run(&mut context);
         
-        assert_eq!(context.program().get_counter(), INITIAL_COUNTER);
+        assert_eq!(context.program().get_counter(), INITIAL_COUNTER+1);
     }
 }

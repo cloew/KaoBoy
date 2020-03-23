@@ -9,7 +9,7 @@ use cpu::registers::{DoubleRegisterName, RegisterName};
 fn main() {
     let mut emulator = Emulator::new();
     
-    let program: [u8; 77] = [
+    let program: [u8; 81] = [
         // Add
         0x80, // 0x00+0x01 = 0x01
         0x81, // 0x01+0x02 = 0x03
@@ -99,6 +99,11 @@ fn main() {
         0x23,
         //BIT Instruction test
         0xCB,
+        0x40,
+        //JR Instruction test
+        0x20,
+        0x40,
+        0x28,
         0x40,
     ];
     
@@ -238,4 +243,12 @@ fn main() {
     println!("Subtract Flag: {}", emulator._cpu._registers.borrow().subtract_flag.get());
     println!("Carry Flag: {}", emulator._cpu._registers.borrow().carry_flag.get());
     println!("Half Carry Flag: {}", emulator._cpu._registers.borrow().half_carry_flag.get());
+    
+    println!("Testing load JR");
+    emulator._cpu._registers.borrow_mut().zero_flag.activate();
+    println!("Program Counter Before: {}", emulator._cpu._counter.borrow().get_counter());
+    emulator._cpu.run_next_instruction();
+    println!("Program Counter After JR NZ: {}", emulator._cpu._counter.borrow().get_counter());
+    emulator._cpu.run_next_instruction();
+    println!("Program Counter After JR Z: {}", emulator._cpu._counter.borrow().get_counter());
 }

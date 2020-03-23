@@ -9,7 +9,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 
 pub struct Cpu {
-    _counter: Rc<RefCell<ProgramCounter>>,
+    pub _counter: Rc<RefCell<ProgramCounter>>,
     pub _registers: Rc<RefCell<Registers>>,
     pub _stack: Rc<RefCell<Stack>>,
     
