@@ -1,6 +1,10 @@
 use super::super::utils::{check_half_carry};
 use super::super::super::instruction_context::InstructionContext;
 
+pub fn always(context: &InstructionContext) -> bool {
+    return true;
+}
+
 pub fn is_carry_flag_off(context: &InstructionContext) -> bool {
     return context.registers().carry_flag.get() == false;
 }

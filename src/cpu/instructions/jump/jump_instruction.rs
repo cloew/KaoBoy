@@ -34,16 +34,13 @@ impl Instruction for JumpInstruction {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use super::super::conditions::{always};
     use super::super::super::sources::ConstantByteSource;
     use crate::cpu::testing::build_test_instruction_context;
     use crate::{as_hex, boxed};
     
     fn invalid_condition(context: &InstructionContext) -> bool {
         return false;
-    }
-    
-    fn valid_condition(context: &InstructionContext) -> bool {
-        return true;
     }
     
     #[test]
@@ -56,7 +53,7 @@ mod tests {
         context.memory_mut().write_byte(INITIAL_COUNTER, RELATIVE_JUMP);
         let source = ConstantByteSource::new();
         
-        let instruction = JumpInstruction::new(boxed!(source), valid_condition);
+        let instruction = JumpInstruction::new(boxed!(source), always);
         instruction.run(&mut context);
         
         assert_eq!(context.program().get_counter(), EXPECTED_COUNTER);
