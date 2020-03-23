@@ -16,6 +16,10 @@ impl ProgramCounter {
         return ProgramCounter {_counter: 0, _memory: memory};
     }
     
+    pub fn get_counter(&self) -> u16 {
+        return self._counter;
+    }
+    
     pub fn set_counter(&mut self, new_counter: u16) {
         self._counter = new_counter;
     }

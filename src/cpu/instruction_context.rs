@@ -34,6 +34,10 @@ impl InstructionContext {
         return self._memory.borrow_mut();
     }
     
+    pub fn program(&self) -> std::cell::Ref<ProgramCounter> {
+        return self._program.borrow();
+    }
+    
     pub fn program_mut(&self) -> std::cell::RefMut<ProgramCounter> {
         return self._program.borrow_mut();
     }

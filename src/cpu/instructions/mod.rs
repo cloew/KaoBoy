@@ -9,6 +9,7 @@ mod utils;
 mod add;
 mod bit;
 mod inc;
+mod jump;
 mod load;
 mod subtract;
 mod xor;
