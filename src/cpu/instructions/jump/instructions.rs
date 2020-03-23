@@ -1,4 +1,4 @@
-use super::conditions::{is_zero_flag_off, is_zero_flag_on};
+use super::conditions::{is_carry_flag_off, is_carry_flag_on, is_zero_flag_off, is_zero_flag_on};
 use super::jump_instruction::{JumpConditionFn, JumpInstruction};
 use super::super::instruction::Instruction;
 use super::super::sources::{ByteSource, ConstantByteSource};
@@ -18,6 +18,8 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         // Relative Jumps
         0x20 => build_relative_jump_instruction(boxed!(ConstantByteSource::new()), is_zero_flag_off),
         0x28 => build_relative_jump_instruction(boxed!(ConstantByteSource::new()), is_zero_flag_on),
+        0x30 => build_relative_jump_instruction(boxed!(ConstantByteSource::new()), is_carry_flag_off),
+        0x38 => build_relative_jump_instruction(boxed!(ConstantByteSource::new()), is_carry_flag_on),
         _ => None,
     };
 }
