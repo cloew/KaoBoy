@@ -3,7 +3,7 @@ use super::super::sources::{ByteSource, RegisterSource};
 use super::super::super::InstructionContext;
 use super::super::super::registers::RegisterName;
 
-type JumpConditionFn = fn(&InstructionContext) -> bool;
+pub type JumpConditionFn = fn(&InstructionContext) -> bool;
 
 pub struct JumpInstruction {
     source: Box<dyn ByteSource>,
