@@ -2,6 +2,7 @@ use super::Memory;
 use super::super::cpu::cpu::Cpu;
 use crate::rc_refcell;
 
+use std::fs;
 use std::rc::Rc;
 use std::cell::RefCell;
 
@@ -19,8 +20,15 @@ impl Emulator {
         };
     }
     
-    pub fn bootstrap(&mut self, bootstrap_data: &[u8]) {
+    pub fn bootstrap(&mut self) {
+        let bootstrap_data = fs::read("emulator/bootstrap.bin").expect("Unable to read bootstrap file");
         self._memory.borrow_mut().bootstrap(bootstrap_data);
+    }
+    
+    pub fn run(&mut self) {
+        loop {
+            self._cpu.run_next_instruction();
+        }
     }
 }
 

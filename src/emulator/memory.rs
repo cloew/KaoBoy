@@ -9,7 +9,7 @@ impl Memory {
         return Memory {_memory: [0; 0xFFFF]};
     }
     
-    pub fn bootstrap(&mut self, bootstrap_data: &[u8]) {
+    pub fn bootstrap(&mut self, bootstrap_data: Vec<u8>) {
         for (place, data) in self._memory.iter_mut().zip(bootstrap_data.iter()) {
             *place = *data
         }

@@ -8,8 +8,10 @@ use cpu::registers::{DoubleRegisterName, RegisterName};
 
 fn main() {
     let mut emulator = Emulator::new();
+    emulator.bootstrap();
+    emulator.run();
     
-    let program: [u8; 81] = [
+    /*let program: [u8; 81] = [
         // Add
         0x80, // 0x00+0x01 = 0x01
         0x81, // 0x01+0x02 = 0x03
@@ -118,7 +120,7 @@ fn main() {
     emulator._cpu._registers.borrow_mut().l.set(32);
     
     println!("Testing add");
-    for _x in 0..8 {    
+    for _x in 0..8 {
         emulator._cpu.run_next_instruction();
         println!("{}", as_hex!(emulator._cpu._registers.borrow_mut().a));
     }
@@ -250,5 +252,5 @@ fn main() {
     emulator._cpu.run_next_instruction();
     println!("Program Counter After JR NZ: {}", emulator._cpu._counter.borrow().get_counter());
     emulator._cpu.run_next_instruction();
-    println!("Program Counter After JR Z: {}", emulator._cpu._counter.borrow().get_counter());
+    println!("Program Counter After JR Z: {}", emulator._cpu._counter.borrow().get_counter());*/
 }
