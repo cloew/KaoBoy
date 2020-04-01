@@ -35,9 +35,9 @@ impl ProgramCounter {
     }
     
     pub fn read_next_short(&mut self) -> u16 {
-        let first_byte = self.read_next_byte();
-        let second_byte = self.read_next_byte();
-        return build_u16!(first_byte, second_byte);
+        let next_short = self._memory.borrow().read_short(self._counter);
+        self._counter += 2;
+        return next_short;
     }
 }
 

@@ -43,6 +43,6 @@ mod tests {
         ];
         let mut emulator = Emulator::new();
         
-        emulator.bootstrap(&BOOTSTRAP_BYTES);
+        //emulator.bootstrap();
     }
 }

@@ -20,7 +20,9 @@ impl Memory {
     }
     
     pub fn read_short(&self, address: u16) -> u16 {
-        return build_u16!(self.read_byte(address), self.read_byte(address+1));
+        let low_byte = self.read_byte(address);
+        let high_byte = self.read_byte(address+1);
+        return build_u16!(high_byte, low_byte);
     }
     
     pub fn write_byte(&mut self, address: u16, value: u8) {
@@ -28,9 +30,11 @@ impl Memory {
     }
     
     pub fn write_short(&mut self, address: u16, value: u16) {
-        let bytes = value.to_be_bytes();
-        self.write_byte(address, bytes[0]);
-        self.write_byte(address+1, bytes[1]);
+        let bytes = value.to_le_bytes();
+        let low_byte = bytes[0];
+        let high_byte = bytes[1];
+        self.write_byte(address, low_byte);
+        self.write_byte(address+1, high_byte);
     }
 }
 
@@ -45,8 +49,9 @@ mod tests {
             0x01, 0x02, 0x03, 0x04, 0x05, 0x16, 0x17, 0x18, 0x1A, 0x1B,
         ];
         let mut memory = Memory::new();
+        let b: Vec<u8> = BOOTSTRAP_BYTES.iter().cloned().collect();
         
-        memory.bootstrap(&BOOTSTRAP_BYTES);
+        memory.bootstrap(b);
         
         for (i, expected) in BOOTSTRAP_BYTES.iter().enumerate() {
             let address: u16 = i as u16;
@@ -82,7 +87,7 @@ mod tests {
     fn test_write_short_sets_in_proper_order() {
         const ADDRESS: u16 = 0xABCD;
         const EXPECTED_SHORT: u16 = 0xFEDC;
-        let bytes = EXPECTED_SHORT.to_be_bytes();
+        let bytes = EXPECTED_SHORT.to_le_bytes();
         let EXPECTED_FIRST_BYTE = bytes[0];
         let EXPECTED_SECOND_BYTE = bytes[1];
         let mut memory = Memory::new();
