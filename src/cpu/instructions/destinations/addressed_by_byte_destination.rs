@@ -3,7 +3,6 @@ use super::super::sources::ByteSource;
 use super::super::utils::{PostOpFn, build_full_address, dec_double_register, inc_double_register};
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::DoubleRegisterName;
-use crate::build_u16;
 
 pub struct AddressedByByteDestination {
     _address_source: Box<dyn ByteSource>,
@@ -27,7 +26,7 @@ mod tests {
     use super::*;
     use super::super::super::sources::RegisterSource;
     use super::super::super::super::registers::RegisterName;
-    use crate::{as_hex, boxed};
+    use crate::{as_hex, boxed, build_u16};
     use crate::cpu::testing::build_test_instruction_context;
     
     #[test]
