@@ -1,6 +1,6 @@
 use super::byte_destination::ByteDestination;
 use super::super::sources::ByteSource;
-use super::super::utils::{PostOpFn, build_full_address, dec_double_register, inc_double_register};
+use super::super::utils::build_full_address;
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::DoubleRegisterName;
 
