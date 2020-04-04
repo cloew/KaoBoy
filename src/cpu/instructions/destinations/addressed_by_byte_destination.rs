@@ -1,6 +1,6 @@
 use super::byte_destination::ByteDestination;
 use super::super::sources::ByteSource;
-use super::super::utils::{PostOpFn, dec_double_register, inc_double_register};
+use super::super::utils::{PostOpFn, build_full_address, dec_double_register, inc_double_register};
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::DoubleRegisterName;
 use crate::build_u16;
@@ -18,7 +18,7 @@ impl AddressedByByteDestination {
 impl ByteDestination for AddressedByByteDestination {
 	fn assign(&self, context: &mut InstructionContext, new_value: u8) {
         let address = self._address_source.read(context);
-        context.memory_mut().write_byte(build_u16!(0xFF, address), new_value);
+        context.memory_mut().write_byte(build_full_address(address), new_value);
 	}
 }
 
