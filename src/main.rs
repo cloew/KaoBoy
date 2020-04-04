@@ -10,12 +10,13 @@ fn main() {
     let mut emulator = Emulator::new();
     emulator.bootstrap();
     //emulator.run();
-    for _x in 0..3 {
+    for _x in 0..780 {
         emulator._cpu.run_next_instruction();
     }
     println!("Stack Pointer: {}", as_hex!(emulator._cpu._stack.borrow_mut().get_pointer()));
     println!("Program Counter: {}", emulator._cpu._counter.borrow().get_counter());
     println!("HL: {}", as_hex!(emulator._cpu._registers.borrow_mut().hl));
+    println!("0xFF11: {}", as_hex!(emulator._memory.borrow_mut().read_byte(0xFF11)));
     
     
     /*let program: [u8; 81] = [
