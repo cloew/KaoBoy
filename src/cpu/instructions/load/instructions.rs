@@ -1,6 +1,6 @@
 use super::super::instruction::Instruction;
 use super::super::common::{UnaryByteOp, UnaryShortOp};
-use super::super::sources::{AddressedByByteSource,ConstantByteSource, ConstantShortSource, RegisterSource};
+use super::super::sources::{AddressedByByteSource, ConstantByteSource, ConstantShortSource, RegisterSource};
 use super::super::destinations::{AddressedByByteDestination, AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
@@ -121,8 +121,8 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x21 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(DoubleRegisterDestination::new(DoubleRegisterName::HL)))),
         0x31 => optional_boxed!(UnaryShortOp::new_no_op(boxed!(ConstantShortSource::new()), boxed!(StackPointerDestination::new()))),
         // Load Addressed by Double Register Fields
-        0x02 => build_load_into_address_instruction_from_constant_byte(DoubleRegisterName::BC),
-        0x12 => build_load_into_address_instruction_from_constant_byte(DoubleRegisterName::DE),
+        0x02 => build_load_into_address_instruction(RegisterName::A, DoubleRegisterName::BC),
+        0x12 => build_load_into_address_instruction(RegisterName::A, DoubleRegisterName::DE),
         // Load Addressed by Double Register Fields, then modify the register
         0x22 => optional_boxed!(
                     UnaryByteOp::new_no_op(
