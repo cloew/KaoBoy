@@ -1,6 +1,6 @@
 use super::super::instruction::Instruction;
 use super::super::common::{UnaryByteOp, UnaryShortOp};
-use super::super::sources::{AddressedByByteSource, ConstantByteSource, ConstantShortSource, RegisterSource};
+use super::super::sources::{AddressedByByteSource, AddressedByShortSource, ConstantByteSource, ConstantShortSource, RegisterSource};
 use super::super::destinations::{AddressedByByteDestination, AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
@@ -37,6 +37,24 @@ fn build_load_into_address_instruction_from_constant_byte(destination_name: Doub
         UnaryByteOp::new_no_op(
             boxed!(ConstantByteSource::new()),
             boxed!(AddressedByDoubleRegisterDestination::new(destination_name))
+        )
+    );
+}
+
+fn build_load_from_address_instruction(source_name: DoubleRegisterName, destination_name: RegisterName) -> Option<Box<dyn Instruction>> {
+    return optional_boxed!(
+        UnaryByteOp::new_no_op(
+            boxed!(AddressedByShortSource::new_from_register(source_name)),
+            boxed!(RegisterDestination::new(destination_name))
+        )
+    );
+}
+
+fn build_load_from_address_instruction_from_constant_short(destination_name: RegisterName) -> Option<Box<dyn Instruction>> {
+    return optional_boxed!(
+        UnaryByteOp::new_no_op(
+            boxed!(AddressedByShortSource::new_from_constant()),
+            boxed!(RegisterDestination::new(destination_name))
         )
     );
 }
@@ -161,6 +179,10 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
                         boxed!((RegisterDestination::new(RegisterName::A)))
                     )
                 ),
+        // Load from Addressed by Short Fields
+        0x0A => build_load_from_address_instruction(DoubleRegisterName::BC, RegisterName::A),
+        0x1A => build_load_from_address_instruction(DoubleRegisterName::DE, RegisterName::A),
+        0xFA => build_load_from_address_instruction_from_constant_short(RegisterName::A),
         _ => None,
     };
 }
