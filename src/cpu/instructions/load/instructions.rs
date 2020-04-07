@@ -182,6 +182,18 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         // Load from Addressed by Short Fields
         0x0A => build_load_from_address_instruction(DoubleRegisterName::BC, RegisterName::A),
         0x1A => build_load_from_address_instruction(DoubleRegisterName::DE, RegisterName::A),
+        0x2A => optional_boxed!(
+                    UnaryByteOp::new_no_op(
+                        boxed!(AddressedByShortSource::new_from_register_then_increment(DoubleRegisterName::HL)),
+                        boxed!(RegisterDestination::new(RegisterName::A))
+                    )
+                ),
+        0x3A => optional_boxed!(
+                    UnaryByteOp::new_no_op(
+                        boxed!(AddressedByShortSource::new_from_register_then_decrement(DoubleRegisterName::HL)),
+                        boxed!(RegisterDestination::new(RegisterName::A))
+                    )
+                ),
         0xFA => build_load_from_address_instruction_from_constant_short(RegisterName::A),
         _ => None,
     };
