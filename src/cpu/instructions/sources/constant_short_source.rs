@@ -11,7 +11,7 @@ impl ConstantShortSource {
 }
 
 impl ShortSource for ConstantShortSource {
-	fn read(&self, context: &InstructionContext) -> u16 {
+	fn read(&self, context: &mut InstructionContext) -> u16 {
         return context.program_mut().read_next_short();
 	}
 }
@@ -26,13 +26,13 @@ mod tests {
     fn test_run_returns_register_value() {
         const COUNTER: u16 = 0xABCD;
         const EXPECTED_VALUE: u16 = 0xFECD;
-        let context = build_test_instruction_context();
+        let mut context = build_test_instruction_context();
         let source = ConstantShortSource::new();
         
         context.program_mut().set_counter(COUNTER);
         context.program_mut()._memory.borrow_mut().write_short(COUNTER, EXPECTED_VALUE);
         
-        let result = source.read(&context);
+        let result = source.read(&mut context);
         
         assert_eq!(as_hex!(result), as_hex!(EXPECTED_VALUE));
     }

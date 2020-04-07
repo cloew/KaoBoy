@@ -14,7 +14,7 @@ impl AddressedByByteSource {
 }
 
 impl ByteSource for AddressedByByteSource {
-	fn read(&self, context: &InstructionContext) -> u8 {
+	fn read(&self, context: &mut InstructionContext) -> u8 {
         let address = self._address_source.read(context);
         return context.memory().read_byte(build_full_address(address));
 	}

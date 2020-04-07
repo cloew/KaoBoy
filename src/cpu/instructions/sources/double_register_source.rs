@@ -13,7 +13,7 @@ impl DoubleRegisterSource {
 }
 
 impl ShortSource for DoubleRegisterSource {
-	fn read(&self, context: &InstructionContext) -> u16 {
+	fn read(&self, context: &mut InstructionContext) -> u16 {
         return context.registers().get_double(self._name).get();
 	}
 }
@@ -27,11 +27,11 @@ mod tests {
     #[test]
     fn test_run_returns_register_value() {
         const EXPECTED_VALUE: u16 = 0xFECD;
-        let context = build_test_instruction_context();
+        let mut context = build_test_instruction_context();
         context.registers_mut().hl.set(EXPECTED_VALUE);
         let source = DoubleRegisterSource::new(DoubleRegisterName::HL);
         
-        let result = source.read(&context);
+        let result = source.read(&mut context);
         
         assert_eq!(as_hex!(result), as_hex!(EXPECTED_VALUE));
     }
