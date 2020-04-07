@@ -1,6 +1,7 @@
-use super::{ByteSource, ShortSource};
+use super::{ByteSource, ConstantShortSource, DoubleRegisterSource, ShortSource};
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::DoubleRegisterName;
+use crate::boxed;
 
 pub struct AddressedByShortSource {
     _address_source: Box<dyn ShortSource>,
@@ -9,6 +10,14 @@ pub struct AddressedByShortSource {
 impl AddressedByShortSource {
 	pub fn new(address_source: Box<dyn ShortSource>) -> AddressedByShortSource {
 		return AddressedByShortSource {_address_source: address_source};
+	}
+    
+	pub fn new_from_constant() -> AddressedByShortSource {
+		return AddressedByShortSource {_address_source: boxed!(ConstantShortSource::new())};
+	}
+    
+	pub fn new_from_register(register_name: DoubleRegisterName) -> AddressedByShortSource {
+		return AddressedByShortSource {_address_source: boxed!(DoubleRegisterSource::new(register_name))};
 	}
 }
 
@@ -22,9 +31,7 @@ impl ByteSource for AddressedByShortSource {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use super::super::DoubleRegisterSource;
-    use super::super::super::super::registers::DoubleRegisterName;
-    use crate::{as_hex, boxed};
+    use crate::as_hex;
     use crate::cpu::testing::build_test_instruction_context;
     
     #[test]
@@ -34,7 +41,7 @@ mod tests {
         let mut context = build_test_instruction_context();
         context.registers_mut().hl.set(EXPECTED_ADDRESS);
         context.memory_mut().write_byte(EXPECTED_ADDRESS, EXPECTED_VALUE);
-        let source = AddressedByShortSource::new(boxed!(DoubleRegisterSource::new(DoubleRegisterName::HL)));
+        let source = AddressedByShortSource::new_from_register(DoubleRegisterName::HL);
         
         let result = source.read(&mut context);
         
