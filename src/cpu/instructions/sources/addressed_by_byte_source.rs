@@ -2,7 +2,6 @@ use super::ByteSource;
 use super::super::utils::build_full_address;
 use super::super::super::instruction_context::InstructionContext;
 use super::super::super::registers::DoubleRegisterName;
-use crate::build_u16;
 
 pub struct AddressedByByteSource {
     _address_source: Box<dyn ByteSource>,
@@ -24,9 +23,9 @@ impl ByteSource for AddressedByByteSource {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use super::super::super::sources::RegisterSource;
+    use super::super::RegisterSource;
     use super::super::super::super::registers::RegisterName;
-    use crate::{as_hex, boxed};
+    use crate::{as_hex, boxed, build_u16};
     use crate::cpu::testing::build_test_instruction_context;
     
     #[test]
