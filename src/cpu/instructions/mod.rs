@@ -11,5 +11,6 @@ mod bit;
 mod inc;
 mod jump;
 mod load;
+mod stack;
 mod subtract;
 mod xor;

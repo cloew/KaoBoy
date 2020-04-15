@@ -3,8 +3,14 @@ use super::super::super::InstructionContext;
 pub type JumpConditionFn = fn(&InstructionContext) -> bool;
 
 pub fn jump(new_counter: u16, condition: JumpConditionFn, context: &mut InstructionContext) {
+    jump_with_extra_work(new_counter, condition, context, |contextAgain| {});
+}
+
+pub fn jump_with_extra_work<F>(new_counter: u16, condition: JumpConditionFn, context: &mut InstructionContext, other_work: F)
+        where F : Fn(&mut InstructionContext) {
     if (condition)(context) {
         context.program_mut().set_counter(new_counter);
+        other_work(context);
     }
 }
 

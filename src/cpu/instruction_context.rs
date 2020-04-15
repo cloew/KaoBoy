@@ -50,6 +50,10 @@ impl InstructionContext {
         return self._registers.borrow_mut();
     }
     
+    pub fn stack(&self) -> std::cell::Ref<Stack> {
+        return self._stack.borrow();
+    }
+    
     pub fn stack_mut(&self) -> std::cell::RefMut<Stack> {
         return self._stack.borrow_mut();
     }
