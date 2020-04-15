@@ -9,11 +9,10 @@ use cpu::registers::{DoubleRegisterName, RegisterName};
 fn main() {
     let mut emulator = Emulator::new();
     emulator.bootstrap();
-    //emulator.run();
-    //for _x in 0..780 {
-    for _x in 0..787 {
-        emulator._cpu.run_next_instruction();
-    }
+    emulator.run();
+    //for _x in 0..787 {
+    //    emulator._cpu.run_next_instruction();
+    //}
     println!("Stack Pointer: {}", as_hex!(emulator._cpu._stack.borrow_mut().get_pointer()));
     println!("Program Counter: {}", emulator._cpu._counter.borrow().get_counter());
     println!("HL: {}", as_hex!(emulator._cpu._registers.borrow_mut().hl));
