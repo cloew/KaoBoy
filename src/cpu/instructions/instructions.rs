@@ -3,6 +3,7 @@ use super::bit;
 use super::inc;
 use super::jump;
 use super::load;
+use super::stack;
 use super::subtract;
 use super::xor;
 use super::instruction::Instruction;
@@ -34,6 +35,7 @@ fn load_standard_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
         inc::instructions::load_instruction,
         jump::instructions::load_instruction,
         load::instructions::load_instruction,
+        stack::instructions::load_instruction,
         subtract::instructions::load_instruction,
         xor::instructions::load_instruction,
     ];
