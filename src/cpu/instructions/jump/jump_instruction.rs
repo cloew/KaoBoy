@@ -1,9 +1,8 @@
+use super::{JumpConditionFn, jump};
 use super::super::instruction::Instruction;
 use super::super::sources::{ByteSource, RegisterSource};
 use super::super::super::InstructionContext;
 use super::super::super::registers::RegisterName;
-
-pub type JumpConditionFn = fn(&InstructionContext) -> bool;
 
 pub struct JumpInstruction {
     source: Box<dyn ByteSource>,
@@ -25,9 +24,7 @@ impl Instruction for JumpInstruction {
 	fn run(&self, context: &mut InstructionContext) {
         let relative_address = self.source.read(context) as i8;
         let new_counter = context.program_mut().get_counter().wrapping_add(relative_address as u16);
-        if (self.condition)(context) {
-            context.program_mut().set_counter(new_counter);
-        }
+        jump(new_counter, self.condition, context);
 	}
 }
 

@@ -1,5 +1,6 @@
+use super::JumpConditionFn;
 use super::conditions::{always, is_carry_flag_off, is_carry_flag_on, is_zero_flag_off, is_zero_flag_on};
-use super::jump_instruction::{JumpConditionFn, JumpInstruction};
+use super::jump_instruction::JumpInstruction;
 use super::super::instruction::Instruction;
 use super::super::sources::{ByteSource, ConstantByteSource};
 use crate::{boxed, optional_boxed};
