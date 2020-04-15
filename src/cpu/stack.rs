@@ -21,6 +21,12 @@ impl Stack {
         self._pointer = new_pointer;
     }
     
+    pub fn pop(&mut self) -> u16 {
+        self._pointer -= 2;
+        let value = self._memory.borrow_mut().read_short(self._pointer);
+        return value;
+    }
+    
     pub fn push(&mut self, value: u16) {
         self._memory.borrow_mut().write_short(self._pointer, value);
         self._pointer += 2;
@@ -42,6 +48,31 @@ mod tests {
         let mut stack = build_stack();
         
         stack.set_pointer(NEW_STACK_POINTER);
+        
+        assert_eq!(stack.get_pointer(), NEW_STACK_POINTER);
+    }
+    
+    #[test]
+    fn test_pop_reads_memory_at_stack_pointer() {
+        const STACK_POINTER: u16 = 0xABCD;
+        const VALUE: u16 = 0xCAB0;
+        let mut stack = build_stack();
+        stack.set_pointer(STACK_POINTER);
+        stack._memory.borrow_mut().write_short(STACK_POINTER-2, VALUE);
+        
+        let result = stack.pop();
+        
+        assert_eq!(result, VALUE);
+    }
+    
+    #[test]
+    fn test_pop_updates_stack_pointer() {
+        const STACK_POINTER: u16 = 0xABCD;
+        const NEW_STACK_POINTER: u16 = STACK_POINTER - 2;
+        let mut stack = build_stack();
+        stack.set_pointer(STACK_POINTER);
+        
+        stack.pop();
         
         assert_eq!(stack.get_pointer(), NEW_STACK_POINTER);
     }
