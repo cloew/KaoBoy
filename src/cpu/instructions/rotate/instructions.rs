@@ -1,11 +1,17 @@
-use super::rotate_left_through_carry_flag_instruction::RotateLeftThroughCarryFlagInstruction;
+use super::rotate_left_through_carry_flag::rotate_left_through_carry_flag;
+use super::super::common::{UnaryByteOp};
+use super::super::sources::{AddressedByShortSource, RegisterSource};
+use super::super::destinations::{AddressedByDoubleRegisterDestination, RegisterDestination};
 use super::super::instruction::Instruction;
 use super::super::super::registers::RegisterName;
 use crate::{boxed, optional_boxed};
 
 fn build_rotate_left_through_carry_flag_for_register_instruction(register: RegisterName) -> Option<Box<dyn Instruction>> {
     return optional_boxed!(
-        RotateLeftThroughCarryFlagInstruction::new_for_register(register)
+        UnaryByteOp::new(
+            boxed!(RegisterSource::new(register)),
+            rotate_left_through_carry_flag,
+            boxed!(RegisterDestination::new(register)))
     );
 }
 
@@ -35,10 +41,10 @@ mod tests {
     use super::*;
     
     #[test]
-    fn test_load_instruction_returns_instruction() {
-        const CALL_INSTRUCTION: u8 = 0xCD;
+    fn test_load_prefix_instruction_returns_instruction() {
+        const RL_INSTRUCTION: u8 = 0x10;
         
-        load_instruction(CALL_INSTRUCTION);
+        load_prefix_instruction(RL_INSTRUCTION);
         
         // Not sure if there'e anything I can assert on
     }
