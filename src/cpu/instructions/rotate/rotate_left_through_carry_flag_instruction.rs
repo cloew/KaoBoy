@@ -1,26 +1,43 @@
 use super::super::instruction::Instruction;
 use super::super::super::registers::RegisterName;
 use super::super::super::InstructionContext;
+use super::super::destinations::{ByteDestination, RegisterDestination};
+use super::super::sources::{ByteSource, RegisterSource};
+use crate::{boxed};
 
 pub struct RotateLeftThroughCarryFlagInstruction {
-    register: RegisterName,
+    destination: Box<dyn ByteDestination>,
+    source: Box<dyn ByteSource>,
 }
 
 impl RotateLeftThroughCarryFlagInstruction {
-	pub fn new(register: DoubleRegisterName) -> RotateLeftThroughCarryFlagInstruction {
-		return RotateLeftThroughCarryFlagInstruction {register: register};
+	pub fn new(destination: Box<dyn ByteDestination>, source: Box<dyn ByteSource>) -> RotateLeftThroughCarryFlagInstruction {
+		return RotateLeftThroughCarryFlagInstruction {
+            destination: destination,
+            source: source
+        };
+	}
+    
+	pub fn new_for_register(register: RegisterName) -> RotateLeftThroughCarryFlagInstruction {
+		return RotateLeftThroughCarryFlagInstruction {
+            destination: boxed!(RegisterDestination::new(register)),
+            source: boxed!(RegisterSource::new(register))
+        };
 	}
 }
 
 impl Instruction for RotateLeftThroughCarryFlagInstruction {
 	fn run(&self, context: &mut InstructionContext) {
-        let value = context.registers_mut().get(self.register).get();
+        let value = self.source.read(context);
         let original_carry_value = context.registers_mut().carry_flag.get();
-        let new_value = value << 1 + original_carry_value;
+        let mut new_value = value << 1;
+        if (original_carry_value) {
+            new_value += 1;
+        }
         
-        context.registers_mut().get(self.register).set(new_value);
+        self.destination.assign(context, new_value);
         context.registers_mut().carry_flag.set((value >> 7) > 0);
-        context.registers_mut().zaero_flag.set(new_value == 0);
+        context.registers_mut().zero_flag.set(new_value == 0);
 	}
 }
 
@@ -38,7 +55,7 @@ mod tests {
         context.registers_mut().a.set(INITIAL_VALUE);
         context.registers_mut().carry_flag.reset();
         
-        let instruction = RotateLeftThroughCarryFlagInstruction::new(RegisterName::A);
+        let instruction = RotateLeftThroughCarryFlagInstruction::new_for_register(RegisterName::A);
         instruction.run(&mut context);
         
         assert_eq!(as_hex!(context.registers_mut().a.get()), as_hex!(EXPECTED_VALUE));
@@ -53,7 +70,7 @@ mod tests {
         context.registers_mut().a.set(INITIAL_VALUE);
         context.registers_mut().carry_flag.activate();
         
-        let instruction = RotateLeftThroughCarryFlagInstruction::new(RegisterName::A);
+        let instruction = RotateLeftThroughCarryFlagInstruction::new_for_register(RegisterName::A);
         instruction.run(&mut context);
         
         assert_eq!(as_hex!(context.registers_mut().a.get()), as_hex!(EXPECTED_VALUE));
@@ -67,10 +84,10 @@ mod tests {
         context.registers_mut().a.set(INITIAL_VALUE);
         context.registers_mut().carry_flag.reset();
         
-        let instruction = RotateLeftThroughCarryFlagInstruction::new(RegisterName::A);
+        let instruction = RotateLeftThroughCarryFlagInstruction::new_for_register(RegisterName::A);
         instruction.run(&mut context);
         
-        assert_eq!(context.registers_mut().zero_flag.get(), false);
+        assert_eq!(context.registers_mut().zero_flag.get(), true);
     }
     
     #[test]
@@ -80,9 +97,9 @@ mod tests {
         context.registers_mut().a.set(INITIAL_VALUE);
         context.registers_mut().carry_flag.activate();
         
-        let instruction = RotateLeftThroughCarryFlagInstruction::new(RegisterName::A);
+        let instruction = RotateLeftThroughCarryFlagInstruction::new_for_register(RegisterName::A);
         instruction.run(&mut context);
         
-        assert_eq!(context.registers_mut().zero_flag.get(), true);
+        assert_eq!(context.registers_mut().zero_flag.get(), false);
     }
 }
