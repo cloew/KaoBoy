@@ -3,6 +3,7 @@ use super::bit;
 use super::inc;
 use super::jump;
 use super::load;
+use super::rotate;
 use super::stack;
 use super::subtract;
 use super::xor;
@@ -35,6 +36,7 @@ fn load_standard_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
         inc::instructions::load_instruction,
         jump::instructions::load_instruction,
         load::instructions::load_instruction,
+        rotate::instructions::load_instruction,
         stack::instructions::load_instruction,
         subtract::instructions::load_instruction,
         xor::instructions::load_instruction,
@@ -53,6 +55,7 @@ fn load_standard_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
 fn load_prefix_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
     let package_instruction_loaders: Vec<PackageInstructionLoader> = vec![
         bit::instructions::load_instruction,
+        rotate::instructions::load_prefix_instruction,
     ];
     
     let next_instruction = load_instruction_from_packages(instruction_byte, package_instruction_loaders);
