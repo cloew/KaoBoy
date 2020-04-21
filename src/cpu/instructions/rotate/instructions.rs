@@ -1,3 +1,4 @@
+use super::rotate_left::rotate_left;
 use super::rotate_left_through_carry_flag::rotate_left_through_carry_flag;
 use super::super::common::{UnaryByteOp, UnaryByteOpFn};
 use super::super::sources::{AddressedByShortSource, RegisterSource};
@@ -23,14 +24,23 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
 
 pub fn load_prefix_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
     return match instruction_byte {
-        // Rotate through Carry Flag Instructions
+        // Rotate Left through Carry Flag Instructions
+        0x00 => build_rotate_instruction(RegisterName::B, rotate_left),
+        0x01 => build_rotate_instruction(RegisterName::C, rotate_left),
+        0x02 => build_rotate_instruction(RegisterName::D, rotate_left),
+        0x03 => build_rotate_instruction(RegisterName::E, rotate_left),
+        0x04 => build_rotate_instruction(RegisterName::H, rotate_left),
+        0x05 => build_rotate_instruction(RegisterName::L, rotate_left),
+        //0x06 => build_rotate_instruction(RegisterName::HL, rotate_left),
+        0x07 => build_rotate_instruction(RegisterName::A, rotate_left),
+        // Rotate Left through Carry Flag Instructions
         0x10 => build_rotate_instruction(RegisterName::B, rotate_left_through_carry_flag),
         0x11 => build_rotate_instruction(RegisterName::C, rotate_left_through_carry_flag),
         0x12 => build_rotate_instruction(RegisterName::D, rotate_left_through_carry_flag),
         0x13 => build_rotate_instruction(RegisterName::E, rotate_left_through_carry_flag),
         0x14 => build_rotate_instruction(RegisterName::H, rotate_left_through_carry_flag),
         0x15 => build_rotate_instruction(RegisterName::L, rotate_left_through_carry_flag),
-        //0x16 => build_rotate_left_through_carry_flag_instruction(RegisterName::B),
+        //0x16 => build_rotate_instruction(RegisterName::HL, rotate_left_through_carry_flag),
         0x17 => build_rotate_instruction(RegisterName::A, rotate_left_through_carry_flag),
         _ => None,
     };
