@@ -11,6 +11,8 @@ pub fn rotate_left(context: &mut InstructionContext, value: u8) -> u8 {
     
     context.registers_mut().carry_flag.set((value >> 7) > 0);
     context.registers_mut().zero_flag.set(new_value == 0);
+    context.registers_mut().half_carry_flag.reset();
+    context.registers_mut().subtract_flag.reset();
     
     return new_value;
 }
