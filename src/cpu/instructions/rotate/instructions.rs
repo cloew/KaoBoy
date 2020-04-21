@@ -2,6 +2,8 @@ use super::rotate_a_left::rotate_a_left;
 use super::rotate_a_left_through_carry_flag::rotate_a_left_through_carry_flag;
 use super::rotate_left::rotate_left;
 use super::rotate_left_through_carry_flag::rotate_left_through_carry_flag;
+use super::rotate_a_right::rotate_a_right;
+use super::rotate_a_right_through_carry_flag::rotate_a_right_through_carry_flag;
 use super::rotate_right::rotate_right;
 use super::rotate_right_through_carry_flag::rotate_right_through_carry_flag;
 use super::super::common::{UnaryByteOp, UnaryByteOpFn};
@@ -34,6 +36,9 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         // Rotate A Left
         0x07 => build_rotate_register_instruction(RegisterName::A, rotate_a_left),
         0x17 => build_rotate_register_instruction(RegisterName::A, rotate_a_left_through_carry_flag),
+        // Rotate A Right
+        0x0F => build_rotate_register_instruction(RegisterName::A, rotate_a_right),
+        0x1F => build_rotate_register_instruction(RegisterName::A, rotate_a_right_through_carry_flag),
         _ => None,
     };
 }
