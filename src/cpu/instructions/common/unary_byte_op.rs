@@ -4,7 +4,7 @@ use super::super::sources::ByteSource;
 use super::super::super::InstructionContext;
 use super::no_op::byte_no_op;
 
-type UnaryByteOpFn = fn(&mut InstructionContext, u8) -> u8;
+pub type UnaryByteOpFn = fn(&mut InstructionContext, u8) -> u8;
 
 pub struct UnaryByteOp {
     source: Box<dyn ByteSource>,

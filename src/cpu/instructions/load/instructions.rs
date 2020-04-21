@@ -1,5 +1,5 @@
 use super::super::instruction::Instruction;
-use super::super::common::{UnaryByteOp, UnaryShortOp};
+use super::super::common::{UnaryByteOp, UnaryByteOpFn, UnaryShortOp};
 use super::super::sources::{AddressedByByteSource, AddressedByShortSource, ConstantByteSource, ConstantShortSource, RegisterSource};
 use super::super::destinations::{AddressedByByteDestination, AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
