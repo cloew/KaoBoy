@@ -3,6 +3,7 @@ use super::rotate_a_left_through_carry_flag::rotate_a_left_through_carry_flag;
 use super::rotate_left::rotate_left;
 use super::rotate_left_through_carry_flag::rotate_left_through_carry_flag;
 use super::rotate_right::rotate_right;
+use super::rotate_right_through_carry_flag::rotate_right_through_carry_flag;
 use super::super::common::{UnaryByteOp, UnaryByteOpFn};
 use super::super::sources::{AddressedByShortSource, RegisterSource};
 use super::super::destinations::{AddressedByDoubleRegisterDestination, RegisterDestination};
@@ -39,7 +40,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
 
 pub fn load_prefix_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
     return match instruction_byte {
-        // Rotate Left through Carry Flag Instructions
+        // Rotate Left
         0x00 => build_rotate_register_instruction(RegisterName::B, rotate_left),
         0x01 => build_rotate_register_instruction(RegisterName::C, rotate_left),
         0x02 => build_rotate_register_instruction(RegisterName::D, rotate_left),
@@ -59,7 +60,7 @@ pub fn load_prefix_instruction(instruction_byte: u8) -> Option<Box<dyn Instructi
         0x16 => build_rotate_memory_instruction(DoubleRegisterName::HL, rotate_left_through_carry_flag),
         0x17 => build_rotate_register_instruction(RegisterName::A, rotate_left_through_carry_flag),
         
-        // Rotate Right through Carry Flag Instructions
+        // Rotate Right
         0x08 => build_rotate_register_instruction(RegisterName::B, rotate_right),
         0x09 => build_rotate_register_instruction(RegisterName::C, rotate_right),
         0x0A => build_rotate_register_instruction(RegisterName::D, rotate_right),
@@ -68,6 +69,16 @@ pub fn load_prefix_instruction(instruction_byte: u8) -> Option<Box<dyn Instructi
         0x0D => build_rotate_register_instruction(RegisterName::L, rotate_right),
         0x0E => build_rotate_memory_instruction(DoubleRegisterName::HL, rotate_right),
         0x0F => build_rotate_register_instruction(RegisterName::A, rotate_right),
+        
+        // Rotate Right through Carry Flag Instructions
+        0x18 => build_rotate_register_instruction(RegisterName::B, rotate_right_through_carry_flag),
+        0x19 => build_rotate_register_instruction(RegisterName::C, rotate_right_through_carry_flag),
+        0x1A => build_rotate_register_instruction(RegisterName::D, rotate_right_through_carry_flag),
+        0x1B => build_rotate_register_instruction(RegisterName::E, rotate_right_through_carry_flag),
+        0x1C => build_rotate_register_instruction(RegisterName::H, rotate_right_through_carry_flag),
+        0x1D => build_rotate_register_instruction(RegisterName::L, rotate_right_through_carry_flag),
+        0x1E => build_rotate_memory_instruction(DoubleRegisterName::HL, rotate_right_through_carry_flag),
+        0x1F => build_rotate_register_instruction(RegisterName::A, rotate_right_through_carry_flag),
         
         _ => None,
     };
