@@ -6,7 +6,6 @@ use super::super::sources::{ByteSource, RegisterSource};
 use crate::{boxed};
 
 pub fn rotate_a_left(context: &mut InstructionContext, value: u8) -> u8 {
-    let original_carry_value = context.registers_mut().carry_flag.get();
     let mut new_value = (value << 1) + (value >> 7);
     
     context.registers_mut().carry_flag.set((value >> 7) > 0);

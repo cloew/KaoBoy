@@ -2,6 +2,7 @@ use super::rotate_a_left::rotate_a_left;
 use super::rotate_a_left_through_carry_flag::rotate_a_left_through_carry_flag;
 use super::rotate_left::rotate_left;
 use super::rotate_left_through_carry_flag::rotate_left_through_carry_flag;
+use super::rotate_right::rotate_right;
 use super::super::common::{UnaryByteOp, UnaryByteOpFn};
 use super::super::sources::{AddressedByShortSource, RegisterSource};
 use super::super::destinations::{AddressedByDoubleRegisterDestination, RegisterDestination};
@@ -57,6 +58,16 @@ pub fn load_prefix_instruction(instruction_byte: u8) -> Option<Box<dyn Instructi
         0x15 => build_rotate_register_instruction(RegisterName::L, rotate_left_through_carry_flag),
         0x16 => build_rotate_memory_instruction(DoubleRegisterName::HL, rotate_left_through_carry_flag),
         0x17 => build_rotate_register_instruction(RegisterName::A, rotate_left_through_carry_flag),
+        
+        // Rotate Right through Carry Flag Instructions
+        0x08 => build_rotate_register_instruction(RegisterName::B, rotate_right),
+        0x09 => build_rotate_register_instruction(RegisterName::C, rotate_right),
+        0x0A => build_rotate_register_instruction(RegisterName::D, rotate_right),
+        0x0B => build_rotate_register_instruction(RegisterName::E, rotate_right),
+        0x0C => build_rotate_register_instruction(RegisterName::H, rotate_right),
+        0x0D => build_rotate_register_instruction(RegisterName::L, rotate_right),
+        0x0E => build_rotate_memory_instruction(DoubleRegisterName::HL, rotate_right),
+        0x0F => build_rotate_register_instruction(RegisterName::A, rotate_right),
         
         _ => None,
     };
