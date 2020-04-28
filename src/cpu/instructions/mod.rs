@@ -8,6 +8,7 @@ mod utils;
 
 mod add;
 mod bit;
+mod dec;
 mod inc;
 mod jump;
 mod load;
