@@ -1,8 +1,8 @@
 use super::{inc, inc_short};
 use super::super::instruction::Instruction;
 use super::super::common::{UnaryByteOp, UnaryShortOp};
-use super::super::sources::{AddressedByShortSource, DoubleRegisterSource, RegisterSource};
-use super::super::destinations::{AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination};
+use super::super::sources::{AddressedByShortSource, DoubleRegisterSource, RegisterSource, StackPointerSource};
+use super::super::destinations::{AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
 
@@ -36,6 +36,16 @@ fn build_inc_double_register(register: DoubleRegisterName) -> Option<Box<dyn Ins
     );
 }
 
+fn build_inc_stack_pointer() -> Option<Box<dyn Instruction>> {
+    return optional_boxed!(
+        UnaryShortOp::new(
+            boxed!(StackPointerSource::new()),
+            inc_short,
+            boxed!(StackPointerDestination::new())
+        )
+    );
+}
+
 pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
     return match instruction_byte {
         // Increment Registers
@@ -51,6 +61,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x03 => build_inc_double_register(DoubleRegisterName::BC),
         0x13 => build_inc_double_register(DoubleRegisterName::DE),
         0x23 => build_inc_double_register(DoubleRegisterName::HL),
+        0x33 => build_inc_stack_pointer(),
         _ => None,
     };
 }
