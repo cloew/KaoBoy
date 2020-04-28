@@ -1,8 +1,8 @@
 use super::{dec, dec_short};
 use super::super::instruction::Instruction;
 use super::super::common::{UnaryByteOp, UnaryShortOp};
-use super::super::sources::{DoubleRegisterSource, RegisterSource};
-use super::super::destinations::{DoubleRegisterDestination, RegisterDestination};
+use super::super::sources::{AddressedByShortSource, DoubleRegisterSource, RegisterSource};
+use super::super::destinations::{AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination};
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
 
@@ -12,6 +12,16 @@ fn build_dec_register(register: RegisterName) -> Option<Box<dyn Instruction>> {
             boxed!(RegisterSource::new(register)),
             dec,
             boxed!(RegisterDestination::new(register))
+        )
+    );
+}
+
+fn build_dec_memory_location(register: DoubleRegisterName) -> Option<Box<dyn Instruction>> {
+    return optional_boxed!(
+        UnaryByteOp::new(
+            boxed!(AddressedByShortSource::new_from_register(register)),
+            dec,
+            boxed!(AddressedByDoubleRegisterDestination::new(register))
         )
     );
 }
@@ -32,6 +42,7 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x05 => build_dec_register(RegisterName::B),
         0x15 => build_dec_register(RegisterName::D),
         0x25 => build_dec_register(RegisterName::H),
+        0x35 => build_dec_memory_location(DoubleRegisterName::HL),
         0x0D => build_dec_register(RegisterName::C),
         0x1D => build_dec_register(RegisterName::E),
         0x2D => build_dec_register(RegisterName::L),
