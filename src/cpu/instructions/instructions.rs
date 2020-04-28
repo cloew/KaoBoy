@@ -1,5 +1,6 @@
 use super::add;
 use super::bit;
+use super::dec;
 use super::inc;
 use super::jump;
 use super::load;
@@ -33,6 +34,7 @@ fn load_standard_instruction(instruction_byte: u8) -> Box<dyn Instruction> {
     let package_instruction_loaders: Vec<PackageInstructionLoader>
             = vec![
         add::instructions::load_instruction,
+        dec::instructions::load_instruction,
         inc::instructions::load_instruction,
         jump::instructions::load_instruction,
         load::instructions::load_instruction,
