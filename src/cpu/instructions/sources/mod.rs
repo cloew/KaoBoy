@@ -6,6 +6,7 @@ pub mod constant_short_source;
 pub mod double_register_source;
 pub mod register_source;
 pub mod short_source;
+pub mod stack_pointer_source;
 
 pub use addressed_by_byte_source::AddressedByByteSource;
 pub use addressed_by_short_source::AddressedByShortSource;
@@ -15,3 +16,4 @@ pub use constant_short_source::ConstantShortSource;
 pub use double_register_source::DoubleRegisterSource;
 pub use register_source::RegisterSource;
 pub use short_source::ShortSource;
+pub use stack_pointer_source::StackPointerSource;
