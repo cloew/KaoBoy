@@ -17,8 +17,9 @@ impl Instruction for CallInstruction {
         let new_counter = context.program_mut().read_next_short();
         let current_counter = context.program_mut().get_counter();
         
-        jump_with_extra_work(new_counter, self.condition, context, |context_again| {
+        jump_with_extra_work(self.condition, context, |context_again| {
             context_again.stack_mut().push(current_counter);
+            return new_counter;
         });
 	}
 }
