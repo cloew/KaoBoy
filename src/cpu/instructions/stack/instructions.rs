@@ -2,6 +2,7 @@ use super::super::jump::{JumpConditionFn, always, is_carry_flag_off, is_carry_fl
 use super::call_instruction::CallInstruction;
 use super::pop_instruction::PopInstruction;
 use super::push_instruction::PushInstruction;
+use super::return_instruction::ReturnInstruction;
 use super::super::instruction::Instruction;
 use super::super::sources::{ByteSource, ConstantByteSource};
 use super::super::super::registers::DoubleRegisterName;
@@ -31,6 +32,14 @@ fn build_push_instruction(register: DoubleRegisterName) -> Option<Box<dyn Instru
     );
 }
 
+fn build_return_instruction(condition: JumpConditionFn) -> Option<Box<dyn Instruction>> {
+    return optional_boxed!(
+        ReturnInstruction::new(
+            condition
+        )
+    );
+}
+
 pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
     return match instruction_byte {
         // Call Instructions
@@ -49,6 +58,12 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0xD5 => build_push_instruction(DoubleRegisterName::DE),
         0xE5 => build_push_instruction(DoubleRegisterName::HL),
         0xF5 => build_push_instruction(DoubleRegisterName::AF),
+        // Return Instructions
+        0xC9 => build_return_instruction(always),
+        0xC0 => build_return_instruction(is_zero_flag_off),
+        0xC8 => build_return_instruction(is_zero_flag_on),
+        0xD0 => build_return_instruction(is_carry_flag_off),
+        0xD8 => build_return_instruction(is_carry_flag_on),
         _ => None,
     };
 }
