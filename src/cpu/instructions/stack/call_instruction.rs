@@ -27,7 +27,6 @@ impl Instruction for CallInstruction {
 mod tests {
     use super::*;
     use super::super::super::jump::always;
-    use super::super::super::sources::ConstantByteSource;
     use crate::cpu::testing::build_test_instruction_context;
     use crate::{as_hex, boxed};
     
@@ -43,7 +42,6 @@ mod tests {
         context.stack_mut().set_pointer(0xFFFE);
         context.program_mut().set_counter(INITIAL_COUNTER);
         context.memory_mut().write_short(INITIAL_COUNTER, COUNTER_TO_JUMP_TO);
-        let source = ConstantByteSource::new();
         
         let instruction = CallInstruction::new(always);
         instruction.run(&mut context);
@@ -60,7 +58,6 @@ mod tests {
         context.stack_mut().set_pointer(0xFFFE);
         context.program_mut().set_counter(INITIAL_COUNTER);
         context.memory_mut().write_short(INITIAL_COUNTER, COUNTER_TO_JUMP_TO);
-        let source = ConstantByteSource::new();
         
         let instruction = CallInstruction::new(invalid_condition);
         instruction.run(&mut context);
@@ -77,7 +74,6 @@ mod tests {
         context.stack_mut().set_pointer(0xFFFE);
         context.program_mut().set_counter(INITIAL_COUNTER);
         context.memory_mut().write_short(INITIAL_COUNTER, COUNTER_TO_JUMP_TO);
-        let source = ConstantByteSource::new();
         
         let instruction = CallInstruction::new(always);
         instruction.run(&mut context);
@@ -93,7 +89,6 @@ mod tests {
         context.stack_mut().set_pointer(0xFFFE);
         context.program_mut().set_counter(INITIAL_COUNTER);
         context.memory_mut().write_short(INITIAL_COUNTER, COUNTER_TO_JUMP_TO);
-        let source = ConstantByteSource::new();
         let stack_pointer_before = context.stack().get_pointer();
         
         let instruction = CallInstruction::new(invalid_condition);
