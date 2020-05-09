@@ -15,6 +15,10 @@ impl AddressedByShortDestination {
 		return AddressedByShortDestination {_address_source: source, _follow_up_fn: None};
 	}
     
+	pub fn new_from_constant() -> AddressedByShortDestination {
+		return AddressedByShortDestination::new(boxed!(ConstantShortSource::new()));
+	}
+    
 	pub fn new_from_register(register_name: DoubleRegisterName) -> AddressedByShortDestination {
 		return AddressedByShortDestination::new(boxed!(DoubleRegisterSource::new(register_name)));
 	}

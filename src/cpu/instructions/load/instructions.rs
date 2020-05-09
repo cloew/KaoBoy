@@ -194,6 +194,12 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
                         boxed!(RegisterDestination::new(RegisterName::A))
                     )
                 ),
+        0xEA => optional_boxed!(
+                    UnaryByteOp::new_no_op(
+                        boxed!(RegisterSource::new(RegisterName::A)),
+                        boxed!(AddressedByShortDestination::new_from_constant())
+                    )
+                ),
         0xFA => build_load_from_address_instruction_from_constant_short(RegisterName::A),
         _ => None,
     };
