@@ -1,7 +1,7 @@
 use super::super::instruction::Instruction;
 use super::super::common::{UnaryByteOp, UnaryByteOpFn, UnaryShortOp};
 use super::super::sources::{AddressedByByteSource, AddressedByShortSource, ConstantByteSource, ConstantShortSource, RegisterSource};
-use super::super::destinations::{AddressedByByteDestination, AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
+use super::super::destinations::{AddressedByByteDestination, AddressedByShortDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
 
@@ -27,7 +27,7 @@ fn build_load_into_address_instruction(source_name: RegisterName, destination_na
     return optional_boxed!(
         UnaryByteOp::new_no_op(
             boxed!(RegisterSource::new(source_name)),
-            boxed!(AddressedByDoubleRegisterDestination::new(destination_name))
+            boxed!(AddressedByShortDestination::new_from_register(destination_name))
         )
     );
 }
@@ -36,7 +36,7 @@ fn build_load_into_address_instruction_from_constant_byte(destination_name: Doub
     return optional_boxed!(
         UnaryByteOp::new_no_op(
             boxed!(ConstantByteSource::new()),
-            boxed!(AddressedByDoubleRegisterDestination::new(destination_name))
+            boxed!(AddressedByShortDestination::new_from_register(destination_name))
         )
     );
 }
@@ -145,13 +145,13 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x22 => optional_boxed!(
                     UnaryByteOp::new_no_op(
                         boxed!((RegisterSource::new(RegisterName::A))),
-                        boxed!(AddressedByDoubleRegisterDestination::new_assign_then_increment(DoubleRegisterName::HL))
+                        boxed!(AddressedByShortDestination::new_from_register_then_increment(DoubleRegisterName::HL))
                     )
                 ),
         0x32 => optional_boxed!(
                     UnaryByteOp::new_no_op(
                         boxed!((RegisterSource::new(RegisterName::A))),
-                        boxed!(AddressedByDoubleRegisterDestination::new_assign_then_decrement(DoubleRegisterName::HL))
+                        boxed!(AddressedByShortDestination::new_from_register_then_decrement(DoubleRegisterName::HL))
                     )
                 ),
         // Load Addressed by Byte Fields

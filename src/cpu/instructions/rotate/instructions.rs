@@ -8,7 +8,7 @@ use super::rotate_right::rotate_right;
 use super::rotate_right_through_carry_flag::rotate_right_through_carry_flag;
 use super::super::common::{UnaryByteOp, UnaryByteOpFn};
 use super::super::sources::{AddressedByShortSource, RegisterSource};
-use super::super::destinations::{AddressedByDoubleRegisterDestination, RegisterDestination};
+use super::super::destinations::{AddressedByShortDestination, RegisterDestination};
 use super::super::instruction::Instruction;
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
@@ -27,7 +27,7 @@ fn build_rotate_memory_instruction(register: DoubleRegisterName, operation: Unar
         UnaryByteOp::new(
             boxed!(AddressedByShortSource::new_from_register(register)),
             operation,
-            boxed!(AddressedByDoubleRegisterDestination::new(register)))
+            boxed!(AddressedByShortDestination::new_from_register(register)))
     );
 }
 

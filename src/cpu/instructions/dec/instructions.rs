@@ -2,7 +2,7 @@ use super::{dec, dec_short};
 use super::super::instruction::Instruction;
 use super::super::common::{UnaryByteOp, UnaryShortOp};
 use super::super::sources::{AddressedByShortSource, DoubleRegisterSource, RegisterSource, StackPointerSource};
-use super::super::destinations::{AddressedByDoubleRegisterDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
+use super::super::destinations::{AddressedByShortDestination, DoubleRegisterDestination, RegisterDestination, StackPointerDestination};
 use super::super::super::registers::{DoubleRegisterName, RegisterName};
 use crate::{boxed, optional_boxed};
 
@@ -21,7 +21,7 @@ fn build_dec_memory_location(register: DoubleRegisterName) -> Option<Box<dyn Ins
         UnaryByteOp::new(
             boxed!(AddressedByShortSource::new_from_register(register)),
             dec,
-            boxed!(AddressedByDoubleRegisterDestination::new(register))
+            boxed!(AddressedByShortDestination::new_from_register(register))
         )
     );
 }
