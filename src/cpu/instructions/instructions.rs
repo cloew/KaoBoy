@@ -22,6 +22,7 @@ static PREFIX_INSTRUCTION: u8 = 0xCB;
 pub fn load_instruction(program: &mut ProgramCounter) -> Box<dyn Instruction> {
     
     let instruction_byte = program.read_next_byte();
+    println!("Program Counter: {}, {}", as_hex!(program.get_counter()-1), as_hex!(instruction_byte));
     
     if instruction_byte == PREFIX_INSTRUCTION {
         let instruction_byte = program.read_next_byte();

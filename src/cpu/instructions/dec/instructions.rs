@@ -58,10 +58,10 @@ pub fn load_instruction(instruction_byte: u8) -> Option<Box<dyn Instruction>> {
         0x2D => build_dec_register(RegisterName::L),
         0x3D => build_dec_register(RegisterName::A),
         // Decrement Double Registers
-        0x08 => build_dec_double_register(DoubleRegisterName::BC),
-        0x18 => build_dec_double_register(DoubleRegisterName::DE),
-        0x28 => build_dec_double_register(DoubleRegisterName::HL),
-        0x38 => build_dec_stack_pointer(),
+        0x0B => build_dec_double_register(DoubleRegisterName::BC),
+        0x1B => build_dec_double_register(DoubleRegisterName::DE),
+        0x2B => build_dec_double_register(DoubleRegisterName::HL),
+        0x3B => build_dec_stack_pointer(),
         _ => None,
     };
 }
